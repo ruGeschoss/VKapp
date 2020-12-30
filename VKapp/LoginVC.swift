@@ -42,18 +42,18 @@ class LoginVC: UIViewController {
         view.endEditing(true)
     }
     
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        switch identifier {
-        case "login_success":
-            let checkResult = checkUserData()
-            if !checkResult {
-                showLoginError()
-            }
-            return checkResult
-        default:
-            return true
-        }
-    }
+//    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+//        switch identifier {
+//        case "login_success":
+//            let checkResult = checkUserData()
+//            if !checkResult {
+//                showLoginError()
+//            }
+//            return checkResult
+//        default:
+//            return true
+//        }
+//    }
     
     func checkUserData () -> Bool {
         guard let login = loginTextField.text, let password = passwordTextField.text else { return false }

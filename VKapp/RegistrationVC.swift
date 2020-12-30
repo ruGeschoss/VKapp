@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RegistrationVC: LoginVC {
+class RegistrationVC: UIViewController {
         
     override func viewDidLoad() {
     }

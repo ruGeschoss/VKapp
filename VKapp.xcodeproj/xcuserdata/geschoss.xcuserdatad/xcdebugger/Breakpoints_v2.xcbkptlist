@@ -7,17 +7,156 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A3499B48-4B55-4771-A63B-7F8940C93CE2"
-            shouldBeEnabled = "No"
+            uuid = "87351145-4675-4EB5-AFCD-0C2E783021F1"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "VKapp/LoginVC.swift"
+            filePath = "VKapp/Friends/FriendListTableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "shouldPerformSegue(withIdentifier:sender:)"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EA15D3F5-689F-4AE9-9EAF-B50C79D2AC9B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VKapp/Friends/FriendListTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "prepare(for:sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4B8F669A-728F-43F4-A607-2BDF18B82EF0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VKapp/Friends/FriendListTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "FriendListTableViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "4B8F669A-728F-43F4-A607-2BDF18B82EF0 - 74b28741fe26598"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKapp.FriendListTableViewController.photoDelegate.getter : Swift.Optional&lt;VKapp.PhotoDelegate&gt;"
+                  moduleName = "VKapp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geschoss/Documents/Apps/VKapp/VKapp/Friends/FriendListTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "135">
+               </Location>
+               <Location
+                  uuid = "4B8F669A-728F-43F4-A607-2BDF18B82EF0 - 5dbf8d9a458c69ac"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKapp.FriendListTableViewController.photoDelegate.setter : Swift.Optional&lt;VKapp.PhotoDelegate&gt;"
+                  moduleName = "VKapp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geschoss/Documents/Apps/VKapp/VKapp/Friends/FriendListTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "186">
+               </Location>
+               <Location
+                  uuid = "4B8F669A-728F-43F4-A607-2BDF18B82EF0 - a9922ff99cbcc992"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKapp.FriendListTableViewController.photoDelegate.modify : Swift.Optional&lt;VKapp.PhotoDelegate&gt;"
+                  moduleName = "VKapp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geschoss/Documents/Apps/VKapp/VKapp/Friends/FriendListTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "59">
+               </Location>
+               <Location
+                  uuid = "4B8F669A-728F-43F4-A607-2BDF18B82EF0 - 6962915fa787a07"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKapp.FriendListTableViewController.photoDelegate.modify : Swift.Optional&lt;VKapp.PhotoDelegate&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "VKapp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geschoss/Documents/Apps/VKapp/VKapp/Friends/FriendListTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "79">
+               </Location>
+               <Location
+                  uuid = "4B8F669A-728F-43F4-A607-2BDF18B82EF0 - 18702936073c6bf0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKapp.FriendListTableViewController.init(style: __C.UITableViewStyle) -&gt; VKapp.FriendListTableViewController"
+                  moduleName = "VKapp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geschoss/Documents/Apps/VKapp/VKapp/Friends/FriendListTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "1096">
+               </Location>
+               <Location
+                  uuid = "4B8F669A-728F-43F4-A607-2BDF18B82EF0 - cd0348dd3c3bba46"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKapp.FriendListTableViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; VKapp.FriendListTableViewController"
+                  moduleName = "VKapp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geschoss/Documents/Apps/VKapp/VKapp/Friends/FriendListTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "1063">
+               </Location>
+               <Location
+                  uuid = "4B8F669A-728F-43F4-A607-2BDF18B82EF0 - dd11b605bd7b35ff"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VKapp.FriendListTableViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;VKapp.FriendListTableViewController&gt;"
+                  moduleName = "VKapp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/geschoss/Documents/Apps/VKapp/VKapp/Friends/FriendListTableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "995">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
