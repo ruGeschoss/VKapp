@@ -19,15 +19,16 @@ class FriendListTableViewController: UITableViewController {
         UserModel(userId: 67899, userName: "Cinnamoroll", userAvatar: "Cinnamoroll"),
         UserModel(userId: 7765433, userName: "My Melody", userAvatar: "My_Melody")
     ]
+    var sortedFriends:[UserModel] = []
     
-    weak var photoDelegate:PhotoDelegate?
-// MARK: - NEED HELP!
-// Не получилось отправить фото извыбранной ячейки на следующую страницу в ячейку
+    
+    
+    var selectedPhoto: String!
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ToMyFriendCell" {
             if let destination = segue.destination as? FriendPhotoCollectionViewController{
-                destination.userPhoto =
+                destination.userPhoto = selectedPhoto
             }
         }
     }
@@ -35,21 +36,23 @@ class FriendListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        sortedFriends = friends.sorted{$0.userName < $1.userName}
+    }
 
     
-    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friends.count
+        return sortedFriends.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MyFriendCell", for: indexPath) as? MyFriendsTableViewCell {
-            let selectedFriend = friends[indexPath.row]
+            let selectedFriend = sortedFriends[indexPath.row]
             cell.friendName.text = selectedFriend.userName
             cell.friendPhoto.image = UIImage(named:selectedFriend.userAvatar)
 
@@ -59,8 +62,8 @@ class FriendListTableViewController: UITableViewController {
         return UITableViewCell()
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        photoDelegate?.getPhoto(photo: friends[indexPath.row].userAvatar)
+        selectedPhoto = sortedFriends[indexPath.row].userAvatar
+        performSegue(withIdentifier: "ToMyFriendCell", sender: self)
     }
     
     

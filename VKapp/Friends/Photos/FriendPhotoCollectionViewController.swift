@@ -41,7 +41,7 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return 10
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -53,8 +53,6 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
         return UICollectionViewCell()
     }
     
-    
-    // MARK: UICollectionViewDelegate
 
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking

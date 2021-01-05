@@ -11,7 +11,6 @@ class MyGroupsTableViewController: UITableViewController {
 
     var groups = [GroupModel] ()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
