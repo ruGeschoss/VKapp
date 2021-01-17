@@ -38,7 +38,7 @@ class MyGroupsTableViewController: UITableViewController {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as? MyGroupsTableViewCell {
             let selectedGroup = groups[indexPath.row]
             cell.myGroupName.text = selectedGroup.groupName
-            cell.myGroupPhoto.image = UIImage(named: selectedGroup.groupAvatar)
+            cell.myGroupPhoto.image = UIImage(named: selectedGroup.groupAvatar ?? "No_Image")
             return cell
         }
         

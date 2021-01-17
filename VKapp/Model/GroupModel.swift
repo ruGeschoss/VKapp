@@ -10,5 +10,5 @@ import UIKit
 struct GroupModel:Equatable{
     let groupId:UInt
     let groupName:String
-    let groupAvatar:String
+    let groupAvatar:String?
 }

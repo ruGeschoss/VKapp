@@ -10,6 +10,7 @@
 		B751CBB325A32C2000919820 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751CBB225A32C2000919820 /* GradientView.swift */; };
 		B751CBD725A3A7B300919820 /* CustomImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751CBD625A3A7B300919820 /* CustomImage.swift */; };
 		B751CBE225A44A6F00919820 /* LikeButtonUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751CBE125A44A6F00919820 /* LikeButtonUIButton.swift */; };
+		B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751CBF425B46F8B00919820 /* CharPicker.swift */; };
 		B76069D625920427005E1F03 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76069D525920427005E1F03 /* AppDelegate.swift */; };
 		B76069D825920427005E1F03 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76069D725920427005E1F03 /* SceneDelegate.swift */; };
 		B76069DD25920427005E1F03 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B76069DB25920427005E1F03 /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 		B751CBB225A32C2000919820 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		B751CBD625A3A7B300919820 /* CustomImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImage.swift; sourceTree = "<group>"; };
 		B751CBE125A44A6F00919820 /* LikeButtonUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButtonUIButton.swift; sourceTree = "<group>"; };
+		B751CBF425B46F8B00919820 /* CharPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharPicker.swift; sourceTree = "<group>"; };
 		B76069D225920427005E1F03 /* VKapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VKapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B76069D525920427005E1F03 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B76069D725920427005E1F03 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				B751CBE125A44A6F00919820 /* LikeButtonUIButton.swift */,
 				B751CBD625A3A7B300919820 /* CustomImage.swift */,
 				B751CBB225A32C2000919820 /* GradientView.swift */,
+				B751CBF425B46F8B00919820 /* CharPicker.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				B779557E259A7238006E07B1 /* FriendPhotoCollectionViewController.swift in Sources */,
 				B76069EC259204BA005E1F03 /* LoginVC.swift in Sources */,
 				B7795586259A7604006E07B1 /* FriendPhotoCollectionViewCell.swift in Sources */,
+				B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */,
 				B751CBD725A3A7B300919820 /* CustomImage.swift in Sources */,
 				B779555D25950546006E07B1 /* RegistrationVC.swift in Sources */,
 				B7795568259A45D0006E07B1 /* AllGroupsTableViewCell.swift in Sources */,
@@ -406,7 +410,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = P88D7RG3CN;
 				INFOPLIST_FILE = VKapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -414,6 +420,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.learning.swift.VKapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -424,7 +431,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = P88D7RG3CN;
 				INFOPLIST_FILE = VKapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -432,6 +441,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.learning.swift.VKapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

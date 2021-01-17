@@ -11,19 +11,83 @@ protocol PhotoDelegate:AnyObject {
     func getPhoto(photo:String)
 }
 
-class FriendListTableViewController: UITableViewController {
-
+class FriendListTableViewController: UIViewController, UITableViewDataSource {
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var charPicker: CharPicker!
+    
     var friends:[UserModel] = [
-        UserModel(userId: 1241311, userName: "Batz Maru", userAvatar: "Batz_Maru"),
-        UserModel(userId: 99897, userName: "Chococat", userAvatar: "Chococat"),
-        UserModel(userId: 67899, userName: "Cinnamoroll", userAvatar: "Cinnamoroll"),
-        UserModel(userId: 7765433, userName: "My Melody", userAvatar: "My_Melody")
+        UserModel(userId: 1, userName: "Batz Maru", userAvatar: "Batz_Maru"),
+        UserModel(userId: 2, userName: "Chococat", userAvatar: "Chococat"),
+        UserModel(userId: 3, userName: "Cinnamoroll", userAvatar: "Cinnamoroll"),
+        UserModel(userId: 4, userName: "My Melody", userAvatar: "My_Melody"),
+        UserModel(userId: 5, userName: "Abigale", userAvatar: nil),
+        UserModel(userId: 6, userName: "WadwTest", userAvatar: nil),
+        UserModel(userId: 7, userName: "Atest", userAvatar: nil),
+        UserModel(userId: 8, userName: "Dtest", userAvatar: nil),
+        UserModel(userId: 9, userName: "YwadTest", userAvatar: nil),
+        UserModel(userId: 10, userName: "Gtest", userAvatar: nil),
+        UserModel(userId: 11, userName: "ZdwaTest", userAvatar: nil),
+        UserModel(userId: 12, userName: "Gggggtest", userAvatar: nil),
+        UserModel(userId: 13, userName: "Gztest", userAvatar: nil),
+        UserModel(userId: 14, userName: "Gaztest", userAvatar: nil),
+        UserModel(userId: 15, userName: "IIItest", userAvatar: nil),
+        UserModel(userId: 16, userName: "Mtest", userAvatar: nil),
+        UserModel(userId: 17, userName: "MadwTest", userAvatar: nil),
+        UserModel(userId: 18, userName: "OooTest Test", userAvatar: nil),
+        UserModel(userId: 19, userName: "OAtest test", userAvatar: nil),
+        UserModel(userId: 20, userName: "Qtest", userAvatar: nil),
+        UserModel(userId: 21, userName: "Gggtest", userAvatar: nil),
+        UserModel(userId: 22, userName: "Dddtest", userAvatar: nil),
+        UserModel(userId: 23, userName: "Atest", userAvatar: nil),
     ]
     var sortedFriends:[UserModel] = []
-    
-    
+    var sectionTitles:[String] = []
     
     var selectedPhoto: String!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        sortedFriends = friends.sorted{$0.userName < $1.userName}
+        
+        for each in sortedFriends {
+            let charForTitle = each.userName.first!
+            if !sectionTitles.contains(String(charForTitle)) {
+                sectionTitles.append(String(charForTitle))
+            }
+        }
+        
+        charPicker.chars = sectionTitles
+        charPicker.setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
+    @IBAction func charPicked(_ sender: CharPicker) {
+        let selectedChar = charPicker.selectedChar
+        var indexPath = IndexPath(item: 0, section: 0)
+        for (index,section) in sectionTitles.enumerated() {
+            if selectedChar == section {
+                indexPath = IndexPath(item: 0, section: index)
+            }
+        }
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    }
+    
+    @IBAction func didMakePan(_ sender: UIPanGestureRecognizer) {
+        let location = sender.location(in: charPicker)
+        let coeff = Int(charPicker.frame.height) /  sectionTitles.count
+        let letterIndex = Int(location.y) / coeff
+        
+        if letterIndex < sectionTitles.count && letterIndex >= 0 {
+            charPicker.selectedChar = sectionTitles[letterIndex]
+        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ToMyFriendCell" {
@@ -33,39 +97,59 @@ class FriendListTableViewController: UITableViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        sortedFriends = friends.sorted{$0.userName < $1.userName}
-    }
+}
 
+//MARK: Extensions
+
+extension FriendListTableViewController: UITableViewDelegate {
+
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sectionTitles.count
+    }
     
+//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//        return sectionTitles
+//    }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitles[section]
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return compareByFirstChar(section).count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sortedFriends.count
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MyFriendCell", for: indexPath) as? MyFriendsTableViewCell {
-            let selectedFriend = sortedFriends[indexPath.row]
-            cell.friendName.text = selectedFriend.userName
-            cell.friendPhoto.image = UIImage(named:selectedFriend.userAvatar)
-
+            let tmpArray = compareByFirstChar(indexPath.section)
+            let friend = tmpArray[indexPath.row]
+            cell.friendName.text = friend.userName
+            cell.friendPhoto.image = UIImage(named: friend.userAvatar ?? "No_Image")
             return cell
         }
 
         return UITableViewCell()
     }
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedPhoto = sortedFriends[indexPath.row].userAvatar
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let user = compareByFirstChar(indexPath.section)
+        selectedPhoto = user[indexPath.row].userAvatar ?? "No_Image"
         performSegue(withIdentifier: "ToMyFriendCell", sender: self)
     }
     
+    
+    
+    
+    func compareByFirstChar(_ indexInTitles: Int) -> [UserModel] {
+        var tmpArray:[UserModel] = []
+        for each in sortedFriends {
+            if String(each.userName.first!) == sectionTitles[indexInTitles] {
+                tmpArray.append(each)
+            }
+        }
+        return tmpArray
+    }
     
     /*
     // Override to support conditional editing of the table view.

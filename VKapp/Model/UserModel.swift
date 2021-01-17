@@ -10,5 +10,5 @@ import UIKit
 struct UserModel:Equatable {
     let userId:UInt
     let userName:String
-    let userAvatar:String
+    let userAvatar:String?
 }

@@ -43,7 +43,7 @@ class AllGroupsTableViewController: UITableViewController {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as? AllGroupsTableViewCell {
             let selectedGroup = groups[indexPath.row]
             cell.groupName.text = selectedGroup.groupName
-            cell.groupPhoto.image = UIImage(named: selectedGroup.groupAvatar)
+            cell.groupPhoto.image = UIImage(named: selectedGroup.groupAvatar ?? "No_Image")
             
             return cell
         }
