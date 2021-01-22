@@ -2,7 +2,7 @@
 //  MyGroupsTableViewController.swift
 //  VKapp
 //
-//  Created by Александр Андрианов on 28.12.2020.
+//  Created by Alexander Andrianov on 28.12.2020.
 //
 
 import UIKit

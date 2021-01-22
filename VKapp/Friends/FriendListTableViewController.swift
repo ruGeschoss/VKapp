@@ -2,7 +2,7 @@
 //  FriendListTableViewController.swift
 //  VKapp
 //
-//  Created by Александр Андрианов on 29.12.2020.
+//  Created by Alexander Andrianov on 29.12.2020.
 //
 
 import UIKit
@@ -15,6 +15,7 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var charPicker: CharPicker!
+    @IBOutlet weak var friendSearch: UISearchBar!
     
     var friends:[UserModel] = [
         UserModel(userId: 1, userName: "Batz Maru", userAvatar: "Batz_Maru"),
@@ -43,29 +44,23 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     ]
     var sortedFriends:[UserModel] = []
     var sectionTitles:[String] = []
-    
+    var searchData:[UserModel] = []
     var selectedPhoto: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        friendSearch.delegate = self
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = UIColor.clear
         
         sortedFriends = friends.sorted{$0.userName < $1.userName}
-        
-        for each in sortedFriends {
-            let charForTitle = each.userName.first!
-            if !sectionTitles.contains(String(charForTitle)) {
-                sectionTitles.append(String(charForTitle))
-            }
-        }
-        
-        charPicker.chars = sectionTitles
-        charPicker.setupUI()
+        searchData = sortedFriends
+        getSectionTitles()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        super.viewWillAppear(animated)
     }
     
     @IBAction func charPicked(_ sender: CharPicker) {
@@ -99,7 +94,7 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     
 }
 
-//MARK: Extensions
+//MARK: TableViewDelegate
 
 extension FriendListTableViewController: UITableViewDelegate {
 
@@ -107,13 +102,14 @@ extension FriendListTableViewController: UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionTitles.count
     }
-    
-//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return sectionTitles
-//    }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionTitles[section]
+    }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.black
+        header.alpha = 0.5
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -122,6 +118,8 @@ extension FriendListTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MyFriendCell", for: indexPath) as? MyFriendsTableViewCell {
+            cell.backgroundColor = UIColor.clear
+            
             let tmpArray = compareByFirstChar(indexPath.section)
             let friend = tmpArray[indexPath.row]
             cell.friendName.text = friend.userName
@@ -139,18 +137,44 @@ extension FriendListTableViewController: UITableViewDelegate {
     }
     
     
-    
-    
     func compareByFirstChar(_ indexInTitles: Int) -> [UserModel] {
         var tmpArray:[UserModel] = []
-        for each in sortedFriends {
+        for each in searchData {
             if String(each.userName.first!) == sectionTitles[indexInTitles] {
                 tmpArray.append(each)
             }
         }
         return tmpArray
     }
-    
+    func getSectionTitles() {
+        sectionTitles = []
+        for each in searchData {
+            let charForTitle = each.userName.first!
+            if !sectionTitles.contains(String(charForTitle)) {
+                sectionTitles.append(String(charForTitle))
+            }
+        }
+        charPicker.chars = sectionTitles
+        charPicker.setupUI()
+    }
+}
+
+//MARK:- SearchBarDelegate
+extension FriendListTableViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        var people = sortedFriends.map({$0.userName})
+        people = searchText.isEmpty ? people : people.filter({(dataString:String) -> Bool in
+            return dataString.range(of: searchText, options: .caseInsensitive) != nil
+            })
+        searchData = sortedFriends.filter({people.contains($0.userName)})
+        getSectionTitles()
+        tableView.reloadData()
+        
+        print("********************")
+        print("begin test")
+        print(charPicker.chars)
+    }
+}
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -196,4 +220,4 @@ extension FriendListTableViewController: UITableViewDelegate {
     }
     */
 
-}
+

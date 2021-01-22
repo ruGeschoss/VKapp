@@ -2,7 +2,7 @@
 //  LikeButtonUIButton.swift
 //  VKapp
 //
-//  Created by Александр Андрианов on 05.01.2021.
+//  Created by Alexander Andrianov on 05.01.2021.
 //
 
 import UIKit

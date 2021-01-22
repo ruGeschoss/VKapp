@@ -28,6 +28,13 @@
 		B7795586259A7604006E07B1 /* FriendPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7795585259A7604006E07B1 /* FriendPhotoCollectionViewCell.swift */; };
 		B779558A259B500B006E07B1 /* FriendListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7795589259B500B006E07B1 /* FriendListTableViewController.swift */; };
 		B779558D259B5027006E07B1 /* MyFriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B779558C259B5027006E07B1 /* MyFriendsTableViewCell.swift */; };
+		B7CA8CA625B8573200CE256A /* HeaderCRV.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CA425B8573200CE256A /* HeaderCRV.swift */; };
+		B7CA8CA725B8573200CE256A /* HeaderCRV.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7CA8CA525B8573200CE256A /* HeaderCRV.xib */; };
+		B7CA8CAE25B863D300CE256A /* FooterCRV.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CAC25B863D300CE256A /* FooterCRV.swift */; };
+		B7CA8CAF25B863D300CE256A /* FooterCRV.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7CA8CAD25B863D300CE256A /* FooterCRV.xib */; };
+		B7CA8CBC25B9FA9000CE256A /* NewsVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CBB25B9FA9000CE256A /* NewsVController.swift */; };
+		B7CA8CD025BA07DF00CE256A /* NewsCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CCF25BA07DF00CE256A /* NewsCVCell.swift */; };
+		B7CA8CD625BAB2FB00CE256A /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7CA8CD525BAB2FB00CE256A /* NewsCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +61,13 @@
 		B7795585259A7604006E07B1 /* FriendPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		B7795589259B500B006E07B1 /* FriendListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendListTableViewController.swift; sourceTree = "<group>"; };
 		B779558C259B5027006E07B1 /* MyFriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFriendsTableViewCell.swift; sourceTree = "<group>"; };
+		B7CA8CA425B8573200CE256A /* HeaderCRV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCRV.swift; sourceTree = "<group>"; };
+		B7CA8CA525B8573200CE256A /* HeaderCRV.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderCRV.xib; sourceTree = "<group>"; };
+		B7CA8CAC25B863D300CE256A /* FooterCRV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterCRV.swift; sourceTree = "<group>"; };
+		B7CA8CAD25B863D300CE256A /* FooterCRV.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FooterCRV.xib; sourceTree = "<group>"; };
+		B7CA8CBB25B9FA9000CE256A /* NewsVController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsVController.swift; sourceTree = "<group>"; };
+		B7CA8CCF25BA07DF00CE256A /* NewsCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCVCell.swift; sourceTree = "<group>"; };
+		B7CA8CD525BAB2FB00CE256A /* NewsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +120,7 @@
 		B76069D425920427005E1F03 /* VKapp */ = {
 			isa = PBXGroup;
 			children = (
+				B7CA8CAB25B8635200CE256A /* News */,
 				B751CBE525A4636700919820 /* Login */,
 				B751CBE425A4634D00919820 /* Custom */,
 				B7795588259B4FE8006E07B1 /* Friends */,
@@ -176,6 +191,20 @@
 			path = Friends;
 			sourceTree = "<group>";
 		};
+		B7CA8CAB25B8635200CE256A /* News */ = {
+			isa = PBXGroup;
+			children = (
+				B7CA8CA525B8573200CE256A /* HeaderCRV.xib */,
+				B7CA8CA425B8573200CE256A /* HeaderCRV.swift */,
+				B7CA8CAC25B863D300CE256A /* FooterCRV.swift */,
+				B7CA8CAD25B863D300CE256A /* FooterCRV.xib */,
+				B7CA8CBB25B9FA9000CE256A /* NewsVController.swift */,
+				B7CA8CCF25BA07DF00CE256A /* NewsCVCell.swift */,
+				B7CA8CD525BAB2FB00CE256A /* NewsCell.xib */,
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -233,8 +262,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7CA8CD625BAB2FB00CE256A /* NewsCell.xib in Resources */,
 				B76069E225920427005E1F03 /* LaunchScreen.storyboard in Resources */,
+				B7CA8CAF25B863D300CE256A /* FooterCRV.xib in Resources */,
 				B76069DF25920427005E1F03 /* Assets.xcassets in Resources */,
+				B7CA8CA725B8573200CE256A /* HeaderCRV.xib in Resources */,
 				B76069DD25920427005E1F03 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -251,13 +283,17 @@
 				B751CBE225A44A6F00919820 /* LikeButtonUIButton.swift in Sources */,
 				B751CBB325A32C2000919820 /* GradientView.swift in Sources */,
 				B7795576259A6CC1006E07B1 /* GroupModel.swift in Sources */,
+				B7CA8CBC25B9FA9000CE256A /* NewsVController.swift in Sources */,
 				B76069D825920427005E1F03 /* SceneDelegate.swift in Sources */,
 				B779556C259A62DB006E07B1 /* MyGroupsTableViewController.swift in Sources */,
+				B7CA8CA625B8573200CE256A /* HeaderCRV.swift in Sources */,
 				B7795564259A45A2006E07B1 /* AllGroupsTableViewController.swift in Sources */,
 				B779557E259A7238006E07B1 /* FriendPhotoCollectionViewController.swift in Sources */,
 				B76069EC259204BA005E1F03 /* LoginVC.swift in Sources */,
 				B7795586259A7604006E07B1 /* FriendPhotoCollectionViewCell.swift in Sources */,
+				B7CA8CAE25B863D300CE256A /* FooterCRV.swift in Sources */,
 				B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */,
+				B7CA8CD025BA07DF00CE256A /* NewsCVCell.swift in Sources */,
 				B751CBD725A3A7B300919820 /* CustomImage.swift in Sources */,
 				B779555D25950546006E07B1 /* RegistrationVC.swift in Sources */,
 				B7795568259A45D0006E07B1 /* AllGroupsTableViewCell.swift in Sources */,

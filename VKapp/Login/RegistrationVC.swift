@@ -2,7 +2,7 @@
 //  RegistrationVC.swift
 //  VKapp
 //
-//  Created by Александр Андрианов on 24.12.2020.
+//  Created by Alexander Andrianov on 24.12.2020.
 //
 
 import UIKit

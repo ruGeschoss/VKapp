@@ -2,7 +2,7 @@
 //  CharPicker.swift
 //  VKapp
 //
-//  Created by Александр Андрианов on 17.01.2021.
+//  Created by Alexander Andrianov on 17.01.2021.
 //
 
 import UIKit
@@ -31,6 +31,7 @@ class CharPicker: UIControl {
     }
     
     func setupUI () {
+        buttons.removeAll()
         for char in chars {
             let button = UIButton(type: UIButton.ButtonType.system)
             button.setTitle(char, for: .normal)
@@ -39,12 +40,16 @@ class CharPicker: UIControl {
             button.addTarget(self, action: #selector(selectChar), for: .touchUpInside)
             buttons.append(button)
         }
-        stackView = UIStackView(arrangedSubviews: buttons)
-        addSubview(stackView)
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 5
-        stackView.distribution = .fillEqually
+        
+        if stackView != nil {
+            stackView.removeFullyAllArrangedSubviews()
+            }
+                stackView = UIStackView(arrangedSubviews: buttons)
+                addSubview(stackView)
+                stackView.axis = .vertical
+                stackView.spacing = 5
+                stackView.alignment = .center
+                stackView.distribution = .fillEqually
     }
     
     @objc func selectChar(_ sender: UIButton) {
@@ -74,4 +79,18 @@ class CharPicker: UIControl {
     }
     */
 
+}
+
+extension UIStackView {
+
+    func removeFully(view: UIView) {
+        removeArrangedSubview(view)
+        view.removeFromSuperview()
+    }
+
+    func removeFullyAllArrangedSubviews() {
+        arrangedSubviews.forEach { (view) in
+            removeFully(view: view)
+        }
+    }
 }

@@ -2,7 +2,7 @@
 //  CustomImage.swift
 //  VKapp
 //
-//  Created by Александр Андрианов on 04.01.2021.
+//  Created by Alexander Andrianov on 04.01.2021.
 //
 
 import UIKit
@@ -43,4 +43,3 @@ class ShadowImage: UIImageView {
         clipsToBounds = false
     }
 }
-
