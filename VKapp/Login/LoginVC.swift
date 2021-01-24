@@ -13,11 +13,19 @@ class LoginVC: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var loadingStatus: UIView!
     
 //    MARK: - Functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let loadingAnim = Bundle.main.loadNibNamed("LoadingProcess", owner: nil, options: nil)?.first as! LoadingProcessView
+        loadingAnim.frame = CGRect(x: 0, y: 0, width: 120, height: 40)
+        self.loadingStatus.addSubview(loadingAnim)
+        loadingAnim.animate()
+        
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOnScroll))
         view.addGestureRecognizer(tapGesture)
@@ -73,7 +81,9 @@ class LoginVC: UIViewController {
 //    MARK: - Actions
     
     @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {}
-    @IBAction func signInButton(_ sender: UIButton) {}
+    @IBAction func signInButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "login_success", sender: self)
+    }
     @IBAction func signUpButton(_ sender: UIButton) {}
     /*
     // MARK: - Navigation

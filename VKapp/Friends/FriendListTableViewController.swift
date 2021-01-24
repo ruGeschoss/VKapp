@@ -169,10 +169,6 @@ extension FriendListTableViewController: UISearchBarDelegate {
         searchData = sortedFriends.filter({people.contains($0.userName)})
         getSectionTitles()
         tableView.reloadData()
-        
-        print("********************")
-        print("begin test")
-        print(charPicker.chars)
     }
 }
     /*

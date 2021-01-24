@@ -25,16 +25,20 @@ class LikeButtonUIButton: UIButton {
         self.setTitle(String(likesCount), for: .normal)
         self.setTitleColor(preLikeColor, for: .normal)
         self.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+        
     }
     
     @objc func onTap() {
-        alreadyLiked = !alreadyLiked
-        if alreadyLiked {
-            likeImage()
-        } else {
-            dislikeImage()
-        }
-        
+        UIView.transition(with: self.imageView!, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            self.alreadyLiked = !self.alreadyLiked
+            if self.alreadyLiked {
+                self.likeImage()
+            } else {
+                self.dislikeImage()
+            }
+
+        })
+                
     }
     
     func likeImage() {

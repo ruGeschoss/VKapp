@@ -17,22 +17,22 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZDt-IS-6vX">
                     <rect key="frame" x="0.0" y="0.0" width="436" height="50"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iyh-No-4AV">
-                            <rect key="frame" x="20" y="14" width="42" height="22"/>
-                            <state key="normal" title="9k" image="heart" catalog="system"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iyh-No-4AV" customClass="LikeButtonUIButton" customModule="VKapp" customModuleProvider="target">
+                            <rect key="frame" x="20" y="14" width="20.5" height="22"/>
+                            <state key="normal" image="heart" catalog="system"/>
                             <connections>
-                                <action selector="likeButton:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="AOE-SF-cL5"/>
+                                <action selector="likeButton:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="eFN-LM-z0e"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a4f-7X-fZg">
-                            <rect key="frame" x="82" y="14" width="55" height="22"/>
+                            <rect key="frame" x="60.5" y="14" width="55" height="22"/>
                             <state key="normal" title="390" image="message" catalog="system"/>
                             <connections>
                                 <action selector="commentButton:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="4hN-ud-Ufc"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yTR-TD-IwZ">
-                            <rect key="frame" x="157" y="14" width="40" height="22"/>
+                            <rect key="frame" x="135.5" y="14" width="40" height="22"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <state key="normal" title="10" image="arrowshape.turn.up.right" catalog="system"/>
                             <connections>
@@ -89,7 +89,7 @@
             <connections>
                 <outlet property="commentButtonCounter" destination="a4f-7X-fZg" id="j9g-sj-E2E"/>
                 <outlet property="footerView" destination="ZDt-IS-6vX" id="VVO-Po-lt7"/>
-                <outlet property="likeButtonCounter" destination="Iyh-No-4AV" id="2RW-9f-N8e"/>
+                <outlet property="likeButton" destination="Iyh-No-4AV" id="ygW-9n-Jf1"/>
                 <outlet property="shareButtonCounter" destination="yTR-TD-IwZ" id="7Lg-ru-Nmd"/>
                 <outlet property="viewCount" destination="7vm-9x-Omv" id="Qt0-KM-gel"/>
             </connections>

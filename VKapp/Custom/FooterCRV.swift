@@ -11,7 +11,7 @@ class FooterCRV: UICollectionReusableView {
     
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var viewCount: UILabel!
-    @IBOutlet weak var likeButtonCounter: UIButton!
+    @IBOutlet weak var likeButton: LikeButtonUIButton!
     @IBOutlet weak var commentButtonCounter: UIButton!
     @IBOutlet weak var shareButtonCounter: UIButton!
     
@@ -25,16 +25,15 @@ class FooterCRV: UICollectionReusableView {
     
     func configure(viewCount:Int, likeCount:Int, commentCount:Int, shareCount:Int) {
         self.viewCount.text = String(viewCount)
-        self.likeButtonCounter.setTitle(String(likeCount), for: .normal)
         self.commentButtonCounter.setTitle(String(commentCount), for: .normal)
         self.shareButtonCounter.setTitle(String(shareCount), for: .normal)
     }
     
-    @IBAction func likeButton(_ sender: UIButton) {
-    }
     @IBAction func commentButton(_ sender: UIButton) {
     }
     @IBAction func shareButton(_ sender: UIButton) {
+    }
+    @IBAction func likeButton(_ sender: FooterCRV) {
     }
     
 }
