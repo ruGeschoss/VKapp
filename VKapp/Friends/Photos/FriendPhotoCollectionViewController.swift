@@ -8,21 +8,30 @@
 import UIKit
 
 class FriendPhotoCollectionViewController: UICollectionViewController {
-
-    var userPhoto:String = ""
     
+//    var userPhoto:String = ""
+    var currentImageIndex = 0
+    let userAlbumOne = ["photo1","photo2","photo3","photo4","photo5","photo6","photo7","photo8","photo9","photo10","photo11","photo12","photo13","photo14","photo15","photo16","photo17","photo18",]
+    
+    let photoPerRow:CGFloat = 3
+    let cellInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        collectionView.isPagingEnabled = false
         // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
+         self.clearsSelectionOnViewWillAppear = false
         // Register cell classes
-
         // Do any additional setup after loading the view.
     }
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "to_FullScreen_Photo" {
+            if let destination = segue.destination as? FullScreenPhotoVC{
+                destination.fullAlbum = userAlbumOne
+                destination.currentIndex = currentImageIndex
+            }
+        }
+    }
     /*
     // MARK: - Navigation
 
@@ -36,17 +45,17 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        1
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        userAlbumOne.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FriendPhotoCell", for: indexPath) as? FriendPhotoCollectionViewCell {
-            cell.friendAlbumPhoto.image = UIImage(named: userPhoto)
+            cell.friendAlbumPhoto.image = UIImage(named: userAlbumOne[indexPath.item])
             return cell
             
         }
@@ -77,11 +86,35 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
         return false
     }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
+     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+     }
     */
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        userPhoto = userAlbumOne[indexPath.item]
+        currentImageIndex = (indexPath.section + 1) * indexPath.item
+        performSegue(withIdentifier: "to_FullScreen_Photo", sender: self)
+    }
 
 }
 
+extension FriendPhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let spacing = cellInsets.left * (photoPerRow - 1)
+        let availableWidth = collectionView.frame.width - spacing
+        let photoWidth = availableWidth / photoPerRow
+        return CGSize(width: photoWidth, height: photoWidth)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        cellInsets
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        cellInsets.left
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        cellInsets.left
+    }
+
+}

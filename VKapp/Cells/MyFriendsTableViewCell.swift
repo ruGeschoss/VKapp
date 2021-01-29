@@ -34,7 +34,7 @@ class MyFriendsTableViewCell: UITableViewCell {
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveLinear, animations: {
             self.avatarImage.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         })
-        UIView.animate(withDuration: 0.2, delay: 0.2, options: .curveLinear, animations: {
+        UIView.animate(withDuration: 1, delay: 1, options: .curveLinear, animations: {
             self.avatarImage.transform = CGAffineTransform.identity
         })
     }

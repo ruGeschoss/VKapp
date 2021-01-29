@@ -60,16 +60,16 @@ class NewsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
 
 extension NewsVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.layer.frame.width, height: 44)
+        return CGSize(width: collectionView.frame.width, height: 44)
 
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.layer.frame.width, height: 44)
+        return CGSize(width: collectionView.frame.width, height: 44)
 
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return CGSize(width: collectionView.frame.width - 10, height: 500)
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewsCVC.identifier, for: indexPath) as! NewsCVC
+        return CGSize(width: collectionView.bounds.width, height: collectionView.safeAreaLayoutGuide.layoutFrame.height)
         // MARK:- autoresizing height???
     }
 }

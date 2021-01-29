@@ -37,6 +37,7 @@
 		B7CA8CD625BAB2FB00CE256A /* NewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7CA8CD525BAB2FB00CE256A /* NewsCell.xib */; };
 		B7CA8CDB25BD751800CE256A /* LoadingProcessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CDA25BD751800CE256A /* LoadingProcessView.swift */; };
 		B7CA8CE225BD754300CE256A /* LoadingProcess.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7CA8CE125BD754300CE256A /* LoadingProcess.xib */; };
+		B7CA8CF225C19CB100CE256A /* FullScreenPhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CF125C19CB100CE256A /* FullScreenPhotoVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		B7CA8CD525BAB2FB00CE256A /* NewsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCell.xib; sourceTree = "<group>"; };
 		B7CA8CDA25BD751800CE256A /* LoadingProcessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProcessView.swift; sourceTree = "<group>"; };
 		B7CA8CE125BD754300CE256A /* LoadingProcess.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingProcess.xib; sourceTree = "<group>"; };
+		B7CA8CF125C19CB100CE256A /* FullScreenPhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPhotoVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				B779557D259A7238006E07B1 /* FriendPhotoCollectionViewController.swift */,
+				B7CA8CF125C19CB100CE256A /* FullScreenPhotoVC.swift */,
 			);
 			path = Photos;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7CA8CF225C19CB100CE256A /* FullScreenPhotoVC.swift in Sources */,
 				B76069D625920427005E1F03 /* AppDelegate.swift in Sources */,
 				B779558A259B500B006E07B1 /* FriendListTableViewController.swift in Sources */,
 				B751CBE225A44A6F00919820 /* LikeButtonUIButton.swift in Sources */,
@@ -474,6 +478,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P88D7RG3CN;
 				INFOPLIST_FILE = VKapp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -495,6 +500,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P88D7RG3CN;
 				INFOPLIST_FILE = VKapp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
