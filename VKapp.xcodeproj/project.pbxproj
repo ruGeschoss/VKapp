@@ -17,6 +17,10 @@
 		B76069DF25920427005E1F03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B76069DE25920427005E1F03 /* Assets.xcassets */; };
 		B76069E225920427005E1F03 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B76069E025920427005E1F03 /* LaunchScreen.storyboard */; };
 		B76069EC259204BA005E1F03 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76069EB259204BA005E1F03 /* LoginVC.swift */; };
+		B769DBEA25C96D8E00E0E864 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769DBE925C96D8E00E0E864 /* CustomNavigationController.swift */; };
+		B769DBED25C96DA800E0E864 /* PushCustomNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769DBEC25C96DA800E0E864 /* PushCustomNC.swift */; };
+		B769DBF025C96DCD00E0E864 /* PopCustomNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769DBEF25C96DCD00E0E864 /* PopCustomNC.swift */; };
+		B769DBF325C9AC6C00E0E864 /* InteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769DBF225C9AC6C00E0E864 /* InteractiveTransition.swift */; };
 		B779555D25950546006E07B1 /* RegistrationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B779555C25950546006E07B1 /* RegistrationVC.swift */; };
 		B7795564259A45A2006E07B1 /* AllGroupsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7795563259A45A2006E07B1 /* AllGroupsTableViewController.swift */; };
 		B7795568259A45D0006E07B1 /* AllGroupsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7795567259A45D0006E07B1 /* AllGroupsTableViewCell.swift */; };
@@ -53,6 +57,10 @@
 		B76069E125920427005E1F03 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B76069E325920427005E1F03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B76069EB259204BA005E1F03 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		B769DBE925C96D8E00E0E864 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
+		B769DBEC25C96DA800E0E864 /* PushCustomNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushCustomNC.swift; sourceTree = "<group>"; };
+		B769DBEF25C96DCD00E0E864 /* PopCustomNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopCustomNC.swift; sourceTree = "<group>"; };
+		B769DBF225C9AC6C00E0E864 /* InteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveTransition.swift; sourceTree = "<group>"; };
 		B779555C25950546006E07B1 /* RegistrationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVC.swift; sourceTree = "<group>"; };
 		B7795563259A45A2006E07B1 /* AllGroupsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsTableViewController.swift; sourceTree = "<group>"; };
 		B7795567259A45D0006E07B1 /* AllGroupsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsTableViewCell.swift; sourceTree = "<group>"; };
@@ -90,6 +98,7 @@
 		B751CBE425A4634D00919820 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				B769DBE825C96D3500E0E864 /* NavigatonController */,
 				B7CA8CDA25BD751800CE256A /* LoadingProcessView.swift */,
 				B7CA8CAC25B863D300CE256A /* FooterCRV.swift */,
 				B7CA8CA425B8573200CE256A /* HeaderCRV.swift */,
@@ -97,6 +106,7 @@
 				B751CBD625A3A7B300919820 /* CustomImage.swift */,
 				B751CBB225A32C2000919820 /* GradientView.swift */,
 				B751CBF425B46F8B00919820 /* CharPicker.swift */,
+				B769DBF225C9AC6C00E0E864 /* InteractiveTransition.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -145,6 +155,16 @@
 				B76069E325920427005E1F03 /* Info.plist */,
 			);
 			path = VKapp;
+			sourceTree = "<group>";
+		};
+		B769DBE825C96D3500E0E864 /* NavigatonController */ = {
+			isa = PBXGroup;
+			children = (
+				B769DBE925C96D8E00E0E864 /* CustomNavigationController.swift */,
+				B769DBEC25C96DA800E0E864 /* PushCustomNC.swift */,
+				B769DBEF25C96DCD00E0E864 /* PopCustomNC.swift */,
+			);
+			path = NavigatonController;
 			sourceTree = "<group>";
 		};
 		B7795562259A4344006E07B1 /* AllGroups */ = {
@@ -305,12 +325,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7CA8CF225C19CB100CE256A /* FullScreenPhotoVC.swift in Sources */,
+				B769DBED25C96DA800E0E864 /* PushCustomNC.swift in Sources */,
 				B76069D625920427005E1F03 /* AppDelegate.swift in Sources */,
+				B769DBF325C9AC6C00E0E864 /* InteractiveTransition.swift in Sources */,
 				B779558A259B500B006E07B1 /* FriendListTableViewController.swift in Sources */,
 				B751CBE225A44A6F00919820 /* LikeButtonUIButton.swift in Sources */,
 				B751CBB325A32C2000919820 /* GradientView.swift in Sources */,
 				B7795576259A6CC1006E07B1 /* GroupModel.swift in Sources */,
 				B7CA8CBC25B9FA9000CE256A /* NewsVController.swift in Sources */,
+				B769DBF025C96DCD00E0E864 /* PopCustomNC.swift in Sources */,
 				B76069D825920427005E1F03 /* SceneDelegate.swift in Sources */,
 				B779556C259A62DB006E07B1 /* MyGroupsTableViewController.swift in Sources */,
 				B7CA8CA625B8573200CE256A /* HeaderCRV.swift in Sources */,
@@ -320,6 +343,7 @@
 				B76069EC259204BA005E1F03 /* LoginVC.swift in Sources */,
 				B7795586259A7604006E07B1 /* FriendPhotoCollectionViewCell.swift in Sources */,
 				B7CA8CAE25B863D300CE256A /* FooterCRV.swift in Sources */,
+				B769DBEA25C96D8E00E0E864 /* CustomNavigationController.swift in Sources */,
 				B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */,
 				B7CA8CD025BA07DF00CE256A /* NewsCVCell.swift in Sources */,
 				B751CBD725A3A7B300919820 /* CustomImage.swift in Sources */,
@@ -478,7 +502,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P88D7RG3CN;
 				INFOPLIST_FILE = VKapp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -500,7 +524,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P88D7RG3CN;
 				INFOPLIST_FILE = VKapp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

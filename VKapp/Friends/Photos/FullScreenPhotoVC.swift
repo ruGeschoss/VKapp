@@ -48,9 +48,9 @@ class FullScreenPhotoVC: UIViewController {
         swipeRight.direction = .right
         self.view.addGestureRecognizer(swipeRight)
         
-//        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(backToAlbum))
-//        swipeDown.direction = .down
-//        self.view.addGestureRecognizer(swipeDown)
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(backToAlbum))
+        swipeDown.direction = .down
+        self.view.addGestureRecognizer(swipeDown)
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -65,9 +65,9 @@ class FullScreenPhotoVC: UIViewController {
         }
     }
     
-//    @objc func backToAlbum() {
-//      popVC
-//    }
+    @objc func backToAlbum() {
+        navigationController?.popViewController(animated: true)
+    }
     
     //MARK: -Backwards
     @objc func goBackwards() {
