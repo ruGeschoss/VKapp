@@ -65,13 +65,10 @@ extension NewsCVC: UICollectionViewDelegate, UICollectionViewDataSource {
 extension NewsCVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         let availableWidth = collectionView.bounds.width
         let avaliableHeight = collectionView.bounds.height
-//        print("*********************")
-//        print("photoCount \(photoForPost.count)")
-//        print("row \(indexPath.row)")
-//        print("item \(indexPath.item)")
-//        print("*********************")
+        
         switch photoForPost.count {
         case 1:
             return CGSize(width: availableWidth, height: avaliableHeight)
@@ -89,13 +86,13 @@ extension NewsCVC: UICollectionViewDelegateFlowLayout {
             if indexPath.item == 0 || indexPath.item == 1 {
                 return CGSize(width: availableWidth / 2, height: avaliableHeight / 2)
             } else {
-                return CGSize(width: availableWidth / 3, height: avaliableHeight / 2)
+                return CGSize(width: (availableWidth / 3) - 0.01, height: (avaliableHeight / 2) - 0.01)
             }
         case 6: // first big at top left, others fill
             if indexPath.item == 0 {
-                return CGSize(width: availableWidth * 2 / 3, height: avaliableHeight * 2 / 3)
+                return CGSize(width: (availableWidth * 2 / 3) - 0.01, height: (avaliableHeight * 2 / 3) - 0.01)
             } else {
-                return CGSize(width: availableWidth / 3, height: avaliableHeight / 3)
+                return CGSize(width: (availableWidth / 3) - 0.01, height: (avaliableHeight / 3) - 0.01)
             }
         default:
             return CGSize(width: availableWidth / CGFloat(photoForPost.count), height: avaliableHeight / CGFloat(photoForPost.count))

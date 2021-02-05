@@ -11,6 +11,7 @@ class NewsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
 
     @IBOutlet weak var collectionView: UICollectionView!
     
+    var cellPhotos = [String]()
     let allPhotos = ["photo1","photo2","photo3","photo4","photo5","photo6","photo7","photo8","photo9","photo10"]
     
     override func viewDidLoad() {
@@ -35,14 +36,7 @@ class NewsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewsCVC.identifier, for: indexPath) as? NewsCVC {
 //            Generating photos for each cell
-            var cellPhotos = [String]()
-            for i in allPhotos {
-                if cellPhotos.count <= indexPath.section && cellPhotos.count < 10 {
-                    cellPhotos.append(i)
-                } else { break }
-            }
-//
-            
+            generatePhotoLib(indexPath: indexPath)
             cell.photoForPost = cellPhotos
             cell.text = "Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe"
             return cell
@@ -61,6 +55,15 @@ class NewsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "FooterCRV", for: indexPath) as? FooterCRV
             footer?.configure(viewCount: 78, likeCount: 13, commentCount: 2, shareCount: 5)
             return footer ?? UICollectionReusableView()
+        }
+    }
+    
+    func generatePhotoLib(indexPath:IndexPath) {
+        cellPhotos = []
+        for i in allPhotos {
+            if cellPhotos.count < indexPath.section + 1 {
+                cellPhotos.append(i)
+            } else { break }
         }
     }
 }
