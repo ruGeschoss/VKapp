@@ -11,6 +11,8 @@ class NewsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
 
     @IBOutlet weak var collectionView: UICollectionView!
     
+    let allPhotos = ["photo1","photo2","photo3","photo4","photo5","photo6","photo7","photo8","photo9","photo10"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.dataSource = self
@@ -18,7 +20,6 @@ class NewsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
         collectionView.register(HeaderCRV.nib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCRV.identifier)
         collectionView.register(FooterCRV.nib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterCRV.identifier)
         collectionView.register(NewsCVC.nib, forCellWithReuseIdentifier: NewsCVC.identifier)
-        
     }
     
     
@@ -33,14 +34,20 @@ class NewsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewsCVC.identifier, for: indexPath) as? NewsCVC {
-            cell.image = UIImage(named: "No_Image")
+//            Generating photos for each cell
+            var cellPhotos = [String]()
+            for i in allPhotos {
+                if cellPhotos.count <= indexPath.section && cellPhotos.count < 10 {
+                    cellPhotos.append(i)
+                } else { break }
+            }
+//
+            
+            cell.photoForPost = cellPhotos
             cell.text = "Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe Before you go awdawjfjksalfe"
             return cell
         }
         return UICollectionViewCell()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -48,7 +55,7 @@ class NewsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDele
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderCRV", for: indexPath) as? HeaderCRV
             header?.userName.text = "Alex"
             header?.userAvatar.image = UIImage(named: "Batz_Maru")
-            header?.datePosted.text = "11.11.11 14:08"
+            header?.datePosted.text = "11.11.11 14:0\(indexPath.section)"
             return header ?? UICollectionReusableView()
         } else {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "FooterCRV", for: indexPath) as? FooterCRV
@@ -69,7 +76,7 @@ extension NewsVC: UICollectionViewDelegateFlowLayout {
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewsCVC.identifier, for: indexPath) as! NewsCVC
-        return CGSize(width: collectionView.bounds.width, height: collectionView.safeAreaLayoutGuide.layoutFrame.height)
+        return CGSize(width: collectionView.bounds.width - 10, height: collectionView.bounds.height * 0.7)
         // MARK:- autoresizing height???
     }
 }

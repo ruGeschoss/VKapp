@@ -53,15 +53,15 @@ class CharPicker: UIControl {
     }
     
     @objc func selectChar(_ sender: UIButton) {
-        guard let index = buttons.firstIndex(of: sender),
-              let char: String? = chars[index]
-        else { return }
+        guard let index = buttons.firstIndex(of: sender) else { return }
+        let char: String = chars[index]
         selectedChar = char
     }
     
     private func updateSelectedChar() {
         for (index, button) in buttons.enumerated() {
-            guard let char: String? = chars[index] else { return }
+//            guard let char: String? = chars[index] else { return }
+            let char: String = chars[index]
             button.isSelected = char == selectedChar
         }
     }

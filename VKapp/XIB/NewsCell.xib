@@ -17,12 +17,19 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ckN-mc-dAJ">
                     <rect key="frame" x="0.0" y="44" width="209" height="281"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hIv-sT-c36">
+                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Ux0-ZQ-Nzm">
                             <rect key="frame" x="0.0" y="72" width="209" height="209"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="hIv-sT-c36" secondAttribute="height" multiplier="1:1" id="pL4-mz-iHc"/>
+                                <constraint firstAttribute="width" secondItem="Ux0-ZQ-Nzm" secondAttribute="height" multiplier="1:1" id="A5f-uX-UDd"/>
                             </constraints>
-                        </imageView>
+                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="MSh-Ss-94l">
+                                <size key="itemSize" width="128" height="128"/>
+                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            </collectionViewFlowLayout>
+                        </collectionView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8wR-q2-CAp">
                             <rect key="frame" x="0.0" y="0.0" width="209" height="72"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -32,13 +39,13 @@
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="hIv-sT-c36" secondAttribute="bottom" id="0Qi-N9-RBq"/>
                         <constraint firstItem="8wR-q2-CAp" firstAttribute="leading" secondItem="ckN-mc-dAJ" secondAttribute="leading" id="36d-og-SqF"/>
+                        <constraint firstItem="Ux0-ZQ-Nzm" firstAttribute="top" secondItem="8wR-q2-CAp" secondAttribute="bottom" id="ALs-Tq-3vk"/>
                         <constraint firstItem="8wR-q2-CAp" firstAttribute="width" secondItem="ckN-mc-dAJ" secondAttribute="width" id="ExV-Du-rws"/>
                         <constraint firstItem="8wR-q2-CAp" firstAttribute="top" secondItem="ckN-mc-dAJ" secondAttribute="top" id="M9W-nJ-SNZ"/>
-                        <constraint firstItem="hIv-sT-c36" firstAttribute="width" secondItem="ckN-mc-dAJ" secondAttribute="width" id="cTA-Ya-Vv9"/>
-                        <constraint firstItem="hIv-sT-c36" firstAttribute="top" secondItem="8wR-q2-CAp" secondAttribute="bottom" id="kMk-CY-9qk"/>
-                        <constraint firstItem="hIv-sT-c36" firstAttribute="leading" secondItem="ckN-mc-dAJ" secondAttribute="leading" id="mFH-k4-ZD6"/>
+                        <constraint firstAttribute="trailing" secondItem="Ux0-ZQ-Nzm" secondAttribute="trailing" id="RA0-Xu-l8o"/>
+                        <constraint firstAttribute="bottom" secondItem="Ux0-ZQ-Nzm" secondAttribute="bottom" id="m2N-0V-IKT"/>
+                        <constraint firstItem="Ux0-ZQ-Nzm" firstAttribute="leading" secondItem="ckN-mc-dAJ" secondAttribute="leading" id="pVx-fB-fFB"/>
                     </constraints>
                 </view>
             </subviews>
@@ -52,9 +59,9 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="newsImage" destination="hIv-sT-c36" id="1R8-cV-KwN"/>
                 <outlet property="newsText" destination="8wR-q2-CAp" id="8XG-zJ-w3U"/>
                 <outlet property="newsView" destination="ckN-mc-dAJ" id="5Vj-Ub-6UA"/>
+                <outlet property="photoCollectionView" destination="Ux0-ZQ-Nzm" id="3rF-0T-82b"/>
             </connections>
             <point key="canvasLocation" x="-10.869565217391305" y="-87.388392857142847"/>
         </view>

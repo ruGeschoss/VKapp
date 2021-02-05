@@ -85,11 +85,11 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ToMyFriendCell" {
-            if let destination = segue.destination as? FriendPhotoCollectionViewController{
-//                destination.userPhoto = selectedPhoto     //
-            }
-        }
+//        if segue.identifier == "ToMyFriendCell" {
+//            if let destination = segue.destination as? FriendPhotoCollectionViewController{
+////                destination.userPhoto = selectedPhoto     //
+//            }
+//        }
     }
     
 }
@@ -131,8 +131,8 @@ extension FriendListTableViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let user = compareByFirstChar(indexPath.section)
-//        selectedPhoto = user[indexPath.row].userAvatar ?? "No_Image"
+//        let user = compareByFirstChar(indexPath.section)
+////        selectedPhoto = user[indexPath.row].userAvatar ?? "No_Image"
         performSegue(withIdentifier: "ToMyFriendCell", sender: self)
     }
     

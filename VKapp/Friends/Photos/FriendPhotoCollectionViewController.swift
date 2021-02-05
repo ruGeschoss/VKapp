@@ -11,7 +11,7 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
     
 //    var userPhoto:String = ""
     var currentImageIndex = 0
-    let userAlbumOne = ["photo1","photo2","photo3","photo4","photo5","photo6","photo7","photo8","photo9","photo10","photo11","photo12","photo13","photo14","photo15","photo16","photo17","photo18",]
+    let userAlbumOne = ["photo1","photo2","photo3","photo4","photo5","photo6","photo7","photo8","photo9","photo10"]
     
     let photoPerRow:CGFloat = 3
     let cellInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
