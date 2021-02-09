@@ -20,6 +20,8 @@
 		B768A04E25CC19B4005C069E /* AppExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768A04D25CC19B4005C069E /* AppExtensions.swift */; };
 		B768A05F25CC65E2005C069E /* SinglePhotoCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768A05D25CC65E2005C069E /* SinglePhotoCVC.swift */; };
 		B768A06025CC65E2005C069E /* SinglePhotoCVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = B768A05E25CC65E2005C069E /* SinglePhotoCVC.xib */; };
+		B768A06525D01E02005C069E /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768A06425D01E02005C069E /* Session.swift */; };
+		B768A07025D03500005C069E /* CatLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B768A06F25D03500005C069E /* CatLoadingView.swift */; };
 		B769DBEA25C96D8E00E0E864 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769DBE925C96D8E00E0E864 /* CustomNavigationController.swift */; };
 		B769DBED25C96DA800E0E864 /* PushCustomNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769DBEC25C96DA800E0E864 /* PushCustomNC.swift */; };
 		B769DBF025C96DCD00E0E864 /* PopCustomNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B769DBEF25C96DCD00E0E864 /* PopCustomNC.swift */; };
@@ -63,6 +65,8 @@
 		B768A04D25CC19B4005C069E /* AppExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppExtensions.swift; sourceTree = "<group>"; };
 		B768A05D25CC65E2005C069E /* SinglePhotoCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePhotoCVC.swift; sourceTree = "<group>"; };
 		B768A05E25CC65E2005C069E /* SinglePhotoCVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SinglePhotoCVC.xib; sourceTree = "<group>"; };
+		B768A06425D01E02005C069E /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		B768A06F25D03500005C069E /* CatLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatLoadingView.swift; sourceTree = "<group>"; };
 		B769DBE925C96D8E00E0E864 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		B769DBEC25C96DA800E0E864 /* PushCustomNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushCustomNC.swift; sourceTree = "<group>"; };
 		B769DBEF25C96DCD00E0E864 /* PopCustomNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopCustomNC.swift; sourceTree = "<group>"; };
@@ -114,6 +118,7 @@
 				B751CBF425B46F8B00919820 /* CharPicker.swift */,
 				B769DBF225C9AC6C00E0E864 /* InteractiveTransition.swift */,
 				B768A04D25CC19B4005C069E /* AppExtensions.swift */,
+				B768A06F25D03500005C069E /* CatLoadingView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -146,6 +151,7 @@
 		B76069D425920427005E1F03 /* VKapp */ = {
 			isa = PBXGroup;
 			children = (
+				B768A06325D01DEF005C069E /* Networking */,
 				B7CA8CE625BDBDF900CE256A /* Cells */,
 				B7CA8CD925BD74EE00CE256A /* XIB */,
 				B7CA8CAB25B8635200CE256A /* News */,
@@ -162,6 +168,14 @@
 				B76069E325920427005E1F03 /* Info.plist */,
 			);
 			path = VKapp;
+			sourceTree = "<group>";
+		};
+		B768A06325D01DEF005C069E /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				B768A06425D01E02005C069E /* Session.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		B769DBE825C96D3500E0E864 /* NavigatonController */ = {
@@ -334,6 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B768A07025D03500005C069E /* CatLoadingView.swift in Sources */,
 				B7CA8CF225C19CB100CE256A /* FullScreenPhotoVC.swift in Sources */,
 				B769DBED25C96DA800E0E864 /* PushCustomNC.swift in Sources */,
 				B76069D625920427005E1F03 /* AppDelegate.swift in Sources */,
@@ -353,6 +368,7 @@
 				B779557E259A7238006E07B1 /* FriendPhotoCollectionViewController.swift in Sources */,
 				B76069EC259204BA005E1F03 /* LoginVC.swift in Sources */,
 				B7795586259A7604006E07B1 /* FriendPhotoCollectionViewCell.swift in Sources */,
+				B768A06525D01E02005C069E /* Session.swift in Sources */,
 				B7CA8CAE25B863D300CE256A /* FooterCRV.swift in Sources */,
 				B769DBEA25C96D8E00E0E864 /* CustomNavigationController.swift in Sources */,
 				B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */,

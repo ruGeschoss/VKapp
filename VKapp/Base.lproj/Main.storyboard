@@ -21,7 +21,11 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="gwS-pZ-Dhw">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fgo-j7-aPr" userLabel="regView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tx6-if-HDd" customClass="CatLoadingView" customModule="VKapp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fgo-j7-aPr" userLabel="regView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="672.33333333333337"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="close" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7g-Hf-4Du">
@@ -104,10 +108,14 @@
                                     </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="Tx6-if-HDd" firstAttribute="leading" secondItem="Yms-Op-XEG" secondAttribute="leading" id="1p8-uN-VI0"/>
                                     <constraint firstAttribute="bottom" secondItem="Fgo-j7-aPr" secondAttribute="bottom" constant="132" id="4ta-bO-ZCf"/>
                                     <constraint firstItem="Fgo-j7-aPr" firstAttribute="leading" secondItem="gwS-pZ-Dhw" secondAttribute="leading" id="EIX-9q-1oU"/>
                                     <constraint firstAttribute="trailing" secondItem="Fgo-j7-aPr" secondAttribute="trailing" id="SyV-vI-wxe"/>
                                     <constraint firstItem="Fgo-j7-aPr" firstAttribute="top" secondItem="gwS-pZ-Dhw" secondAttribute="top" id="bXO-rY-2f4"/>
+                                    <constraint firstItem="Yms-Op-XEG" firstAttribute="trailing" secondItem="Tx6-if-HDd" secondAttribute="trailing" id="bim-dC-zMO"/>
+                                    <constraint firstItem="Yms-Op-XEG" firstAttribute="bottom" secondItem="Tx6-if-HDd" secondAttribute="bottom" id="hxs-Lv-W5E"/>
+                                    <constraint firstItem="Tx6-if-HDd" firstAttribute="top" secondItem="Yms-Op-XEG" secondAttribute="top" id="v6z-Xo-SPn"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="Fyz-DX-bFm"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Yms-Op-XEG"/>
@@ -289,6 +297,7 @@
                         <outlet property="passwordTextField" destination="H54-Ix-Ukb" id="hGk-IH-ZTL"/>
                         <outlet property="scrollView" destination="TzE-jK-ShF" id="3jp-zk-IKG"/>
                         <outlet property="signInButton" destination="Qpa-bx-FX6" id="6Cc-sU-PYb"/>
+                        <outlet property="stackView" destination="Lwa-eF-6VP" id="rOU-aP-onC"/>
                         <segue destination="w8U-qC-ZGC" kind="show" identifier="login_success" id="fP3-lW-ZLZ"/>
                     </connections>
                 </viewController>
@@ -511,6 +520,9 @@
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xvR-Tb-dxH" customClass="LikeButtonUIButton" customModule="VKapp" customModuleProvider="target">
                                             <rect key="frame" x="8" y="128.66666666666666" width="13.333333333333336" height="13.333333333333343"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="xvR-Tb-dxH" secondAttribute="height" multiplier="1:1" id="2Mh-Cu-ivp"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                             <state key="normal" title="like" image="heart" catalog="system">
                                                 <color key="titleColor" systemColor="systemGreenColor"/>
@@ -524,13 +536,13 @@
                                         <constraint firstItem="d3n-6d-mIs" firstAttribute="trailing" secondItem="dhL-FV-Y6E" secondAttribute="trailingMargin" id="1hu-OZ-R1Y"/>
                                         <constraint firstItem="d3n-6d-mIs" firstAttribute="leading" secondItem="dhL-FV-Y6E" secondAttribute="leadingMargin" id="JCh-dQ-Gp5"/>
                                         <constraint firstItem="d3n-6d-mIs" firstAttribute="bottom" secondItem="dhL-FV-Y6E" secondAttribute="bottomMargin" id="T9E-eC-jf5"/>
-                                        <constraint firstItem="xvR-Tb-dxH" firstAttribute="height" secondItem="d3n-6d-mIs" secondAttribute="height" multiplier="0.1" id="Uo9-5p-8nN"/>
                                         <constraint firstItem="d3n-6d-mIs" firstAttribute="centerX" secondItem="dhL-FV-Y6E" secondAttribute="centerX" id="W68-DH-ssN"/>
                                         <constraint firstItem="d3n-6d-mIs" firstAttribute="top" secondItem="dhL-FV-Y6E" secondAttribute="topMargin" id="Z3p-O9-QI8"/>
                                         <constraint firstItem="xvR-Tb-dxH" firstAttribute="width" secondItem="d3n-6d-mIs" secondAttribute="width" multiplier="0.1" id="fgK-QS-mXE"/>
                                         <constraint firstItem="d3n-6d-mIs" firstAttribute="centerY" secondItem="dhL-FV-Y6E" secondAttribute="centerY" id="gWE-Mb-w4G"/>
                                         <constraint firstItem="xvR-Tb-dxH" firstAttribute="leading" secondItem="d3n-6d-mIs" secondAttribute="leading" id="ha8-qW-PDt"/>
                                         <constraint firstItem="xvR-Tb-dxH" firstAttribute="bottom" secondItem="d3n-6d-mIs" secondAttribute="bottom" id="knY-wP-FLc"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xvR-Tb-dxH" secondAttribute="trailing" id="zQj-gR-QQO"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <connections>

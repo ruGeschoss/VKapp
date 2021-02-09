@@ -15,24 +15,31 @@ class LoginVC: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var loadingStatus: UIView!
+    @IBOutlet weak var stackView: UIStackView!
     
 //    MARK: - Functions
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let loadingAnim = Bundle.main.loadNibNamed("LoadingProcess", owner: nil, options: nil)?.first as! LoadingProcessView
-        loadingAnim.frame = CGRect(x: 0, y: 0, width: 120, height: 40)
-        self.loadingStatus.addSubview(loadingAnim)
-        loadingAnim.animate()
-        
-
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOnScroll))
         view.addGestureRecognizer(tapGesture)
         view.isUserInteractionEnabled = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow (notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide (notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+//      MARK:-  Three dots at top
+//        let loadingAnim = Bundle.main.loadNibNamed("LoadingProcess", owner: nil, options: nil)?.first as! LoadingProcessView
+//        loadingAnim.frame = CGRect(x: 0, y: 0, width: 120, height: 40)
+//        self.loadingStatus.addSubview(loadingAnim)
+//        loadingAnim.animate()
+        
+        
     }
     
     @objc func keyboardWillShow (notification: Notification) {
@@ -71,19 +78,80 @@ class LoginVC: UIViewController {
             return false
         }
     }
+    
     func showLoginError() {
-        let alert = UIAlertController(title: "Ошибка", message: "Введите admin в оба поля", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Ошибка", message: "Введите имя, пароль можно не вводить", preferredStyle: .alert)
         let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func addAnimations() -> CAAnimationGroup {
+        let strokeStartAnimation = CABasicAnimation(keyPath: "strokeStart")
+        strokeStartAnimation.fromValue = 0
+        strokeStartAnimation.toValue = 1
+        let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        strokeEndAnimation.fromValue = 0
+        strokeEndAnimation.toValue = 1.2
+        let animationGroup = CAAnimationGroup()
+        animationGroup.duration = 4
+        animationGroup.repeatCount = .infinity
+        animationGroup.speed = 1.1
+        animationGroup.animations = [strokeStartAnimation, strokeEndAnimation]
+        return animationGroup
     }
     
 //    MARK: - Actions
     
     @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {}
     @IBAction func signInButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "login_success", sender: self)
+        didTapOnScroll()
+        
+        guard let name = loginTextField.text else { return }
+        let userInfo = Session.instance
+        userInfo.userName = name
+        if name.count < 2 {
+            showLoginError()
+            return
+        }
+        
+        let anim = CatLoadingView() // adding cat's face
+        anim.backgroundColor = .clear
+        anim.frame = CGRect(x: 0, y: 0, width: 77*3, height: 55*3)
+        anim.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        view.addSubview(anim)
+        
+        let customLayer = CAShapeLayer() // adding animated layer
+        customLayer.path = anim.addFace().cgPath
+        customLayer.backgroundColor = UIColor.clear.cgColor
+        customLayer.fillColor = .none
+        customLayer.strokeColor = UIColor.white.cgColor
+        customLayer.lineCap = .round
+        customLayer.lineWidth = 10
+        customLayer.add(addAnimations(), forKey: nil)
+        anim.layer.addSublayer(customLayer)
+        
+        anim.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        anim.alpha = 0
+        
+        
+        // taking time to show animation
+        UIView.animateKeyframes(withDuration: 4, delay: 0, options: [], animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.05, animations: {
+                self.stackView.alpha = 0
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.05, relativeDuration: 0.1, animations: {
+                anim.alpha = 1
+            })
+        }, completion: { _ in
+            self.performSegue(withIdentifier: "login_success", sender: self)
+            self.stackView.alpha = 1
+            anim.removeFromSuperview()
+        })
+        
+        
     }
+    
     @IBAction func signUpButton(_ sender: UIButton) {}
     /*
     // MARK: - Navigation
@@ -94,5 +162,4 @@ class LoginVC: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    
 }

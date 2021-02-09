@@ -57,6 +57,8 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         sortedFriends = friends.sorted{$0.userName < $1.userName}
         searchData = sortedFriends
         getSectionTitles()
+        
+        showWelcomeMessage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,6 +92,13 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
 ////                destination.userPhoto = selectedPhoto     //
 //            }
 //        }
+    }
+    
+    func showWelcomeMessage() {
+        let alert = UIAlertController(title: "Welcome!", message: "Добро пожаловать, \(Session.instance.userName)! \n Хорошего Вам дня!", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Продолжить", style: .cancel, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
 }
