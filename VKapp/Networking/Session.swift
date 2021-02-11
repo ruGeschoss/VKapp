@@ -15,6 +15,6 @@ class Session {
     }
     
     var token = ""
-    var userId = 0
+    var userId = Int()
     var userName = ""
 }
