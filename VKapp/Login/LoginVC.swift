@@ -108,8 +108,6 @@ class LoginVC: UIViewController {
         didTapOnScroll()
         
         guard let name = loginTextField.text else { return }
-        let userInfo = Session.instance
-        userInfo.userName = name
         if name.count < 2 {
             showLoginError()
             return

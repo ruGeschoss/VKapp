@@ -8,23 +8,27 @@
 import UIKit
 
 class AllGroupsTableViewController: UITableViewController {
-
-    var groups:[GroupModel] = [
-        GroupModel(groupId: 123, groupName: "Hello Kitty Fans", groupAvatar: "Batz_Maru"),
-        GroupModel(groupId: 321, groupName: "HKFriens", groupAvatar: "Chococat"),
-        GroupModel(groupId: 342324, groupName: "Cinnamoroll", groupAvatar: "Cinnamoroll"),
-        GroupModel(groupId: 57656, groupName: "Cartoons", groupAvatar: "My_Melody"),
-        GroupModel(groupId: 747, groupName: "For those who like Hello Kitty", groupAvatar: "My_Melody")
-    ]
     
+    @IBOutlet weak var searchGroups: UISearchBar!
+    
+    var groups = [Group]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        searchGroups.delegate = self
+        
+        NetworkManager.searchGroupSJ(searchText: nil) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let groups):
+                self.groups = groups
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 
     // MARK: - Table view data source
@@ -41,16 +45,32 @@ class AllGroupsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "GroupCell", for: indexPath) as? AllGroupsTableViewCell {
-            let selectedGroup = groups[indexPath.row]
-            cell.groupName.text = selectedGroup.groupName
-            cell.groupPhoto.image = UIImage(named: selectedGroup.groupAvatar ?? "No_Image")
-            
+            cell.configure(forGroup: groups[indexPath.row])
             return cell
         }
         
         return UITableViewCell()
     }
-
+}
+extension AllGroupsTableViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else { return }
+        NetworkManager.searchGroupSJ(searchText: searchText) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let foundGroups):
+                self.groups = foundGroups
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+}
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -95,5 +115,3 @@ class AllGroupsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-}

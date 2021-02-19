@@ -15,6 +15,7 @@ class MyFriendsTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.backgroundColor = .clear
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedOnImage))
         avatarImage.addGestureRecognizer(tapGesture)
         avatarImage.isUserInteractionEnabled = true
@@ -30,12 +31,20 @@ class MyFriendsTableViewCell: UITableViewCell {
         tapAnimation()
     }
 
-    func tapAnimation() {
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveLinear, animations: {
+    private func tapAnimation() {
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveLinear, animations: {
             self.avatarImage.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         })
-        UIView.animate(withDuration: 1, delay: 1, options: .curveLinear, animations: {
+        UIView.animate(withDuration: 0.1, delay: 0.1, options: .curveLinear, animations: {
             self.avatarImage.transform = CGAffineTransform.identity
         })
     }
+    
+    func configure(forUser: UserSJ) {
+        self.friendName.text = "\(forUser.firstName) \(forUser.lastName)"
+        NetworkManager.getPhotoDataFromUrl(url: forUser.photo ,completion: { [weak self] data in
+            self?.friendPhoto.image = UIImage(data: data, scale: 0.3)
+        })
+    }
+    
 }

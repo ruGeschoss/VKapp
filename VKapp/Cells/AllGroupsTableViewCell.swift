@@ -22,5 +22,12 @@ class AllGroupsTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func configure(forGroup: Group) {
+        self.groupName.text = forGroup.groupName
+        NetworkManager.getPhotoDataFromUrl(url: forGroup.groupAvatarSizes[0] ,completion: { [weak self] data in
+            self?.groupPhoto.image = UIImage(data: data, scale: 0.5)
+        })
+    }
 
 }

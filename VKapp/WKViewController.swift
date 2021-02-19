@@ -72,14 +72,16 @@ extension WKViewController: WKNavigationDelegate {
             return
         }
         
-        Session.instance.token = token
-        Session.instance.userId = Int(userIdString)!
-        
-        NetworkManager.loadGroups(token: token)
-        NetworkManager.loadFriends(token: token) // works fine
-        NetworkManager.loadPhotos(token: token, count: 5) // works fine
-        NetworkManager.searchGroup(token: token, searchText: "help") // works fine
+        Session.shared.token = token
+        Session.shared.userId = Int(userIdString)!
+    
+        NetworkManager.getProfileDataSJ()
+//        NetworkManager.loadGroups()
+//        NetworkManager.loadFriends() // works fine
+//        NetworkManager.loadPhotos(count: 5) // works fine
+//        NetworkManager.searchGroup(searchText: "help") // works fine
         
         decisionHandler(.cancel)
+        performSegue(withIdentifier: "loginDone", sender: self)
     }
 }

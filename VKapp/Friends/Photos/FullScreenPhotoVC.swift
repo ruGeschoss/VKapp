@@ -38,7 +38,10 @@ class FullScreenPhotoVC: UIViewController {
         photoImage.backgroundColor = .clear
         extraPhotoImage.backgroundColor = .clear
         
-        photoImage.image = UIImage(named: fullAlbum[currentIndex])
+        NetworkManager.getPhotoDataFromUrl(url: fullAlbum[currentIndex] , completion: { [weak self] (data) in
+            self?.photoImage.image = UIImage(data: data)
+        })
+        
         
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(goForward))
         swipeLeft.direction = .left
@@ -52,6 +55,7 @@ class FullScreenPhotoVC: UIViewController {
         swipeDown.direction = .down
         self.view.addGestureRecognizer(swipeDown)
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -79,6 +83,7 @@ class FullScreenPhotoVC: UIViewController {
             animationBuilder(index: .minusOne, hiddenImg: extraPhotoImage, shownImg: photoImage, hiddenImgComesFromX: leftXPosition, showImgGoesToX: rightXPosition)
         }
     }
+    
     //MARK: -Forward
     @objc func goForward() {
         guard currentIndex < fullAlbum.count - 1 else { return }
@@ -89,6 +94,7 @@ class FullScreenPhotoVC: UIViewController {
             animationBuilder(index: .plusOne, hiddenImg: extraPhotoImage, shownImg: photoImage, hiddenImgComesFromX: rightXPosition, showImgGoesToX: leftXPosition)
         }
     }
+    
     //MARK: - AnimationBuilder
     func animationBuilder(index:IndexChange, hiddenImg:UIImageView!, shownImg:UIImageView!, hiddenImgComesFromX:CGFloat, showImgGoesToX:CGFloat) {
         startingViewIsHidden = !startingViewIsHidden
@@ -99,7 +105,10 @@ class FullScreenPhotoVC: UIViewController {
             currentIndex -= 1
         }
         
-        hiddenImg.image = UIImage(named: fullAlbum[currentIndex])
+//        hiddenImg.image = UIImage(named: fullAlbum[currentIndex])
+        NetworkManager.getPhotoDataFromUrl(url: fullAlbum[currentIndex] , completion: { (data) in
+            hiddenImg.image = UIImage(data: data)
+        })
         hiddenImg.center.x = hiddenImgComesFromX
         hiddenImg.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
         hiddenImg.layer.opacity = 0

@@ -9,16 +9,24 @@ import UIKit
 
 class MyGroupsTableViewController: UITableViewController {
 
-    var groups = [GroupModel] ()
+    var groups = [Group] ()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NetworkManager.loadGroupsSJ(forUserId: nil) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let group):
+                self.groups = group
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -36,45 +44,34 @@ class MyGroupsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as? MyGroupsTableViewCell {
-            let selectedGroup = groups[indexPath.row]
-            cell.myGroupName.text = selectedGroup.groupName
-            cell.myGroupPhoto.image = UIImage(named: selectedGroup.groupAvatar ?? "No_Image")
+            cell.configure(forGroup: groups[indexPath.row])
             return cell
         }
         
         return UITableViewCell()
     }
 
-    
+    //MARK: Add group
     @IBAction func addGroup(segue:UIStoryboardSegue) {
-        if segue.identifier == "addGroup" {
-            guard let allGroupsController = segue.source as? AllGroupsTableViewController else { return }
-            if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
-                let group = allGroupsController.groups[indexPath.row]
-                if !groups.contains(group){
-                    groups.append(group)
-                    tableView.reloadData()
-                }
-            }
-        }
+//        if segue.identifier == "addGroup" {
+//            guard let allGroupsController = segue.source as? AllGroupsTableViewController else { return }
+//            if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
+//                let group = allGroupsController.groups[indexPath.row]
+//                if !groups.contains(group){
+//                    groups.append(group)
+//                    tableView.reloadData()
+//                }
+//            }
+//        }
     }
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    // Override to support editing the table view.
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            groups.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-    }
+    //MARK: Remove group
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            groups.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        }
+//    }
 
     /*
     // Override to support rearranging the table view.

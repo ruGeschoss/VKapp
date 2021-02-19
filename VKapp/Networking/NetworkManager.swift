@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 class NetworkManager {
     
@@ -26,11 +27,11 @@ class NetworkManager {
 //        return session
 //    }()
 //
-//    static let shared = NetworkManager()
-//
-//    private init() {
-//
-//    }
+    static let shared = NetworkManager()
+
+    private init() {
+
+    }
 //
 //    func advancedRequest(city:String) {
 //        var urlComponents = URLComponents()
@@ -108,28 +109,72 @@ class NetworkManager {
 //        }
 //    }
     
-    static func loadGroups(token: String) {
+    //MARK: Load Groups
+//    static func loadGroups() {
+//        let baseUrl = "https://api.vk.com"
+//        let path = "/method/groups.get"
+//        let params: Parameters = [
+//            "access_token": Session.shared.token,
+//            "extended": 1,
+//            "v": "5.92"
+//        ]
+//
+//        NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+//            guard let json = response.value else { return }
+//
+//            print(json)
+//        }
+//    }
+    
+    static func loadGroupsSJ(forUserId: String?, completion: ((Result<[Group],Error>) -> Void)? = nil) {
         let baseUrl = "https://api.vk.com"
         let path = "/method/groups.get"
         let params: Parameters = [
-            "access_token": token,
+            "access_token": Session.shared.token,
+            "user_id" : forUserId ?? "\(Session.shared.userId)",
             "extended": 1,
             "v": "5.92"
         ]
         
         NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
-            guard let json = response.value else { return }
-            
-            print(json)
+            switch response.result {
+            case .success(let data):
+                let json = JSON(data)
+                let response = json["response"]["items"].arrayValue
+                let groups = response.map { Group(from: $0) }
+                completion?(.success(groups))
+            case .failure(let error):
+                completion?(.failure(error))
+            }
         }
     }
     
-    static func searchGroup(token: String, searchText: String) {
+    //MARK: Search Groups
+//    static func searchGroup(searchText: String) {
+//        let baseUrl = "https://api.vk.com"
+//        let path = "/method/groups.search"
+//        let params: Parameters = [
+//            "access_token": Session.shared.token,
+//            "q": "\(searchText)",
+//            "type": "group",
+//            "sort": "0",
+//            "count": "50",
+//            "v": "5.92"
+//        ]
+//        
+//        NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+//            guard let json = response.value else { return }
+//            
+//            print(json)
+//        }
+//    }
+    
+    static func searchGroupSJ(searchText: String?, completion: ((Result<[Group],Error>) -> Void)? = nil) {
         let baseUrl = "https://api.vk.com"
         let path = "/method/groups.search"
         let params: Parameters = [
-            "access_token": token,
-            "q": "\(searchText)",
+            "access_token": Session.shared.token,
+            "q": searchText ?? " ",
             "type": "group",
             "sort": "0",
             "count": "50",
@@ -137,46 +182,154 @@ class NetworkManager {
         ]
         
         NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
-            guard let json = response.value else { return }
-            
-            print(json)
+            switch response.result {
+            case .success(let data):
+                let json = JSON(data)
+                let response = json["response"]["items"].arrayValue
+                let groups = response.map { Group(from: $0) }
+                completion?(.success(groups))
+            case .failure(let error):
+                completion?(.failure(error))
+            }
         }
     }
     
-    static func loadFriends(token: String) {
+    //MARK: Load Friends
+//    static func loadFriends(completion: @escaping ([User]) -> ()) {
+//        let baseUrl = "https://api.vk.com"
+//        let path = "/method/friends.get"
+//        let params: Parameters = [
+//            "access_token": Session.shared.token,
+//            "fields" : "photo_50",
+//            "v": "5.92"
+//        ]
+//        
+//        NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+//                guard let data = response.data else { return }
+//                
+//                do {
+//                    let friends = try JSONDecoder().decode(VKResponseAllFriends.self, from: data)
+//                    let friendsArray = friends.response.friends
+//                    completion(friendsArray)
+//                } catch {
+//                    print(error.localizedDescription)
+//                }
+//        }
+//    }
+    //MARK: Load Friends SJ
+    static func loadFriendsSJ(completion: ((Result<[UserSJ],Error>) -> Void)? = nil) {
         let baseUrl = "https://api.vk.com"
         let path = "/method/friends.get"
         let params: Parameters = [
-            "access_token": token,
-            "fields" : "nickname, sex, online",
+            "access_token": Session.shared.token,
+            "fields" : "photo_50",
             "v": "5.92"
         ]
         
         NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
-            guard let json = response.value else { return }
-            
-            print(json)
+            switch response.result {
+            case .success(let data):
+                let json = JSON(data)
+                let response = json["response"]["items"].arrayValue
+                let friends = response.map { UserSJ(from: $0) }
+                completion?(.success(friends))
+            case .failure(let error):
+                completion?(.failure(error))
+            }
         }
     }
     
-    static func loadPhotos(token: String, count: Int) {
+    
+    
+    //MARK: Load Photos
+//    static func loadPhotos(ownerId: String, completion: @escaping ([Photo]) -> ()) {
+//        let baseUrl = "https://api.vk.com"
+//        let path = "/method/photos.getAll"
+//        let params: Parameters = [
+//            "access_token": Session.shared.token,
+//            "owner_id": ownerId,
+//            "v": "5.92"
+//        ]
+//        
+//        NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+//            guard let data = response.data else { return }
+//            
+//            do {
+//                let photos = try JSONDecoder().decode(VKResponseAllPhotos.self, from: data)
+//                let allPhotos = photos.response.items
+//                completion(allPhotos)
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+    
+    static func loadPhotosSJ(ownerId: String, completion: ((Result<[Photos],Error>) -> Void)? = nil) {
         let baseUrl = "https://api.vk.com"
         let path = "/method/photos.getAll"
         let params: Parameters = [
-            "access_token": token,
-            "extended": "1",
-            "count": "\(count)",
-            "photo_sizes": "0",
-            "no_service_albums": "0",
+            "access_token": Session.shared.token,
+            "owner_id": ownerId,
             "v": "5.92"
         ]
         
         NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
-            guard let json = response.value else { return }
-            
-            print(json)
+            switch response.result {
+            case .success(let data):
+                let json = JSON(data)
+                let response = json["response"]["items"].arrayValue
+                let friends = response.map { Photos(from: $0) }
+                completion?(.success(friends))
+            case .failure(let error):
+                completion?(.failure(error))
+            }
         }
     }
     
+    //MARK: Get Photo Data
+    static func getPhotoDataFromUrl(url: String, completion: @escaping (Data) -> ()) {
+        NetworkManager.alamoFireSession.request(url, method: .get).responseData { (response) in
+            guard let data = response.data else { return }
+            completion(data)
+        }
+    }
+
+    //MARK: User Profile Data
+//    static func getProfileData() {
+//        let baseUrl = "https://api.vk.com"
+//        let path = "/method/account.getProfileInfo"
+//        let params: Parameters = [
+//            "access_token": Session.shared.token,
+//            "v": "5.92"
+//        ]
+//        NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+//            guard let data = response.data else { return }
+//            do {
+//                let profileData = try JSONDecoder().decode(Profile.self, from: data)
+//                Session.shared.userName = profileData.response.firstName
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
+    
+    static func getProfileDataSJ() {
+        let baseUrl = "https://api.vk.com"
+        let path = "/method/account.getProfileInfo"
+        let params: Parameters = [
+            "access_token": Session.shared.token,
+            "v": "5.92"
+        ]
+        NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+            switch response.result {
+            case .success(let data):
+                let json = JSON(data)
+                let user = ProfileSJ(from: json["response"])
+                Session.shared.userName = user.firstName
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
     
 }

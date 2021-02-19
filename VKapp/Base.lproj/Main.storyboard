@@ -38,11 +38,12 @@
                     </view>
                     <connections>
                         <outlet property="webKitView" destination="Lpx-Ce-m2B" id="BlK-yh-JQO"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="loginDone" id="ZCP-WX-Lm5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CeQ-L3-jD1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5233" y="78"/>
+            <point key="canvasLocation" x="-3881" y="-754"/>
         </scene>
         <!--RegistrationVC-->
         <scene sceneID="JxJ-ku-mRv">
@@ -171,7 +172,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uoH-bV-Lij" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="boG-QS-aX6" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-3881" y="438"/>
+            <point key="canvasLocation" x="-3881" y="765"/>
         </scene>
         <!--LoginVC-->
         <scene sceneID="tne-QT-ifu">
@@ -325,6 +326,7 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
+                    <navigationItem key="navigationItem" id="Lm4-tC-xL3"/>
                     <connections>
                         <outlet property="loadingStatus" destination="Yff-7V-boy" id="hFJ-Gk-Sg1"/>
                         <outlet property="loginTextField" destination="45d-cW-ST5" id="KhJ-SD-ABr"/>
@@ -337,7 +339,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3881" y="-320"/>
+            <point key="canvasLocation" x="-3881" y="28"/>
         </scene>
         <!--News-->
         <scene sceneID="MmY-lB-6Lv">
@@ -455,9 +457,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="u8p-S3-jYq">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GroupCell" id="BKw-p4-plk" customClass="AllGroupsTableViewCell" customModule="VKapp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="62.333332061767578"/>
+                                <rect key="frame" x="0.0" y="72" width="414" height="62.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BKw-p4-plk" id="6Hb-lS-Asm">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="62.333332061767578"/>
@@ -518,6 +525,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Найти группы" id="aF9-sU-EkJ"/>
+                    <connections>
+                        <outlet property="searchGroups" destination="u8p-S3-jYq" id="joN-RE-UeS"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WRq-cA-KHf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="7Vb-3g-pBX" userLabel="Exit" sceneMemberID="exit"/>

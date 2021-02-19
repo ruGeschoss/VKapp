@@ -8,94 +8,78 @@
 import UIKit
 
 class FriendPhotoCollectionViewController: UICollectionViewController {
-    
-//    var userPhoto:String = ""
+
     var currentImageIndex = 0
-    let userAlbumOne = ["photo1","photo2","photo3","photo4","photo5","photo6","photo7","photo8","photo9","photo10"]
-    
-    let photoPerRow:CGFloat = 3
+    let photoPerRow: CGFloat = 3
     let cellInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    
+    var photosForUserID = String()      // id of user
+    var allPhotosOfUser = [Photos]()    // detailed photo info (if needed more info) unused
+    var allPhotosUrls = [[String]]()    // Array of photos with multiple urls for each size
+    
+    var testArray = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.isPagingEnabled = false
-        // Uncomment the following line to preserve selection between presentations
-         self.clearsSelectionOnViewWillAppear = false
-        // Register cell classes
-        // Do any additional setup after loading the view.
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "to_FullScreen_Photo" {
-            if let destination = segue.destination as? FullScreenPhotoVC{
-                destination.fullAlbum = userAlbumOne
-                destination.currentIndex = currentImageIndex
+        self.clearsSelectionOnViewWillAppear = false
+        //MARK: Loading photos for user
+//        NetworkManager.loadPhotos(ownerId: photosForUserID, completion: { [weak self] (photos) in
+//            guard let self = self else { return }
+//            self.allPhotosOfUser = photos
+//            let imageUrls = photos.map({$0.photoSizes[0].imageUrl})
+//            self.allPhotosUrls = imageUrls
+//            DispatchQueue.main.async {
+//                self.collectionView.reloadData()
+//            }
+//        })
+        
+        NetworkManager.loadPhotosSJ(ownerId: photosForUserID) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let photos):
+                self.allPhotosOfUser = photos
+                self.allPhotosUrls = photos.map({$0.imageUrl})
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "to_FullScreen_Photo" {
+            if let destination = segue.destination as? FullScreenPhotoVC{
+                destination.currentIndex = currentImageIndex
+                destination.fullAlbum = allPhotosUrls.map { $0[$0.count - 1] }
+            }
+        }
     }
-    */
-
-    // MARK: UICollectionViewDataSource
-
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        userAlbumOne.count
+        allPhotosUrls.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FriendPhotoCell", for: indexPath) as? FriendPhotoCollectionViewCell {
-            cell.friendAlbumPhoto.image = UIImage(named: userAlbumOne[indexPath.item])
+            cell.configure(photoUrl: allPhotosUrls[indexPath.item][0])
             return cell
             
         }
         return UICollectionViewCell()
     }
     
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-     }
-    */
-    
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        userPhoto = userAlbumOne[indexPath.item]
         currentImageIndex = (indexPath.section + 1) * indexPath.item
         performSegue(withIdentifier: "to_FullScreen_Photo", sender: self)
     }
-
 }
 
 extension FriendPhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
