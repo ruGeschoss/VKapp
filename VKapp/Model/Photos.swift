@@ -7,13 +7,16 @@
 
 import Foundation
 import SwiftyJSON
+import RealmSwift
 
-class Photos {
-    let photoId: String
-    let datePosted: Int
-    let imageUrl: [String]
+class Photos: Object, Decodable {
+    @objc dynamic var photoId: String = ""
+    @objc dynamic var datePosted: Int = 0
+    var imageUrl: [String] = []
     
-    init(from json: JSON) {
+    convenience init(from json: JSON) {
+        self.init()
+        
         let photoId = json["id"].stringValue
         self.photoId = photoId
         

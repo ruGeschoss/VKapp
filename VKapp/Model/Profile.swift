@@ -7,14 +7,17 @@
 
 import Foundation
 import SwiftyJSON
+import RealmSwift
 
-class ProfileSJ {
-    let id: String
-    let firstName: String
-    let lastName: String
-    let city: String?
+class ProfileSJ: Object, Decodable {
+    @objc dynamic var id: String = ""
+    @objc dynamic var firstName: String = ""
+    @objc dynamic var lastName: String = ""
+    @objc dynamic var city: String? = ""
     
-    init(from json: JSON) {
+    convenience init(from json: JSON) {
+        self.init()
+        
         let id = json["id"].stringValue
         self.id = id
         

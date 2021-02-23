@@ -7,13 +7,16 @@
 
 import Foundation
 import SwiftyJSON
+import RealmSwift
 
-class Group {
-    let groupId: String
-    let groupName: String
-    let groupAvatarSizes: [String]
+class Group: Object, Decodable {
+    @objc dynamic var groupId: String = ""
+    @objc dynamic var groupName: String = ""
+    var groupAvatarSizes: [String] = []
     
-    init (from json: JSON) {
+    convenience init (from json: JSON) {
+        self.init()
+        
         let groupId = json["id"].stringValue
         self.groupId = groupId
         

@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import RealmSwift
 
 class NetworkManager {
     
@@ -108,6 +109,50 @@ class NetworkManager {
 //            }
 //        }
 //    }
+    //MARK: Saving data to Realm
+    static func saveUsersDataToRealm(_ users: [UserSJ]) {
+            do {
+                let realm = try Realm()
+                realm.beginWrite()
+                realm.add(users)
+                try realm.commitWrite()
+            } catch {
+                print(error.localizedDescription)
+            }
+    }
+    
+    static func savePhotosToRealm(_ photos: [Photos]) {
+            do {
+                let realm = try Realm()
+                realm.beginWrite()
+                realm.add(photos)
+                try realm.commitWrite()
+            } catch {
+                print(error.localizedDescription)
+            }
+    }
+    
+    static func saveGroupsDataToRealm(_ groups: [Group]) {
+            do {
+                let realm = try Realm()
+                realm.beginWrite()
+                realm.add(groups)
+                try realm.commitWrite()
+            } catch {
+                print(error.localizedDescription)
+            }
+    }
+    
+    static func saveProfileDataToRealm(_ profile: ProfileSJ) {
+            do {
+                let realm = try Realm()
+                realm.beginWrite()
+                realm.add(profile)
+                try realm.commitWrite()
+            } catch {
+                print(error.localizedDescription)
+            }
+    }
     
     //MARK: Load Groups
 //    static func loadGroups() {
@@ -142,6 +187,7 @@ class NetworkManager {
                 let json = JSON(data)
                 let response = json["response"]["items"].arrayValue
                 let groups = response.map { Group(from: $0) }
+                self.saveGroupsDataToRealm(groups)
                 completion?(.success(groups))
             case .failure(let error):
                 completion?(.failure(error))
@@ -232,6 +278,7 @@ class NetworkManager {
                 let json = JSON(data)
                 let response = json["response"]["items"].arrayValue
                 let friends = response.map { UserSJ(from: $0) }
+                self.saveUsersDataToRealm(friends)
                 completion?(.success(friends))
             case .failure(let error):
                 completion?(.failure(error))
@@ -278,8 +325,9 @@ class NetworkManager {
             case .success(let data):
                 let json = JSON(data)
                 let response = json["response"]["items"].arrayValue
-                let friends = response.map { Photos(from: $0) }
-                completion?(.success(friends))
+                let photos = response.map { Photos(from: $0) }
+                self.savePhotosToRealm(photos)
+                completion?(.success(photos))
             case .failure(let error):
                 completion?(.failure(error))
             }
@@ -325,6 +373,7 @@ class NetworkManager {
             case .success(let data):
                 let json = JSON(data)
                 let user = ProfileSJ(from: json["response"])
+                self.saveProfileDataToRealm(user)
                 Session.shared.userName = user.firstName
             case .failure(let error):
                 print(error.localizedDescription)
