@@ -162,6 +162,7 @@
 			children = (
 				B779555C25950546006E07B1 /* RegistrationVC.swift */,
 				B76069EB259204BA005E1F03 /* LoginVC.swift */,
+				B768A07925D5444F005C069E /* WKViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -202,7 +203,6 @@
 				B76069E025920427005E1F03 /* LaunchScreen.storyboard */,
 				B76069DE25920427005E1F03 /* Assets.xcassets */,
 				B76069E325920427005E1F03 /* Info.plist */,
-				B768A07925D5444F005C069E /* WKViewController.swift */,
 			);
 			path = VKapp;
 			sourceTree = "<group>";

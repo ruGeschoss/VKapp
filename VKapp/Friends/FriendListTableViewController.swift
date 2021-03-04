@@ -20,7 +20,7 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     var usersData = [UserSJ]()        // data from VK.api
     var searchData = [UserSJ]()       // data to show
     
-    var sectionTitles = [String]() // titles for sections by first char of lastName
+    var sectionTitles = [String]()  // titles for sections by first char of lastName
     var selectedUser = String()     // String id of selected user
     
     override func viewDidLoad() {

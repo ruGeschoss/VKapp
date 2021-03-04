@@ -17,6 +17,8 @@ class LoginVC: UIViewController {
     @IBOutlet weak var loadingStatus: UIView!
     @IBOutlet weak var stackView: UIStackView!
     
+    var shouldAutoLogin = true
+    
 //    MARK: - Functions
     
     override func viewDidLoad() {
@@ -28,18 +30,24 @@ class LoginVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow (notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide (notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
 //      MARK:-  Three dots at top
 //        let loadingAnim = Bundle.main.loadNibNamed("LoadingProcess", owner: nil, options: nil)?.first as! LoadingProcessView
 //        loadingAnim.frame = CGRect(x: 0, y: 0, width: 120, height: 40)
 //        self.loadingStatus.addSubview(loadingAnim)
 //        loadingAnim.animate()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        
+        if shouldAutoLogin {
+            nextScreenAnim()
+        }
     }
     
     @objc func keyboardWillShow (notification: Notification) {
@@ -101,18 +109,7 @@ class LoginVC: UIViewController {
         return animationGroup
     }
     
-//    MARK: - Actions
-    
-    @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {}
-    @IBAction func signInButton(_ sender: UIButton) {
-        didTapOnScroll()
-        
-        guard let name = loginTextField.text else { return }
-        if name.count < 2 {
-            showLoginError()
-            return
-        }
-        
+    func nextScreenAnim() {
         let anim = CatLoadingView() // adding cat's face
         anim.backgroundColor = .clear
         anim.frame = CGRect(x: 0, y: 0, width: 77*3, height: 55*3)
@@ -146,8 +143,33 @@ class LoginVC: UIViewController {
             self.stackView.alpha = 1
             anim.removeFromSuperview()
         })
+    }
+    
+//    MARK: - Actions
+    
+    @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {
+        shouldAutoLogin = false
+    }
+    
+    @IBAction func signInButton(_ sender: UIButton) {
+        didTapOnScroll()
         
+        print(Session.shared.token)
         
+        guard let name = loginTextField.text else { return }
+        if name.count < 2 {
+            showLoginError()
+            return
+        }
+        
+        nextScreenAnim()
+        
+    }
+    
+    @IBAction func loginWithVK(_ sender: UIButton) {
+        let vc = storyboard?.instantiateViewController(identifier: "WKViewController") as! WKViewController
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
     }
     
     @IBAction func signUpButton(_ sender: UIButton) {}

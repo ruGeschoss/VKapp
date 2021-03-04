@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class FriendPhotoCollectionViewController: UICollectionViewController {
 
@@ -15,7 +16,8 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
     
     var photosForUserID = String()      // id of user
     var allPhotosOfUser = [Photos]()    // detailed photo info (if needed more info) unused
-    var allPhotosUrls = [[String]]()    // Array of photos with multiple urls for each size
+//    var allPhotosUrls = [[String]]()
+    var allPhotosUrls = [List<String>]() // Array of photos with multiple urls for each size
     
     var testArray = [String]()
     
@@ -39,7 +41,7 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
             switch result {
             case .success(let photos):
                 self.allPhotosOfUser = photos
-                self.allPhotosUrls = photos.map({$0.imageUrl})
+                self.allPhotosUrls = photos.map({ $0.imageUrl })
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }

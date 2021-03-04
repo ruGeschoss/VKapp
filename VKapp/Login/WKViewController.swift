@@ -76,12 +76,20 @@ extension WKViewController: WKNavigationDelegate {
         Session.shared.userId = Int(userIdString)!
     
         NetworkManager.getProfileDataSJ()
+        
 //        NetworkManager.loadGroups()
 //        NetworkManager.loadFriends() // works fine
 //        NetworkManager.loadPhotos(count: 5) // works fine
 //        NetworkManager.searchGroup(searchText: "help") // works fine
         
         decisionHandler(.cancel)
-        performSegue(withIdentifier: "loginDone", sender: self)
+        
+        guard Session.shared.token != "" else { return }
+        
+        if let vc = self.presentingViewController as? LoginVC {
+            dismiss(animated: true) {
+                vc.nextScreenAnim()
+            }
+        }
     }
 }

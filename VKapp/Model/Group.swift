@@ -12,7 +12,8 @@ import RealmSwift
 class Group: Object, Decodable {
     @objc dynamic var groupId: String = ""
     @objc dynamic var groupName: String = ""
-    var groupAvatarSizes: [String] = []
+//    var groupAvatarSizes: [String] = []
+    var groupAvatarSizes = List<String>()
     
     convenience init (from json: JSON) {
         self.init()
@@ -26,7 +27,10 @@ class Group: Object, Decodable {
         let groupAvaS = json["photo_50"].stringValue
         let groupAvaM = json["photo_100"].stringValue
         let groupAvaL = json["photo_200"].stringValue
-        self.groupAvatarSizes = [groupAvaS, groupAvaM, groupAvaL]
+//        self.groupAvatarSizes = [groupAvaS, groupAvaM, groupAvaL]
+        self.groupAvatarSizes.append(groupAvaS)
+        self.groupAvatarSizes.append(groupAvaM)
+        self.groupAvatarSizes.append(groupAvaL)
     }
     
 }

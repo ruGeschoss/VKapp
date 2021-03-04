@@ -6,10 +6,28 @@
 //
 
 import UIKit
+import Foundation
 
 class CharPicker: UIControl {
 
-    var chars:[String] = []
+    var maximumChars = 15
+    var chars:[String] = [] {
+        didSet {
+            if chars.count > maximumChars {
+                let step = Float((chars.count * 100) / maximumChars)
+                let roundedStep = (step / 100).rounded(.awayFromZero)
+                var tmpArr:[String] = []
+                for (index, char) in chars.enumerated() {
+                    if index % Int(roundedStep) == 0 {
+                        tmpArr.append(char)
+                    }
+                }
+                self.chars = tmpArr
+                setupUI()
+                return
+            }
+        }
+    }
     private var buttons:[UIButton] = []
     private var stackView:UIStackView!
     
@@ -43,13 +61,14 @@ class CharPicker: UIControl {
         
         if stackView != nil {
             stackView.removeFullyAllArrangedSubviews()
-            }
-                stackView = UIStackView(arrangedSubviews: buttons)
-                addSubview(stackView)
-                stackView.axis = .vertical
-                stackView.spacing = 5
-                stackView.alignment = .center
-                stackView.distribution = .fillEqually
+        }
+        
+        stackView = UIStackView(arrangedSubviews: buttons)
+        addSubview(stackView)
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
     }
     
     @objc func selectChar(_ sender: UIButton) {
@@ -60,7 +79,7 @@ class CharPicker: UIControl {
     
     private func updateSelectedChar() {
         for (index, button) in buttons.enumerated() {
-//            guard let char: String? = chars[index] else { return }
+//            guard let char = chars[index] else { return }
             let char: String = chars[index]
             button.isSelected = char == selectedChar
         }

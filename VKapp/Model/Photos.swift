@@ -12,7 +12,8 @@ import RealmSwift
 class Photos: Object, Decodable {
     @objc dynamic var photoId: String = ""
     @objc dynamic var datePosted: Int = 0
-    var imageUrl: [String] = []
+//    var imageUrl: [String] = []
+    var imageUrl = List<String>()
     
     convenience init(from json: JSON) {
         self.init()
@@ -24,7 +25,10 @@ class Photos: Object, Decodable {
         self.datePosted = datePosted
         
         let imageSizes = json["sizes"].arrayValue
-        self.imageUrl = imageSizes.map { $0["url"].stringValue }
+//        self.imageUrl = imageSizes.map { $0["url"].stringValue }
+        let tmpArray = imageSizes.map { $0["url"].stringValue }
+        tmpArray.forEach({ self.imageUrl.append($0) })
+        
     }
 }
 
