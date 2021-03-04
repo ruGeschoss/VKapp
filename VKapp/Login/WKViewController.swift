@@ -73,7 +73,7 @@ extension WKViewController: WKNavigationDelegate {
         }
         
         Session.shared.token = token
-        Session.shared.userId = Int(userIdString)!
+        Session.shared.userId = userIdString
     
         NetworkManager.getProfileDataSJ()
         

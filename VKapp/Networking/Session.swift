@@ -21,12 +21,12 @@ class Session {
         }
     }
     
-    var userId = UserDefaults.standard.integer(forKey: "userId") {
+    var userId = UserDefaults.standard.string(forKey: "userId") ?? "" {
         didSet {
             UserDefaults.standard.set(userId, forKey: "userId")
         }
     }
-    var userName = UserDefaults.standard.string(forKey: "userName") {
+    var userName = UserDefaults.standard.string(forKey: "userName") ?? "" {
         didSet {
             UserDefaults.standard.set(userName, forKey: "userName")
         }

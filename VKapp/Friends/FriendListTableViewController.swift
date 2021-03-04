@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol PhotoDelegate:AnyObject {
     func getPhoto(photo:String)
@@ -23,6 +24,8 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     var sectionTitles = [String]()  // titles for sections by first char of lastName
     var selectedUser = String()     // String id of selected user
     
+    var friendListForUserId = Session.shared.userId
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         friendSearch.delegate = self
@@ -30,24 +33,33 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         tableView.delegate = self
         tableView.backgroundColor = UIColor.clear
 
-        //MARK:- Loading friends from VK
-        NetworkManager.loadFriendsSJ { [weak self] (result) in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let users):
-                self.usersData = users.sorted {$0.lastName < $1.lastName}
-                self.searchData = self.usersData
-                self.getSectionTitles()
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+        //MARK:- Loading friends list
         
-        showWelcomeMessage()
+        //        NetworkManager.loadFriendsSJ(forUser: nil) { [weak self] in
+        //            self?.getDataFromRealm()
+        //            self?.tableView.reloadData()
+        //        }
+        getDataFromRealm()
+        tableView.reloadData()
+                
+        //        showWelcomeMessage()
+        
+        
+//        NetworkManager.loadFriendsSJ(forUser: nil) { [weak self] (result) in
+//            guard let self = self else { return }
+//
+//            switch result {
+//            case .success(let users):
+//                self.usersData = users.sorted {$0.lastName < $1.lastName}
+//                self.searchData = self.usersData
+//                self.getSectionTitles()
+//                DispatchQueue.main.async {
+//                    self.tableView.reloadData()
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
     }
     
     @IBAction func charPicked(_ sender: CharPicker) {
@@ -79,11 +91,23 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         }
     }
     
-    func showWelcomeMessage() {
-        let alert = UIAlertController(title: "Welcome!", message: "Добро пожаловать, \(Session.shared.userName)! \n Хорошего Вам дня!", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Продолжить", style: .cancel, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+//    func showWelcomeMessage() {
+//        let alert = UIAlertController(title: "Welcome!", message: "Добро пожаловать, \(Session.shared.userName)! \n Хорошего Вам дня!", preferredStyle: .alert)
+//        let action = UIAlertAction(title: "Продолжить", style: .cancel, handler: nil)
+//        alert.addAction(action)
+//        present(alert, animated: true, completion: nil)
+//    }
+    
+    func getDataFromRealm() {
+        do {
+            let realm = try Realm()
+            let usersData = realm.objects(UserSJ.self).filter("forUser == %@", friendListForUserId)
+            self.usersData = Array(usersData).sorted {$0.lastName < $1.lastName}
+            self.searchData = self.usersData
+            self.getSectionTitles()
+        } catch {
+            print(error)
+        }
     }
     
 }
@@ -121,7 +145,10 @@ extension FriendListTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedUser = friendsForSectionByFirstChar(indexPath.section)[indexPath.row].id
-        performSegue(withIdentifier: "ToMyFriendCell", sender: self)
+        NetworkManager.loadPhotosSJ(ownerId: selectedUser) {
+            self.performSegue(withIdentifier: "ToMyFriendCell", sender: self)
+        }
+//        performSegue(withIdentifier: "ToMyFriendCell", sender: self)
     }
     
     func friendsForSectionByFirstChar(_ indexInTitles: Int) -> [UserSJ] {

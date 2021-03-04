@@ -14,6 +14,7 @@ class UserSJ: Object, Decodable {
     @objc dynamic var firstName: String = ""
     @objc dynamic var lastName: String = ""
     @objc dynamic var photo: String = ""
+    @objc dynamic var forUser: String = ""
     
     convenience init(from json: JSON) {
         self.init()
@@ -29,6 +30,12 @@ class UserSJ: Object, Decodable {
         
         let photo = json["photo_50"].stringValue
         self.photo = photo
+        
+        self.forUser = forUser
+    }
+    
+    override static func primaryKey() -> String? {
+        "id"
     }
     
 }

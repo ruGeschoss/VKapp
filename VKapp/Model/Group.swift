@@ -12,6 +12,7 @@ import RealmSwift
 class Group: Object, Decodable {
     @objc dynamic var groupId: String = ""
     @objc dynamic var groupName: String = ""
+    @objc dynamic var forUserId: String = ""
 //    var groupAvatarSizes: [String] = []
     var groupAvatarSizes = List<String>()
     
@@ -31,6 +32,12 @@ class Group: Object, Decodable {
         self.groupAvatarSizes.append(groupAvaS)
         self.groupAvatarSizes.append(groupAvaM)
         self.groupAvatarSizes.append(groupAvaL)
+        
+        self.forUserId = forUserId
+    }
+    
+    override static func primaryKey() -> String? {
+        "groupId"
     }
     
 }

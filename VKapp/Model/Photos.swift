@@ -12,6 +12,7 @@ import RealmSwift
 class Photos: Object, Decodable {
     @objc dynamic var photoId: String = ""
     @objc dynamic var datePosted: Int = 0
+    @objc dynamic var ownerId: String = ""
 //    var imageUrl: [String] = []
     var imageUrl = List<String>()
     
@@ -29,6 +30,11 @@ class Photos: Object, Decodable {
         let tmpArray = imageSizes.map { $0["url"].stringValue }
         tmpArray.forEach({ self.imageUrl.append($0) })
         
+        self.ownerId = ownerId
+    }
+    
+    override static func primaryKey() -> String? {
+        "photoId"
     }
 }
 

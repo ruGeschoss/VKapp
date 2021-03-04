@@ -36,18 +36,32 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
 //            }
 //        })
         
-        NetworkManager.loadPhotosSJ(ownerId: photosForUserID) { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let photos):
-                self.allPhotosOfUser = photos
-                self.allPhotosUrls = photos.map({ $0.imageUrl })
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        getDataFromRealm()
+        collectionView.reloadData()
+        
+//        NetworkManager.loadPhotosSJ(ownerId: photosForUserID) { [weak self] (result) in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let photos):
+//                self.allPhotosOfUser = photos
+//                self.allPhotosUrls = photos.map({ $0.imageUrl })
+//                DispatchQueue.main.async {
+//                    self.collectionView.reloadData()
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+    }
+    
+    func getDataFromRealm() {
+        do {
+            let realm = try Realm()
+            let userPhotos = realm.objects(Photos.self).filter("ownerId == %@", photosForUserID)
+            self.allPhotosUrls = Array(userPhotos).map { $0.imageUrl }
+            self.allPhotosOfUser = Array(userPhotos)
+        } catch {
+            print(error)
         }
     }
     

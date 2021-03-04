@@ -15,6 +15,7 @@ class ProfileSJ: Object, Decodable {
     @objc dynamic var lastName: String = ""
     @objc dynamic var city: String? = ""
     
+    
     convenience init(from json: JSON) {
         self.init()
         
@@ -29,6 +30,10 @@ class ProfileSJ: Object, Decodable {
         
         let city = json["home_town"].stringValue
         self.city = city
+    }
+    
+    override static func primaryKey() -> String? {
+        "id"
     }
 }
 

@@ -129,13 +129,22 @@ class LoginVC: UIViewController {
         anim.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         anim.alpha = 0
         
+        //MARK: Loading data to storage
+        NetworkManager.loadFriendsSJ(forUser: nil) {
+            print("Friends loaded")
+        }
+        NetworkManager.loadGroupsSJ(forUserId: nil) {
+            print("Groups loaded")
+        }
         
-        // taking time to show animation
+        //MARK: Show animation
         UIView.animateKeyframes(withDuration: 4, delay: 0, options: [], animations: {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.05, animations: {
+                // duration 0.2 sec
                 self.stackView.alpha = 0
             })
             UIView.addKeyframe(withRelativeStartTime: 0.05, relativeDuration: 0.1, animations: {
+                // duration 0.4 sec
                 anim.alpha = 1
             })
         }, completion: { _ in

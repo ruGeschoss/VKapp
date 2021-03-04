@@ -6,29 +6,43 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MyGroupsTableViewController: UITableViewController {
 
     var groups = [Group] ()
+    var groupListForUserId = Session.shared.userId
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NetworkManager.loadGroupsSJ(forUserId: nil) { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let group):
-                self.groups = group
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+//        NetworkManager.loadGroupsSJ(forUserId: nil) { [weak self] (result) in
+//            guard let self = self else { return }
+//            switch result {
+//            case .success(let group):
+//                self.groups = group
+//                DispatchQueue.main.async {
+//                    self.tableView.reloadData()
+//                }
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+        getDataFromRealm()
+        tableView.reloadData()
 
     }
 
+    func getDataFromRealm() {
+        do {
+            let realm = try Realm()
+            let groupsData = realm.objects(Group.self).filter("forUserId == %@", groupListForUserId)
+            self.groups = Array(groupsData)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
