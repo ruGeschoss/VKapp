@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MyFriendsTableViewCell: UITableViewCell {
 
@@ -42,9 +43,24 @@ class MyFriendsTableViewCell: UITableViewCell {
     
     func configure(forUser: UserSJ) {
         self.friendName.text = "\(forUser.firstName) \(forUser.lastName)"
-        NetworkManager.getPhotoDataFromUrl(url: forUser.photo ,completion: { [weak self] data in
-            self?.friendPhoto.image = UIImage(data: data, scale: 0.3)
-        })
+        
+        switch forUser.photoData {
+        case nil:
+            NetworkManager.getPhotoDataFromUrl(url: forUser.photo ,completion: { [weak self] data in
+                self?.friendPhoto.image = UIImage(data: data, scale: 0.3)
+                do {
+                    let realm = try Realm()
+                    realm.beginWrite()
+                    forUser.photoData = data
+                    try realm.commitWrite()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            })
+        default:
+            self.friendPhoto.image = UIImage(data: forUser.photoData!, scale: 0.3)
+        }
+        
     }
     
 }

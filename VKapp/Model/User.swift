@@ -14,6 +14,7 @@ class UserSJ: Object, Decodable {
     @objc dynamic var firstName: String = ""
     @objc dynamic var lastName: String = ""
     @objc dynamic var photo: String = ""
+    @objc dynamic var photoData: Data? = nil
     @objc dynamic var forUser: String = ""
     
     convenience init(from json: JSON) {

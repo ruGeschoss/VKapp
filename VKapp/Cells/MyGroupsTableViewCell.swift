@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MyGroupsTableViewCell: UITableViewCell {
     @IBOutlet weak var myGroupName: UILabel!
@@ -23,9 +24,27 @@ class MyGroupsTableViewCell: UITableViewCell {
     
     func configure(forGroup: Group) {
         self.myGroupName.text = forGroup.groupName
-        NetworkManager.getPhotoDataFromUrl(url: forGroup.groupAvatarSizes[0] ,completion: { [weak self] data in
-            self?.myGroupPhoto.image = UIImage(data: data, scale: 0.5)
-        })
+
+        switch forGroup.groupAvatarData.first {
+        case nil:
+            NetworkManager.getPhotoDataFromUrl(url: forGroup.groupAvatarSizes[0] ,completion: { [weak self] data in
+                self?.myGroupPhoto.image = UIImage(data: data, scale: 0.3)
+                print("Added to storage")
+                do {
+                    print("Success")
+                    let realm = try Realm()
+                    realm.beginWrite()
+                    forGroup.groupAvatarData.append(data)
+                    try realm.commitWrite()
+                } catch {
+                    print("Fail")
+                    print(error.localizedDescription)
+                }
+            })
+        default:
+            self.myGroupPhoto.image = UIImage(data: forGroup.groupAvatarData[0], scale: 0.3)
+            print("Loaded from storage")
+        }
     }
 
 }

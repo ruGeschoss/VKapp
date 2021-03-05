@@ -116,7 +116,7 @@ class NetworkManager {
                 let prevSavedData = realm.objects(UserSJ.self).filter("forUser == %@", forUser)
                 realm.beginWrite()
                 realm.delete(prevSavedData)
-                realm.add(users, update: .all)
+                realm.add(users, update: .modified)
                 try realm.commitWrite()
             } catch {
                 print(error.localizedDescription)
@@ -129,7 +129,7 @@ class NetworkManager {
                 let prevSavedData = realm.objects(Photos.self).filter("ownerId == %@", ownerId)
                 realm.beginWrite()
                 realm.delete(prevSavedData)
-                realm.add(photos, update: .all)
+                realm.add(photos, update: .modified)
                 try realm.commitWrite()
             } catch {
                 print(error.localizedDescription)
@@ -142,7 +142,7 @@ class NetworkManager {
                 let prevSavedData = realm.objects(Group.self).filter("forUserId == %@", forUserId)
                 realm.beginWrite()
                 realm.delete(prevSavedData)
-                realm.add(groups, update: .all)
+                realm.add(groups, update: .modified)
                 print(realm.configuration.fileURL)
                 try realm.commitWrite()
             } catch {
@@ -154,7 +154,7 @@ class NetworkManager {
             do { 
                 let realm = try Realm()
                 realm.beginWrite()
-                realm.add(profile, update: .all)
+                realm.add(profile, update: .modified)
                 try realm.commitWrite()
             } catch {
                 print(error.localizedDescription)

@@ -15,6 +15,7 @@ class Group: Object, Decodable {
     @objc dynamic var forUserId: String = ""
 //    var groupAvatarSizes: [String] = []
     var groupAvatarSizes = List<String>()
+    var groupAvatarData = List<Data>()
     
     convenience init (from json: JSON) {
         self.init()
@@ -32,7 +33,6 @@ class Group: Object, Decodable {
         self.groupAvatarSizes.append(groupAvaS)
         self.groupAvatarSizes.append(groupAvaM)
         self.groupAvatarSizes.append(groupAvaL)
-        
         self.forUserId = forUserId
     }
     

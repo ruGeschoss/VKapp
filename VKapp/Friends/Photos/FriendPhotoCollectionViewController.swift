@@ -16,7 +16,6 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
     
     var photosForUserID = String()      // id of user
     var allPhotosOfUser = [Photos]()    // detailed photo info (if needed more info) unused
-//    var allPhotosUrls = [[String]]()
     var allPhotosUrls = [List<String>]() // Array of photos with multiple urls for each size
     
     var testArray = [String]()
@@ -79,7 +78,8 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        allPhotosUrls.count
+//        allPhotosUrls.count
+        allPhotosOfUser.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
