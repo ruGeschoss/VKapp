@@ -21,14 +21,14 @@ class Session {
         }
     }
     
-    var userId = UserDefaults.standard.string(forKey: "userId") ?? "" {
+    var userId = KeychainWrapper.standard.string(forKey: "userId") ?? "" {
         didSet {
-            UserDefaults.standard.set(userId, forKey: "userId")
+            KeychainWrapper.standard.set(userId, forKey: "userId")
         }
     }
-    var userName = UserDefaults.standard.string(forKey: "userName") ?? "" {
+    var userName = KeychainWrapper.standard.string(forKey: "userName") ?? "" {
         didSet {
-            UserDefaults.standard.set(userName, forKey: "userName")
+            KeychainWrapper.standard.set(userName, forKey: "userName")
         }
     }
 }

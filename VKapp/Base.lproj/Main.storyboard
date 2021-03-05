@@ -55,11 +55,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="gwS-pZ-Dhw">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tx6-if-HDd" customClass="CatLoadingView" customModule="VKapp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                    </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fgo-j7-aPr" userLabel="regView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fgo-j7-aPr" userLabel="regView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="672.33333333333337"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="close" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7g-Hf-4Du">
@@ -142,14 +138,10 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="Tx6-if-HDd" firstAttribute="leading" secondItem="Yms-Op-XEG" secondAttribute="leading" id="1p8-uN-VI0"/>
                                     <constraint firstAttribute="bottom" secondItem="Fgo-j7-aPr" secondAttribute="bottom" constant="132" id="4ta-bO-ZCf"/>
                                     <constraint firstItem="Fgo-j7-aPr" firstAttribute="leading" secondItem="gwS-pZ-Dhw" secondAttribute="leading" id="EIX-9q-1oU"/>
                                     <constraint firstAttribute="trailing" secondItem="Fgo-j7-aPr" secondAttribute="trailing" id="SyV-vI-wxe"/>
                                     <constraint firstItem="Fgo-j7-aPr" firstAttribute="top" secondItem="gwS-pZ-Dhw" secondAttribute="top" id="bXO-rY-2f4"/>
-                                    <constraint firstItem="Yms-Op-XEG" firstAttribute="trailing" secondItem="Tx6-if-HDd" secondAttribute="trailing" id="bim-dC-zMO"/>
-                                    <constraint firstItem="Yms-Op-XEG" firstAttribute="bottom" secondItem="Tx6-if-HDd" secondAttribute="bottom" id="hxs-Lv-W5E"/>
-                                    <constraint firstItem="Tx6-if-HDd" firstAttribute="top" secondItem="Yms-Op-XEG" secondAttribute="top" id="v6z-Xo-SPn"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="Fyz-DX-bFm"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Yms-Op-XEG"/>

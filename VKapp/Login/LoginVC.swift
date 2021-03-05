@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 class LoginVC: UIViewController {
 //    MARK: - Outlets
@@ -46,6 +47,7 @@ class LoginVC: UIViewController {
         super.viewDidAppear(animated)
         
         if shouldAutoLogin {
+            guard Session.shared.token != "" else { return }
             nextScreenAnim()
         }
     }
@@ -158,6 +160,9 @@ class LoginVC: UIViewController {
     
     @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {
         shouldAutoLogin = false
+        KeychainWrapper.standard.remove(forKey: "userToken")
+        KeychainWrapper.standard.remove(forKey: "userId")
+        KeychainWrapper.standard.remove(forKey: "userName")
     }
     
     @IBAction func signInButton(_ sender: UIButton) {
