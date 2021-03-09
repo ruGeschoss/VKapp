@@ -29,21 +29,18 @@ class MyGroupsTableViewCell: UITableViewCell {
         case nil:
             NetworkManager.getPhotoDataFromUrl(url: forGroup.groupAvatarSizes[0] ,completion: { [weak self] data in
                 self?.myGroupPhoto.image = UIImage(data: data, scale: 0.3)
-                print("Added to storage")
+                
                 do {
-                    print("Success")
                     let realm = try Realm()
                     realm.beginWrite()
                     forGroup.groupAvatarData.append(data)
                     try realm.commitWrite()
                 } catch {
-                    print("Fail")
                     print(error.localizedDescription)
                 }
             })
         default:
             self.myGroupPhoto.image = UIImage(data: forGroup.groupAvatarData[0], scale: 0.3)
-            print("Loaded from storage")
         }
     }
 

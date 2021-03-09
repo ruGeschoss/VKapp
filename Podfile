@@ -10,4 +10,5 @@ target 'VKapp' do
   pod 'SwiftyJSON', '~> 4.0'
   pod 'RealmSwift'
   pod 'SwiftKeychainWrapper'
+#  pod 'SDWebImage', '~> 5.0'
 end

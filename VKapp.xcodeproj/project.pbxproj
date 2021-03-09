@@ -40,6 +40,7 @@
 		B79B16CA25DEFF91001DA787 /* Photos.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79B16C925DEFF91001DA787 /* Photos.swift */; };
 		B79B16CE25DF280F001DA787 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79B16CD25DF280F001DA787 /* Profile.swift */; };
 		B79B16D125DFE644001DA787 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79B16D025DFE644001DA787 /* Group.swift */; };
+		B79B16E525F79B3A001DA787 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79B16E425F79B39001DA787 /* RealmManager.swift */; };
 		B7CA8CA625B8573200CE256A /* HeaderCRV.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CA425B8573200CE256A /* HeaderCRV.swift */; };
 		B7CA8CA725B8573200CE256A /* HeaderCRV.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7CA8CA525B8573200CE256A /* HeaderCRV.xib */; };
 		B7CA8CAE25B863D300CE256A /* FooterCRV.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CAC25B863D300CE256A /* FooterCRV.swift */; };
@@ -94,6 +95,7 @@
 		B79B16C925DEFF91001DA787 /* Photos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photos.swift; sourceTree = "<group>"; };
 		B79B16CD25DF280F001DA787 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B79B16D025DFE644001DA787 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		B79B16E425F79B39001DA787 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		B7CA8CA425B8573200CE256A /* HeaderCRV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCRV.swift; sourceTree = "<group>"; };
 		B7CA8CA525B8573200CE256A /* HeaderCRV.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderCRV.xib; sourceTree = "<group>"; };
 		B7CA8CAC25B863D300CE256A /* FooterCRV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterCRV.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 			children = (
 				B768A06425D01E02005C069E /* Session.swift */,
 				B768A07625D5412E005C069E /* NetworkManager.swift */,
+				B79B16E425F79B39001DA787 /* RealmManager.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				B7CA8CF225C19CB100CE256A /* FullScreenPhotoVC.swift in Sources */,
 				B769DBED25C96DA800E0E864 /* PushCustomNC.swift in Sources */,
 				B76069D625920427005E1F03 /* AppDelegate.swift in Sources */,
+				B79B16E525F79B3A001DA787 /* RealmManager.swift in Sources */,
 				B769DBF325C9AC6C00E0E864 /* InteractiveTransition.swift in Sources */,
 				B779558A259B500B006E07B1 /* FriendListTableViewController.swift in Sources */,
 				B751CBE225A44A6F00919820 /* LikeButtonUIButton.swift in Sources */,

@@ -14,24 +14,55 @@ protocol PhotoDelegate:AnyObject {
 
 class FriendListTableViewController: UIViewController, UITableViewDataSource {
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView! {
+        didSet {
+            tableView.refreshControl = refreshControl
+            tableView.dataSource = self
+            tableView.delegate = self
+            tableView.backgroundColor = UIColor.clear
+        }
+    }
     @IBOutlet weak var charPicker: CharPicker!
-    @IBOutlet weak var friendSearch: UISearchBar!
+    @IBOutlet weak var friendSearch: UISearchBar! {
+        didSet {
+            friendSearch.delegate = self
+        }
+    }
     
-    var usersData = [UserSJ]()        // data from VK.api
+    var usersData = [UserSJ]()      // data from VK.api
     var searchData = [UserSJ]()       // data to show
-    
     var sectionTitles = [String]()  // titles for sections by first char of lastName
     var selectedUser = String()     // String id of selected user
-    
     var friendListForUserId = Session.shared.userId
+    
+    private var usersDataNotificationToken: NotificationToken?
+    
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .systemGray
+        refreshControl.attributedTitle = NSAttributedString(string: "Обновление...", attributes: [.font: UIFont.systemFont(ofSize: 10)])
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
+    
+    func getDataFromRealm() {
+        do {
+            let realm = try Realm()
+            let usersData = realm.objects(UserSJ.self).filter("forUser == %@", friendListForUserId)
+            self.usersData = Array(usersData).sorted {$0.lastName < $1.lastName}
+            self.searchData = self.usersData
+            self.getSectionTitles()
+        } catch {
+            print(error)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        friendSearch.delegate = self
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.backgroundColor = UIColor.clear
+//        friendSearch.delegate = self
+//        tableView.dataSource = self
+//        tableView.delegate = self
+//        tableView.backgroundColor = UIColor.clear
 
         //MARK:- Loading friends list
         
@@ -39,9 +70,9 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         //            self?.getDataFromRealm()
         //            self?.tableView.reloadData()
         //        }
+        
         getDataFromRealm()
         tableView.reloadData()
-                
         //        showWelcomeMessage()
         
         
@@ -98,15 +129,9 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
 //        present(alert, animated: true, completion: nil)
 //    }
     
-    func getDataFromRealm() {
-        do {
-            let realm = try Realm()
-            let usersData = realm.objects(UserSJ.self).filter("forUser == %@", friendListForUserId)
-            self.usersData = Array(usersData).sorted {$0.lastName < $1.lastName}
-            self.searchData = self.usersData
-            self.getSectionTitles()
-        } catch {
-            print(error)
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        NetworkManager.loadFriendsSJ(forUser: friendListForUserId) { [weak self] in
+            self?.refreshControl.endRefreshing()
         }
     }
     
