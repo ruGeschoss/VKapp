@@ -29,13 +29,27 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         }
     }
     
-    var usersData = [UserSJ]()      // data from VK.api
-    var searchData = [UserSJ]()       // data to show
-    var sectionTitles = [String]()  // titles for sections by first char of lastName
-    var selectedUser = String()     // String id of selected user
-    var friendListForUserId = Session.shared.userId
+    var usersData : Results<UserSJ>? {
+        let realm = try? Realm()
+        let users: Results<UserSJ>? = realm?.objects(UserSJ.self)
+        return users?.sorted(byKeyPath: "lastName", ascending: true)
+    }
     
-    private var usersDataNotificationToken: NotificationToken?
+    var searchData : Results<UserSJ>? {
+        guard !searchText.isEmpty else {
+            return usersData
+        }
+        return usersData?.filter("lastName CONTAINS %@", searchText)
+    }
+    
+    private var searchText: String {
+        friendSearch.text ?? ""
+    }
+    
+    var sectionTitles = [String]()
+    var selectedUser = String()
+    var friendListForUserId = Session.shared.userId
+    private var searchDataNotificationToken: NotificationToken?
     
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -45,52 +59,38 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         return refreshControl
     }()
     
-    func getDataFromRealm() {
-        do {
-            let realm = try Realm()
-            let usersData = realm.objects(UserSJ.self).filter("forUser == %@", friendListForUserId)
-            self.usersData = Array(usersData).sorted {$0.lastName < $1.lastName}
-            self.searchData = self.usersData
-            self.getSectionTitles()
-        } catch {
-            print(error)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        friendSearch.delegate = self
-//        tableView.dataSource = self
-//        tableView.delegate = self
-//        tableView.backgroundColor = UIColor.clear
-
-        //MARK:- Loading friends list
-        
-        //        NetworkManager.loadFriendsSJ(forUser: nil) { [weak self] in
-        //            self?.getDataFromRealm()
-        //            self?.tableView.reloadData()
-        //        }
-        
-        getDataFromRealm()
-        tableView.reloadData()
-        //        showWelcomeMessage()
-        
-        
-//        NetworkManager.loadFriendsSJ(forUser: nil) { [weak self] (result) in
-//            guard let self = self else { return }
+     
+        searchDataNotificationToken = usersData?.observe { [weak self] result in
+            switch result {
+            case .initial(let usersData):
+                print("Initiated with \(usersData.count) users")
+                self?.getSectionTitles()
+                self?.tableView.reloadData()
+                break
+            case .update(let users, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                print("""
+                    New count \(users.count)
+                    Deletions \(deletions)
+                    Insertions \(insertions)
+                    Modifications \(modifications)
+                    """)
+//                self?.tableView.beginUpdates()
+//                let deletionsIndexPaths = deletions.map { IndexPath(row: $0, section: 0) }
+//                let insertionsIndexPaths = insertions.map { IndexPath(row: $0, section: 0) }
+//                let modificationsIndexPaths = modifications.map { IndexPath(row: $0, section: 0) }
 //
-//            switch result {
-//            case .success(let users):
-//                self.usersData = users.sorted {$0.lastName < $1.lastName}
-//                self.searchData = self.usersData
-//                self.getSectionTitles()
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
+//                self?.tableView.deleteRows(at: deletionsIndexPaths, with: .automatic)
+//                self?.tableView.insertRows(at: insertionsIndexPaths, with: .automatic)
+//                self?.tableView.reloadRows(at: modificationsIndexPaths, with: .automatic)
+//                self?.tableView.endUpdates()
+                break
+            case .error(let error):
+                print(error.localizedDescription)
+                break
+            }
+        }
     }
     
     @IBAction func charPicked(_ sender: CharPicker) {
@@ -121,13 +121,6 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
             }
         }
     }
-    
-//    func showWelcomeMessage() {
-//        let alert = UIAlertController(title: "Welcome!", message: "Добро пожаловать, \(Session.shared.userName)! \n Хорошего Вам дня!", preferredStyle: .alert)
-//        let action = UIAlertAction(title: "Продолжить", style: .cancel, handler: nil)
-//        alert.addAction(action)
-//        present(alert, animated: true, completion: nil)
-//    }
     
     @objc private func refresh(_ sender: UIRefreshControl) {
         NetworkManager.loadFriendsSJ(forUser: friendListForUserId) { [weak self] in
@@ -173,12 +166,11 @@ extension FriendListTableViewController: UITableViewDelegate {
         NetworkManager.loadPhotosSJ(ownerId: selectedUser) {
             self.performSegue(withIdentifier: "ToMyFriendCell", sender: self)
         }
-//        performSegue(withIdentifier: "ToMyFriendCell", sender: self)
     }
     
     func friendsForSectionByFirstChar(_ indexInTitles: Int) -> [UserSJ] {
         var tmpArray:[UserSJ] = []
-        for each in searchData {
+        for each in searchData! {
             if String(each.lastName.first ?? "-") == sectionTitles[indexInTitles] {
                 tmpArray.append(each)
             }
@@ -187,7 +179,7 @@ extension FriendListTableViewController: UITableViewDelegate {
     }
     func getSectionTitles() {
         sectionTitles = []
-        for each in searchData {
+        for each in searchData! {
             let charForTitle = each.lastName.first ?? "-"
             if !sectionTitles.contains(String(charForTitle)) {
                 sectionTitles.append(String(charForTitle))
@@ -202,13 +194,6 @@ extension FriendListTableViewController: UITableViewDelegate {
 extension FriendListTableViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        var userLastNames = usersData.map({$0.lastName})
-        
-        userLastNames = searchText.isEmpty ? userLastNames : userLastNames.filter({(dataString:String) -> Bool in
-            return dataString.range(of: searchText, options: .caseInsensitive) != nil
-            })
-        
-        searchData = usersData.filter({userLastNames.contains($0.lastName)})
         getSectionTitles()
         tableView.reloadData()
     }
