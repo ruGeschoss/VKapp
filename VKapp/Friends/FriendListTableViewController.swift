@@ -39,7 +39,7 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         guard !searchText.isEmpty else {
             return usersData
         }
-        return usersData?.filter("lastName CONTAINS %@", searchText)
+        return usersData?.filter("lastName CONTAINS[cd] %@", searchText)
     }
     
     private var searchText: String {
@@ -50,6 +50,7 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     var selectedUser = String()
     var friendListForUserId = Session.shared.userId
     private var searchDataNotificationToken: NotificationToken?
+    private var testToken: NotificationToken?
     
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -59,9 +60,26 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         return refreshControl
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-     
+    private func createSingleTargetToken() {
+        testToken = usersData?.last?.observe { change in
+            switch change {
+            case .change(let object, let properties):
+                let changes = properties.reduce("") { (res,new) in
+                    "\(res)\n\(new.name):\n\t\(String(describing: new.oldValue ?? nil)) -> \(String(describing: new.newValue ?? nil))"
+                }
+                let user = object as? UserSJ
+                #if DEBUG
+                print("Changed properties for user: \(user?.lastName ?? "")\n\(changes)")
+                #endif
+            case .deleted:
+                print("obj deleted")
+            case .error(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func createSearchDataNotificationToken() {
         searchDataNotificationToken = usersData?.observe { [weak self] result in
             switch result {
             case .initial(let usersData):
@@ -76,20 +94,59 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
                     Insertions \(insertions)
                     Modifications \(modifications)
                     """)
-//                self?.tableView.beginUpdates()
-//                let deletionsIndexPaths = deletions.map { IndexPath(row: $0, section: 0) }
-//                let insertionsIndexPaths = insertions.map { IndexPath(row: $0, section: 0) }
-//                let modificationsIndexPaths = modifications.map { IndexPath(row: $0, section: 0) }
-//
-//                self?.tableView.deleteRows(at: deletionsIndexPaths, with: .automatic)
-//                self?.tableView.insertRows(at: insertionsIndexPaths, with: .automatic)
-//                self?.tableView.reloadRows(at: modificationsIndexPaths, with: .automatic)
-//                self?.tableView.endUpdates()
+                if !deletions.isEmpty || !insertions.isEmpty {
+                    self?.getSectionTitles()
+                    self?.tableView.reloadData()
+                }
+                /*
+                 if !modifications.isEmpty {
+                 var modIndexPaths = [IndexPath]()
+                 modifications.forEach { [weak self] in
+                 let section = self?.sectionTitles.firstIndex(of: "\(self?.usersData?[$0].lastName.first ?? "-")" )
+                 let arrayForSection = self?.friendsForSectionByFirstChar(section!)
+                 let row = arrayForSection?.firstIndex(of: (self?.usersData?[$0])!)
+                 modIndexPaths.append(IndexPath(row: row!, section: section!))
+                 }
+                 self?.tableView.reloadRows(at: modIndexPaths, with: .automatic)
+                 }
+                 */
+                
+                
+                //                self?.tableView.beginUpdates()
+                //                let deletionsIndexPaths = deletions.map { IndexPath(row: $0, section: 0) }
+                //                let insertionsIndexPaths = insertions.map { IndexPath(row: $0, section: 0) }
+                //                let modificationsIndexPaths = modifications.map { IndexPath(row: $0, section: 0) }
+                //
+                //                self?.tableView.deleteRows(at: deletionsIndexPaths, with: .automatic)
+                //                self?.tableView.insertRows(at: insertionsIndexPaths, with: .automatic)
+                //                self?.tableView.reloadRows(at: modificationsIndexPaths, with: .automatic)
+                //                self?.tableView.endUpdates()
                 break
             case .error(let error):
                 print(error.localizedDescription)
                 break
             }
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        createSingleTargetToken()
+        createSearchDataNotificationToken()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ToMyFriendCell" {
+            if let destination = segue.destination as? FriendPhotoCollectionViewController{
+                destination.photosForUserID = selectedUser
+            }
+        }
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        NetworkManager.loadFriendsSJ(forUser: friendListForUserId) { [weak self] in
+            self?.refreshControl.endRefreshing()
         }
     }
     
@@ -113,21 +170,11 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
             charPicker.selectedChar = sectionTitles[letterIndex]
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ToMyFriendCell" {
-            if let destination = segue.destination as? FriendPhotoCollectionViewController{
-                destination.photosForUserID = selectedUser
-            }
-        }
+    //MARK: Deinit
+    deinit {
+        searchDataNotificationToken?.invalidate()
+        testToken?.invalidate()
     }
-    
-    @objc private func refresh(_ sender: UIRefreshControl) {
-        NetworkManager.loadFriendsSJ(forUser: friendListForUserId) { [weak self] in
-            self?.refreshControl.endRefreshing()
-        }
-    }
-    
 }
 
 //MARK: TableViewDelegate
@@ -152,6 +199,13 @@ extension FriendListTableViewController: UITableViewDelegate {
         header.alpha = 0.5
     }
 
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? MyFriendsTableViewCell {
+            cell.friendPhoto.image = UIImage(named: "No_Image")
+        }
+        cell.prepareForReuse()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MyFriendCell", for: indexPath) as? MyFriendsTableViewCell {
             let friend = friendsForSectionByFirstChar(indexPath.section)[indexPath.row]

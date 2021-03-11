@@ -12,7 +12,7 @@ class MyFriendsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var friendName: UILabel!
     @IBOutlet weak var friendPhoto: UIImageView!
-    @IBOutlet weak var avatarImage: ShadowImage!
+    @IBOutlet private weak var avatarImage: ShadowImage!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -46,7 +46,7 @@ class MyFriendsTableViewCell: UITableViewCell {
         
         switch forUser.photoData {
         case nil:
-            NetworkManager.getPhotoDataFromUrl(url: forUser.photo ,completion: { [weak self] data in
+            NetworkManager.getPhotoDataFromUrl(url: forUser.photo) { [weak self] data in
                 self?.friendPhoto.image = UIImage(data: data, scale: 0.3)
                 do {
                     let realm = try Realm()
@@ -56,11 +56,10 @@ class MyFriendsTableViewCell: UITableViewCell {
                 } catch {
                     print(error.localizedDescription)
                 }
-            })
+            }
         default:
             self.friendPhoto.image = UIImage(data: forUser.photoData!, scale: 0.3)
         }
-        
     }
     
 }

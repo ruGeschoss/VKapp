@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftKeychainWrapper
+import RealmSwift
 
 class LoginVC: UIViewController {
 //    MARK: - Outlets
@@ -132,11 +133,11 @@ class LoginVC: UIViewController {
         anim.alpha = 0
         
         //MARK: Loading data to storage
-        NetworkManager.loadFriendsSJ(forUser: nil) {
-            print("Friends loaded")
-        }
-        NetworkManager.loadGroupsSJ(forUserId: nil) {
-            print("Groups loaded")
+        let realm = try? Realm()
+        if realm!.objects(UserSJ.self).isEmpty || realm!.objects(Group.self).isEmpty  {
+            print("Started loading")
+            NetworkManager.loadFriendsSJ(forUser: nil) {}
+            NetworkManager.loadGroupsSJ(forUserId: nil) {}
         }
         
         //MARK: Show animation

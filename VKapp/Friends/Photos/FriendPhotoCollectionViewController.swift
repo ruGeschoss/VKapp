@@ -22,35 +22,11 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         collectionView.isPagingEnabled = false
         self.clearsSelectionOnViewWillAppear = false
-        //MARK: Loading photos for user
-//        NetworkManager.loadPhotos(ownerId: photosForUserID, completion: { [weak self] (photos) in
-//            guard let self = self else { return }
-//            self.allPhotosOfUser = photos
-//            let imageUrls = photos.map({$0.photoSizes[0].imageUrl})
-//            self.allPhotosUrls = imageUrls
-//            DispatchQueue.main.async {
-//                self.collectionView.reloadData()
-//            }
-//        })
         
         getDataFromRealm()
-        collectionView.reloadData()
-        
-//        NetworkManager.loadPhotosSJ(ownerId: photosForUserID) { [weak self] (result) in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let photos):
-//                self.allPhotosOfUser = photos
-//                self.allPhotosUrls = photos.map({ $0.imageUrl })
-//                DispatchQueue.main.async {
-//                    self.collectionView.reloadData()
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
     }
     
     func getDataFromRealm() {
@@ -59,6 +35,7 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
             let userPhotos = realm.objects(Photos.self).filter("ownerId == %@", photosForUserID)
             self.allPhotosUrls = Array(userPhotos).map { $0.imageUrl }
             self.allPhotosOfUser = Array(userPhotos)
+            collectionView.reloadData()
         } catch {
             print(error)
         }

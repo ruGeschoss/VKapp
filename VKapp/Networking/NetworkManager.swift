@@ -114,9 +114,9 @@ class NetworkManager {
     static func saveUsersDataToRealm(_ users: [UserSJ], forUser: String) {
             do {
                 let realm = try Realm()
-                let prevSavedData = realm.objects(UserSJ.self).filter("forUser == %@", forUser)
                 realm.beginWrite()
-                realm.delete(prevSavedData)
+//                let prevSavedData = realm.objects(UserSJ.self).filter("forUser == %@", forUser)
+//                realm.delete(prevSavedData)
                 realm.add(users, update: .modified)
                 try realm.commitWrite()
             } catch {
@@ -127,9 +127,9 @@ class NetworkManager {
     static func savePhotosToRealm(_ photos: [Photos], ownerId: String) {
             do {
                 let realm = try Realm()
-                let prevSavedData = realm.objects(Photos.self).filter("ownerId == %@", ownerId)
                 realm.beginWrite()
-                realm.delete(prevSavedData)
+//                let prevSavedData = realm.objects(Photos.self).filter("ownerId == %@", ownerId)
+//                realm.delete(prevSavedData)
                 realm.add(photos, update: .modified)
                 try realm.commitWrite()
             } catch {
@@ -140,11 +140,10 @@ class NetworkManager {
     static func saveGroupsDataToRealm(_ groups: [Group], forUserId: String) {
             do {
                 let realm = try Realm()
-                let prevSavedData = realm.objects(Group.self).filter("forUserId == %@", forUserId)
                 realm.beginWrite()
-                realm.delete(prevSavedData)
+//                let prevSavedData = realm.objects(Group.self).filter("forUserId == %@", forUserId)
+//                realm.delete(prevSavedData)
                 realm.add(groups, update: .modified)
-                print(realm.configuration.fileURL)
                 try realm.commitWrite()
             } catch {
                 print(error.localizedDescription)
@@ -154,6 +153,7 @@ class NetworkManager {
     static func saveProfileDataToRealm(_ profile: ProfileSJ) {
             do { 
                 let realm = try Realm()
+                print(realm.configuration.fileURL)
                 realm.beginWrite()
                 realm.add(profile, update: .modified)
                 try realm.commitWrite()
