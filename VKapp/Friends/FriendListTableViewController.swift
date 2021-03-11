@@ -29,13 +29,13 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         }
     }
     
-    var usersData : Results<UserSJ>? {
+    var usersData: Results<UserSJ>? {
         let realm = try? Realm()
         let users: Results<UserSJ>? = realm?.objects(UserSJ.self)
         return users?.sorted(byKeyPath: "lastName", ascending: true)
     }
     
-    var searchData : Results<UserSJ>? {
+    var searchData: Results<UserSJ>? {
         guard !searchText.isEmpty else {
             return usersData
         }
@@ -59,6 +59,13 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
         return refreshControl
     }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        createSingleTargetToken()
+        createSearchDataNotificationToken()
+    }
     
     private func createSingleTargetToken() {
         testToken = usersData?.last?.observe { change in
@@ -127,13 +134,6 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
                 break
             }
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        createSingleTargetToken()
-        createSearchDataNotificationToken()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

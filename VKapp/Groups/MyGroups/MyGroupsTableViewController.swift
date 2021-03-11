@@ -10,55 +10,82 @@ import RealmSwift
 
 class MyGroupsTableViewController: UITableViewController {
 
-    var groups = [Group] ()
+    var groups: Results<Group>? {
+        let realm = try? Realm()
+        let groups = realm?.objects(Group.self).filter("forUserId == %@", groupListForUserId)
+        return groups
+    }
     var groupListForUserId = Session.shared.userId
+    private var groupsNotificationToken: NotificationToken?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.refreshControl = refresher
         
-//        NetworkManager.loadGroupsSJ(forUserId: nil) { [weak self] (result) in
-//            guard let self = self else { return }
-//            switch result {
-//            case .success(let group):
-//                self.groups = group
-//                DispatchQueue.main.async {
-//                    self.tableView.reloadData()
-//                }
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-        getDataFromRealm()
-        tableView.reloadData()
-
+        createGroupsNotificationToken()
     }
-
-    func getDataFromRealm() {
-        do {
-            let realm = try Realm()
-            let groupsData = realm.objects(Group.self).filter("forUserId == %@", groupListForUserId)
-            self.groups = Array(groupsData)
-        } catch {
-            print(error.localizedDescription)
+    
+    private lazy var refresher: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .systemGray
+        refreshControl.attributedTitle = NSAttributedString(string: "Обновление...", attributes: [.font: UIFont.systemFont(ofSize: 10)])
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
+    
+    private func createGroupsNotificationToken() {
+        groupsNotificationToken = groups?.observe { [weak self] result in
+            switch result {
+            case .initial(let groupsData):
+                print("Initiated with \(groupsData.count) users")
+                self?.tableView.reloadData()
+                break
+            case .update(let groups, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                print("""
+                    New count \(groups.count)
+                    Deletions \(deletions)
+                    Insertions \(insertions)
+                    Modifications \(modifications)
+                    """)
+                self?.tableView.beginUpdates()
+                let deletionsIndexPaths = deletions.map { IndexPath(row: $0, section: 0) }
+                let insertionsIndexPaths = insertions.map { IndexPath(row: $0, section: 0) }
+                let modificationsIndexPaths = modifications.map { IndexPath(row: $0, section: 0) }
+                
+                self?.tableView.deleteRows(at: deletionsIndexPaths, with: .automatic)
+                self?.tableView.insertRows(at: insertionsIndexPaths, with: .automatic)
+                self?.tableView.reloadRows(at: modificationsIndexPaths, with: .automatic)
+                self?.tableView.endUpdates()
+                break
+            case .error(let error):
+                print(error.localizedDescription)
+                break
+            }
+        }
+    }
+    
+    deinit {
+        groupsNotificationToken?.invalidate()
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        NetworkManager.loadGroupsSJ(forUserId: groupListForUserId) { [weak self] in
+            self?.refresher.endRefreshing()
         }
     }
     
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return groups.count
+        return groups?.count ?? 0
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as? MyGroupsTableViewCell {
-            cell.configure(forGroup: groups[indexPath.row])
+            cell.configure(forGroup: groups![indexPath.row])
             return cell
         }
         

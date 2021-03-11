@@ -13,7 +13,6 @@ class Group: Object, Decodable {
     @objc dynamic var groupId: String = ""
     @objc dynamic var groupName: String = ""
     @objc dynamic var forUserId: String = ""
-//    var groupAvatarSizes: [String] = []
     var groupAvatarSizes = List<String>()
     var groupAvatarData = List<Data>()
     
@@ -29,7 +28,7 @@ class Group: Object, Decodable {
         let groupAvaS = json["photo_50"].stringValue
         let groupAvaM = json["photo_100"].stringValue
         let groupAvaL = json["photo_200"].stringValue
-//        self.groupAvatarSizes = [groupAvaS, groupAvaM, groupAvaL]
+        
         self.groupAvatarSizes.append(groupAvaS)
         self.groupAvatarSizes.append(groupAvaM)
         self.groupAvatarSizes.append(groupAvaL)

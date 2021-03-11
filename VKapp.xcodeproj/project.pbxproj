@@ -237,12 +237,12 @@
 			path = AllGroups;
 			sourceTree = "<group>";
 		};
-		B779556A259A62AB006E07B1 /* MyGroup */ = {
+		B779556A259A62AB006E07B1 /* MyGroups */ = {
 			isa = PBXGroup;
 			children = (
 				B779556B259A62DB006E07B1 /* MyGroupsTableViewController.swift */,
 			);
-			path = MyGroup;
+			path = MyGroups;
 			sourceTree = "<group>";
 		};
 		B7795571259A6C85006E07B1 /* Model */ = {
@@ -260,7 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				B7795562259A4344006E07B1 /* AllGroups */,
-				B779556A259A62AB006E07B1 /* MyGroup */,
+				B779556A259A62AB006E07B1 /* MyGroups */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
