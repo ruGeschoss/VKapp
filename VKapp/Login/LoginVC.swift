@@ -8,6 +8,7 @@
 import UIKit
 import SwiftKeychainWrapper
 import RealmSwift
+import WebKit
 
 class LoginVC: UIViewController {
 //    MARK: - Outlets
@@ -156,6 +157,20 @@ class LoginVC: UIViewController {
             anim.removeFromSuperview()
         })
     }
+    private func removeCookie() {
+//        URLCache.shared.removeAllCachedResponses()
+//        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+//        print("[WebCacheCleaner] All cookies deleted")
+
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                guard record.displayName == "vk.com" || record.displayName == "mail.ru" else { return }
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {
+                    print("Finished removing data for \(record.displayName)")
+                })
+            }
+        }
+    }
     
 //    MARK: - Actions
     
@@ -164,6 +179,8 @@ class LoginVC: UIViewController {
         KeychainWrapper.standard.remove(forKey: "userToken")
         KeychainWrapper.standard.remove(forKey: "userId")
         KeychainWrapper.standard.remove(forKey: "userName")
+        
+        removeCookie()
     }
     
     @IBAction func signInButton(_ sender: UIButton) {
