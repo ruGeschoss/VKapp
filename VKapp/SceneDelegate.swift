@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  VKapp
 //
-//  Created by Александр Андрианов on 22.12.2020.
+//  Created by Alexander Andrianov on 22.12.2020.
 //
 
 import UIKit

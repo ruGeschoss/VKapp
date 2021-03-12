@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LoadingProcessView" customModule="VKapp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="120" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SfE-lY-bmq">
+                    <rect key="frame" x="0.0" y="0.0" width="120" height="40"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gPu-W3-XpO" userLabel="right">
+                            <rect key="frame" x="80" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" systemColor="systemPinkColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="gPu-W3-XpO" secondAttribute="height" multiplier="1:1" id="yOU-ba-NPq"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c9x-5N-chN" userLabel="left">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" systemColor="systemYellowColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="c9x-5N-chN" secondAttribute="height" multiplier="1:1" id="B72-Ar-J9M"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oXT-rH-V5Q" userLabel="center">
+                            <rect key="frame" x="40" y="0.0" width="40" height="40"/>
+                            <color key="backgroundColor" systemColor="systemGreenColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="oXT-rH-V5Q" secondAttribute="height" multiplier="1:1" id="x1x-B0-Pwf"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="c9x-5N-chN" secondAttribute="bottom" id="2fz-Ng-1zu"/>
+                        <constraint firstItem="c9x-5N-chN" firstAttribute="leading" secondItem="SfE-lY-bmq" secondAttribute="leading" id="7nt-Yn-Ijs"/>
+                        <constraint firstAttribute="trailing" secondItem="gPu-W3-XpO" secondAttribute="trailing" id="A6d-Kx-NxF"/>
+                        <constraint firstItem="gPu-W3-XpO" firstAttribute="top" secondItem="SfE-lY-bmq" secondAttribute="top" id="Alc-qQ-0Fd"/>
+                        <constraint firstItem="oXT-rH-V5Q" firstAttribute="centerX" secondItem="SfE-lY-bmq" secondAttribute="centerX" id="DsV-i3-gh5"/>
+                        <constraint firstItem="oXT-rH-V5Q" firstAttribute="top" secondItem="SfE-lY-bmq" secondAttribute="top" id="SId-nk-B4V"/>
+                        <constraint firstItem="gPu-W3-XpO" firstAttribute="width" secondItem="SfE-lY-bmq" secondAttribute="width" multiplier="1/3" id="Ums-vg-qgG"/>
+                        <constraint firstItem="c9x-5N-chN" firstAttribute="width" secondItem="SfE-lY-bmq" secondAttribute="width" multiplier="1/3" id="d3n-et-Xjn"/>
+                        <constraint firstItem="oXT-rH-V5Q" firstAttribute="centerY" secondItem="SfE-lY-bmq" secondAttribute="centerY" id="hgX-1J-15k"/>
+                        <constraint firstAttribute="bottom" secondItem="oXT-rH-V5Q" secondAttribute="bottom" id="ii1-ZF-ehc"/>
+                        <constraint firstAttribute="width" secondItem="SfE-lY-bmq" secondAttribute="height" multiplier="3:1" id="mSv-XN-EDx"/>
+                        <constraint firstAttribute="bottom" secondItem="gPu-W3-XpO" secondAttribute="bottom" id="qNH-BU-Bnk"/>
+                        <constraint firstItem="oXT-rH-V5Q" firstAttribute="width" secondItem="SfE-lY-bmq" secondAttribute="width" multiplier="1/3" id="rC9-tz-2ng"/>
+                        <constraint firstItem="c9x-5N-chN" firstAttribute="top" secondItem="SfE-lY-bmq" secondAttribute="top" id="rv9-nX-3NX"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <constraints>
+                <constraint firstItem="SfE-lY-bmq" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="S9e-h8-K4L"/>
+                <constraint firstItem="SfE-lY-bmq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="WBU-VX-i2w"/>
+                <constraint firstAttribute="trailing" secondItem="SfE-lY-bmq" secondAttribute="trailing" id="g5u-MG-E5e"/>
+                <constraint firstAttribute="bottom" secondItem="SfE-lY-bmq" secondAttribute="bottom" id="j4W-da-Ygb"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="centerDot" destination="oXT-rH-V5Q" id="1mK-te-Seq"/>
+                <outlet property="leftDot" destination="c9x-5N-chN" id="X31-JF-gO0"/>
+                <outlet property="loadingProcess" destination="SfE-lY-bmq" id="57L-sL-Waa"/>
+                <outlet property="rightDot" destination="gPu-W3-XpO" id="duA-Pv-9J0"/>
+            </connections>
+            <point key="canvasLocation" x="58" y="42"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

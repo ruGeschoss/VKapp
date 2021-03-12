@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FooterCRV" id="U6b-Vx-4bR" customClass="FooterCRV" customModule="VKapp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="436" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZDt-IS-6vX">
+                    <rect key="frame" x="0.0" y="0.0" width="436" height="50"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iyh-No-4AV" customClass="LikeButtonUIButton" customModule="VKapp" customModuleProvider="target">
+                            <rect key="frame" x="20" y="14" width="20.5" height="22"/>
+                            <state key="normal" image="heart" catalog="system"/>
+                            <connections>
+                                <action selector="likeButton:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="eFN-LM-z0e"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a4f-7X-fZg">
+                            <rect key="frame" x="60.5" y="14" width="55" height="22"/>
+                            <state key="normal" title="390" image="message" catalog="system"/>
+                            <connections>
+                                <action selector="commentButton:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="4hN-ud-Ufc"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yTR-TD-IwZ">
+                            <rect key="frame" x="135.5" y="14" width="40" height="22"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <state key="normal" title="10" image="arrowshape.turn.up.right" catalog="system"/>
+                            <connections>
+                                <action selector="shareButton:" destination="U6b-Vx-4bR" eventType="touchUpInside" id="ewq-XX-WBI"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EA0-VI-rzY">
+                            <rect key="frame" x="356" y="7.5" width="70" height="35"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="dCk-Z8-IIT">
+                                    <rect key="frame" x="35" y="0.5" width="35" height="34"/>
+                                    <color key="tintColor" systemColor="systemGrayColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="dCk-Z8-IIT" secondAttribute="height" multiplier="1:1" id="l8M-6y-pbm"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7vm-9x-Omv">
+                                    <rect key="frame" x="0.0" y="9.5" width="33" height="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="textColor" systemColor="systemGrayColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="EA0-VI-rzY" secondAttribute="height" multiplier="2:1" id="6Er-LG-2gw"/>
+                                <constraint firstItem="7vm-9x-Omv" firstAttribute="centerY" secondItem="EA0-VI-rzY" secondAttribute="centerY" id="XHw-4j-urF"/>
+                                <constraint firstItem="dCk-Z8-IIT" firstAttribute="centerY" secondItem="EA0-VI-rzY" secondAttribute="centerY" id="XrR-rl-bCc"/>
+                                <constraint firstItem="7vm-9x-Omv" firstAttribute="leading" secondItem="EA0-VI-rzY" secondAttribute="leading" id="aMq-5Z-Snc"/>
+                                <constraint firstAttribute="trailing" secondItem="dCk-Z8-IIT" secondAttribute="trailing" id="ihI-Cg-K4Q"/>
+                                <constraint firstItem="dCk-Z8-IIT" firstAttribute="height" secondItem="EA0-VI-rzY" secondAttribute="height" id="lOu-JN-vkn"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="yTR-TD-IwZ" firstAttribute="leading" secondItem="a4f-7X-fZg" secondAttribute="trailing" constant="20" id="1ZJ-mW-5Xu"/>
+                        <constraint firstItem="Iyh-No-4AV" firstAttribute="leading" secondItem="ZDt-IS-6vX" secondAttribute="leading" constant="20" id="A5B-w4-8pL"/>
+                        <constraint firstItem="a4f-7X-fZg" firstAttribute="leading" secondItem="Iyh-No-4AV" secondAttribute="trailing" constant="20" id="Gxg-1r-RbC"/>
+                        <constraint firstItem="a4f-7X-fZg" firstAttribute="centerY" secondItem="ZDt-IS-6vX" secondAttribute="centerY" id="X2y-Mk-DMc"/>
+                        <constraint firstAttribute="trailing" secondItem="EA0-VI-rzY" secondAttribute="trailing" constant="10" id="aA3-16-e3r"/>
+                        <constraint firstItem="yTR-TD-IwZ" firstAttribute="centerY" secondItem="ZDt-IS-6vX" secondAttribute="centerY" id="pH4-P1-xAW"/>
+                        <constraint firstItem="Iyh-No-4AV" firstAttribute="centerY" secondItem="ZDt-IS-6vX" secondAttribute="centerY" id="uCg-25-utZ"/>
+                        <constraint firstItem="EA0-VI-rzY" firstAttribute="height" secondItem="ZDt-IS-6vX" secondAttribute="height" multiplier="0.7" id="xFn-On-Eld"/>
+                        <constraint firstItem="EA0-VI-rzY" firstAttribute="centerY" secondItem="ZDt-IS-6vX" secondAttribute="centerY" id="zRy-ZJ-DyU"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <constraints>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="ZDt-IS-6vX" secondAttribute="trailing" id="XAx-Xp-j2O"/>
+                <constraint firstAttribute="bottom" secondItem="ZDt-IS-6vX" secondAttribute="bottom" id="YHW-6W-VkP"/>
+                <constraint firstItem="ZDt-IS-6vX" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="hDK-6n-iUB"/>
+                <constraint firstItem="ZDt-IS-6vX" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" id="rQd-0n-432"/>
+            </constraints>
+            <connections>
+                <outlet property="commentButtonCounter" destination="a4f-7X-fZg" id="j9g-sj-E2E"/>
+                <outlet property="footerView" destination="ZDt-IS-6vX" id="VVO-Po-lt7"/>
+                <outlet property="likeButton" destination="Iyh-No-4AV" id="ygW-9n-Jf1"/>
+                <outlet property="shareButtonCounter" destination="yTR-TD-IwZ" id="7Lg-ru-Nmd"/>
+                <outlet property="viewCount" destination="7vm-9x-Omv" id="Qt0-KM-gel"/>
+            </connections>
+            <point key="canvasLocation" x="-113.04347826086958" y="69.642857142857139"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <image name="arrowshape.turn.up.right" catalog="system" width="128" height="106"/>
+        <image name="eye.circle" catalog="system" width="128" height="121"/>
+        <image name="heart" catalog="system" width="128" height="109"/>
+        <image name="message" catalog="system" width="128" height="113"/>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
