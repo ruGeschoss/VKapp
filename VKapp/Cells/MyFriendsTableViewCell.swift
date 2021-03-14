@@ -41,24 +41,14 @@ class MyFriendsTableViewCell: UITableViewCell {
         })
     }
     
-    func configure(forUser: UserSJ) {
+    func configure(forUser: UserFirebase) {
         self.friendName.text = "\(forUser.firstName) \(forUser.lastName)"
+        self.friendPhoto.image = UIImage(named: "No_Image")
         
-        switch forUser.photoData {
-        case nil:
-            NetworkManager.getPhotoDataFromUrl(url: forUser.photo) { [weak self] data in
+        NetworkManager.getPhotoDataFromUrl(url: forUser.photo) { [weak self] data in
+            DispatchQueue.main.async {
                 self?.friendPhoto.image = UIImage(data: data, scale: 0.3)
-                do {
-                    let realm = try Realm()
-                    realm.beginWrite()
-                    forUser.photoData = data
-                    try realm.commitWrite()
-                } catch {
-                    print(error.localizedDescription)
-                }
             }
-        default:
-            self.friendPhoto.image = UIImage(data: forUser.photoData!, scale: 0.3)
         }
     }
     

@@ -11,4 +11,8 @@ target 'VKapp' do
   pod 'RealmSwift'
   pod 'SwiftKeychainWrapper'
 #  pod 'SDWebImage', '~> 5.0'
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Database'
 end
