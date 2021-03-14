@@ -6,7 +6,8 @@
 //
 
 import UIKit
-import RealmSwift
+import FirebaseDatabase
+import FirebaseFirestore
 
 protocol PhotoDelegate:AnyObject {
     func getPhoto(photo:String)
@@ -29,28 +30,33 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         }
     }
     
-    var usersData: Results<UserSJ>? {
-        let realm = try? Realm()
-        let users: Results<UserSJ>? = realm?.objects(UserSJ.self)
-        return users?.sorted(byKeyPath: "lastName", ascending: true)
+    //Firebase Database
+    let appUserRef = Database.database().reference(withPath: "appUsers/\(Session.shared.userId)")
+    
+    //Firebase Firestore
+    let appUserCollection = Firestore.firestore().collection("AppUsers").document(Session.shared.userId)
+    var listener: ListenerRegistration?
+    
+    var usersFirebase = [UserFirebase]()
+    var filtredUsersFirebase: [UserFirebase]? {
+        guard !searchText.isEmpty else { return usersFirebase }
+        
+        var userLastNames = usersFirebase.map { $0.lastName }
+        userLastNames = searchText.isEmpty ? userLastNames : userLastNames.filter { (lastName:String) -> Bool in
+            lastName.range(of: searchText, options: .caseInsensitive) != nil
+            }
+        
+        return usersFirebase.filter { userLastNames.contains($0.lastName) }
     }
     
-    var searchData: Results<UserSJ>? {
-        guard !searchText.isEmpty else {
-            return usersData
-        }
-        return usersData?.filter("lastName CONTAINS[cd] %@", searchText)
-    }
     
     private var searchText: String {
         friendSearch.text ?? ""
     }
     
-    var sectionTitles = [String]()
+    var sectionTitles = [String]()  //Whole tableView based on those titles
     var selectedUser = String()
     var friendListForUserId = Session.shared.userId
-    private var searchDataNotificationToken: NotificationToken?
-    private var testToken: NotificationToken?
     
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -63,75 +69,45 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        createSingleTargetToken()
-        createSearchDataNotificationToken()
+        observeFirebase()
     }
     
-    private func createSingleTargetToken() {
-        testToken = usersData?.last?.observe { change in
-            switch change {
-            case .change(let object, let properties):
-                let changes = properties.reduce("") { (res,new) in
-                    "\(res)\n\(new.name):\n\t\(String(describing: new.oldValue ?? nil)) -> \(String(describing: new.newValue ?? nil))"
+    private func observeFirebase() {
+        switch FirebaseConfig.databaseType {
+        case .database:
+            appUserRef.child("friends").observe(.value) { [weak self] (snapshot) in
+                self?.usersFirebase.removeAll()
+                guard !snapshot.children.allObjects.isEmpty else {
+                    NetworkManager.loadFriendsSJ(forUser: self?.friendListForUserId) {
+                        self?.tableView.reloadData()
+                    }
+                    return
                 }
-                let user = object as? UserSJ
-                #if DEBUG
-                print("Changed properties for user: \(user?.lastName ?? "")\n\(changes)")
-                #endif
-            case .deleted:
-                print("obj deleted")
-            case .error(let error):
-                print(error.localizedDescription)
-            }
-        }
-    }
-    
-    private func createSearchDataNotificationToken() {
-        searchDataNotificationToken = usersData?.observe { [weak self] result in
-            switch result {
-            case .initial(let usersData):
-                print("Initiated with \(usersData.count) users")
+                for child in snapshot.children {
+                    guard let child = child as? DataSnapshot,
+                          let friend = UserFirebase(snapshot: child) else { continue }
+                    self?.usersFirebase.append(friend)
+                }
+                self?.usersFirebase.sort { $0.lastName < $1.lastName }
                 self?.getSectionTitles()
                 self?.tableView.reloadData()
-                break
-            case .update(let users, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-                print("""
-                    New count \(users.count)
-                    Deletions \(deletions)
-                    Insertions \(insertions)
-                    Modifications \(modifications)
-                    """)
-                if !deletions.isEmpty || !insertions.isEmpty {
-                    self?.getSectionTitles()
-                    self?.tableView.reloadData()
+            }
+        case .firestore:
+            listener = appUserCollection.collection("Friends").addSnapshotListener { [weak self] (snapshot, error) in
+                self?.usersFirebase.removeAll()
+                guard let snapshot = snapshot, !snapshot.documents.isEmpty else {
+                    NetworkManager.loadFriendsSJ(forUser: self?.friendListForUserId) {
+                        self?.tableView.reloadData()
+                    }
+                    return
                 }
-                /*
-                 if !modifications.isEmpty {
-                 var modIndexPaths = [IndexPath]()
-                 modifications.forEach { [weak self] in
-                 let section = self?.sectionTitles.firstIndex(of: "\(self?.usersData?[$0].lastName.first ?? "-")" )
-                 let arrayForSection = self?.friendsForSectionByFirstChar(section!)
-                 let row = arrayForSection?.firstIndex(of: (self?.usersData?[$0])!)
-                 modIndexPaths.append(IndexPath(row: row!, section: section!))
-                 }
-                 self?.tableView.reloadRows(at: modIndexPaths, with: .automatic)
-                 }
-                 */
-                
-                
-                //                self?.tableView.beginUpdates()
-                //                let deletionsIndexPaths = deletions.map { IndexPath(row: $0, section: 0) }
-                //                let insertionsIndexPaths = insertions.map { IndexPath(row: $0, section: 0) }
-                //                let modificationsIndexPaths = modifications.map { IndexPath(row: $0, section: 0) }
-                //
-                //                self?.tableView.deleteRows(at: deletionsIndexPaths, with: .automatic)
-                //                self?.tableView.insertRows(at: insertionsIndexPaths, with: .automatic)
-                //                self?.tableView.reloadRows(at: modificationsIndexPaths, with: .automatic)
-                //                self?.tableView.endUpdates()
-                break
-            case .error(let error):
-                print(error.localizedDescription)
-                break
+                for doc in snapshot.documents {
+                    guard let friend = UserFirebase(dict: doc.data()) else { continue }
+                    self?.usersFirebase.append(friend)
+                }
+                self?.usersFirebase.sort { $0.lastName < $1.lastName }
+                self?.getSectionTitles()
+                self?.tableView.reloadData()
             }
         }
     }
@@ -172,8 +148,12 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     }
     //MARK: Deinit
     deinit {
-        searchDataNotificationToken?.invalidate()
-        testToken?.invalidate()
+        switch FirebaseConfig.databaseType {
+        case .database:
+            appUserRef.removeAllObservers()
+        case .firestore:
+            listener?.remove()
+        }
     }
 }
 
@@ -222,9 +202,9 @@ extension FriendListTableViewController: UITableViewDelegate {
         }
     }
     
-    func friendsForSectionByFirstChar(_ indexInTitles: Int) -> [UserSJ] {
-        var tmpArray:[UserSJ] = []
-        for each in searchData! {
+    func friendsForSectionByFirstChar(_ indexInTitles: Int) -> [UserFirebase] {
+        var tmpArray:[UserFirebase] = []
+        for each in filtredUsersFirebase! {
             if String(each.lastName.first ?? "-") == sectionTitles[indexInTitles] {
                 tmpArray.append(each)
             }
@@ -233,7 +213,7 @@ extension FriendListTableViewController: UITableViewDelegate {
     }
     func getSectionTitles() {
         sectionTitles = []
-        for each in searchData! {
+        for each in filtredUsersFirebase! {
             let charForTitle = each.lastName.first ?? "-"
             if !sectionTitles.contains(String(charForTitle)) {
                 sectionTitles.append(String(charForTitle))
@@ -249,7 +229,7 @@ extension FriendListTableViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         getSectionTitles()
-        tableView.reloadData()
+//        tableView.reloadData()
     }
     
 }

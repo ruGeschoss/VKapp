@@ -51,6 +51,11 @@
 		B7CA8CDB25BD751800CE256A /* LoadingProcessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CDA25BD751800CE256A /* LoadingProcessView.swift */; };
 		B7CA8CE225BD754300CE256A /* LoadingProcess.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7CA8CE125BD754300CE256A /* LoadingProcess.xib */; };
 		B7CA8CF225C19CB100CE256A /* FullScreenPhotoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CA8CF125C19CB100CE256A /* FullScreenPhotoVC.swift */; };
+		B7D2386925FB95A700F7EF16 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7D2386825FB95A700F7EF16 /* GoogleService-Info.plist */; };
+		B7D238A525FBCC7D00F7EF16 /* GroupFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D238A425FBCC7D00F7EF16 /* GroupFirebase.swift */; };
+		B7D238A825FBCC8D00F7EF16 /* UserFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D238A725FBCC8D00F7EF16 /* UserFirebase.swift */; };
+		B7D238AB25FD266F00F7EF16 /* ProfileFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D238AA25FD266F00F7EF16 /* ProfileFirebase.swift */; };
+		B7D238B225FD2CD000F7EF16 /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D238B125FD2CD000F7EF16 /* FirebaseConfig.swift */; };
 		B7FFEECE25D58363006959EC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7FFEECD25D58363006959EC /* WebKit.framework */; };
 		B7FFEED125DBFF8C006959EC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFEED025DBFF8C006959EC /* User.swift */; };
 		F93254088670A60AFF7D2476 /* Pods_VKapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E38BF168BE93A3F0089FA6F /* Pods_VKapp.framework */; };
@@ -106,6 +111,11 @@
 		B7CA8CDA25BD751800CE256A /* LoadingProcessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProcessView.swift; sourceTree = "<group>"; };
 		B7CA8CE125BD754300CE256A /* LoadingProcess.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingProcess.xib; sourceTree = "<group>"; };
 		B7CA8CF125C19CB100CE256A /* FullScreenPhotoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPhotoVC.swift; sourceTree = "<group>"; };
+		B7D2386825FB95A700F7EF16 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B7D238A425FBCC7D00F7EF16 /* GroupFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupFirebase.swift; sourceTree = "<group>"; };
+		B7D238A725FBCC8D00F7EF16 /* UserFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFirebase.swift; sourceTree = "<group>"; };
+		B7D238AA25FD266F00F7EF16 /* ProfileFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFirebase.swift; sourceTree = "<group>"; };
+		B7D238B125FD2CD000F7EF16 /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
 		B7FFEECD25D58363006959EC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B7FFEED025DBFF8C006959EC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -204,6 +214,7 @@
 				B76069DB25920427005E1F03 /* Main.storyboard */,
 				B76069E025920427005E1F03 /* LaunchScreen.storyboard */,
 				B76069DE25920427005E1F03 /* Assets.xcassets */,
+				B7D2386825FB95A700F7EF16 /* GoogleService-Info.plist */,
 				B76069E325920427005E1F03 /* Info.plist */,
 			);
 			path = VKapp;
@@ -215,6 +226,7 @@
 				B768A06425D01E02005C069E /* Session.swift */,
 				B768A07625D5412E005C069E /* NetworkManager.swift */,
 				B79B16E425F79B39001DA787 /* RealmManager.swift */,
+				B7D238B125FD2CD000F7EF16 /* FirebaseConfig.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -252,6 +264,9 @@
 				B79B16C925DEFF91001DA787 /* Photos.swift */,
 				B79B16CD25DF280F001DA787 /* Profile.swift */,
 				B79B16D025DFE644001DA787 /* Group.swift */,
+				B7D238A425FBCC7D00F7EF16 /* GroupFirebase.swift */,
+				B7D238A725FBCC8D00F7EF16 /* UserFirebase.swift */,
+				B7D238AA25FD266F00F7EF16 /* ProfileFirebase.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -377,6 +392,7 @@
 			files = (
 				B7CA8CD625BAB2FB00CE256A /* NewsCell.xib in Resources */,
 				B76069E225920427005E1F03 /* LaunchScreen.storyboard in Resources */,
+				B7D2386925FB95A700F7EF16 /* GoogleService-Info.plist in Resources */,
 				B7CA8CAF25B863D300CE256A /* FooterCRV.xib in Resources */,
 				B768A06025CC65E2005C069E /* SinglePhotoCVC.xib in Resources */,
 				B76069DF25920427005E1F03 /* Assets.xcassets in Resources */,
@@ -437,6 +453,7 @@
 			files = (
 				B768A07025D03500005C069E /* CatLoadingView.swift in Sources */,
 				B7CA8CF225C19CB100CE256A /* FullScreenPhotoVC.swift in Sources */,
+				B7D238AB25FD266F00F7EF16 /* ProfileFirebase.swift in Sources */,
 				B769DBED25C96DA800E0E864 /* PushCustomNC.swift in Sources */,
 				B76069D625920427005E1F03 /* AppDelegate.swift in Sources */,
 				B79B16E525F79B3A001DA787 /* RealmManager.swift in Sources */,
@@ -452,6 +469,7 @@
 				B7FFEED125DBFF8C006959EC /* User.swift in Sources */,
 				B779556C259A62DB006E07B1 /* MyGroupsTableViewController.swift in Sources */,
 				B768A04E25CC19B4005C069E /* AppExtensions.swift in Sources */,
+				B7D238B225FD2CD000F7EF16 /* FirebaseConfig.swift in Sources */,
 				B7CA8CA625B8573200CE256A /* HeaderCRV.swift in Sources */,
 				B768A07725D5412E005C069E /* NetworkManager.swift in Sources */,
 				B7795564259A45A2006E07B1 /* AllGroupsTableViewController.swift in Sources */,
@@ -467,6 +485,8 @@
 				B7CA8CD025BA07DF00CE256A /* NewsCVCell.swift in Sources */,
 				B79B16CA25DEFF91001DA787 /* Photos.swift in Sources */,
 				B751CBD725A3A7B300919820 /* CustomImage.swift in Sources */,
+				B7D238A825FBCC8D00F7EF16 /* UserFirebase.swift in Sources */,
+				B7D238A525FBCC7D00F7EF16 /* GroupFirebase.swift in Sources */,
 				B779555D25950546006E07B1 /* RegistrationVC.swift in Sources */,
 				B7795568259A45D0006E07B1 /* AllGroupsTableViewCell.swift in Sources */,
 				B779558D259B5027006E07B1 /* MyFriendsTableViewCell.swift in Sources */,

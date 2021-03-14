@@ -69,18 +69,13 @@ extension WKViewController: WKNavigationDelegate {
               let userIdString = params["user_id"],
               let _ = Int(userIdString) else {
             decisionHandler(.allow)
+            dismiss(animated: true)
             return
         }
         
         Session.shared.token = token
         Session.shared.userId = userIdString
-    
         NetworkManager.getProfileDataSJ()
-        
-//        NetworkManager.loadGroups()
-//        NetworkManager.loadFriends() // works fine
-//        NetworkManager.loadPhotos(count: 5) // works fine
-//        NetworkManager.searchGroup(searchText: "help") // works fine
         
         decisionHandler(.cancel)
         

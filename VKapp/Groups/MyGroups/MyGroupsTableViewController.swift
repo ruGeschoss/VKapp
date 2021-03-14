@@ -6,23 +6,59 @@
 //
 
 import UIKit
-import RealmSwift
+import FirebaseDatabase
+import FirebaseFirestore
 
 class MyGroupsTableViewController: UITableViewController {
 
-    var groups: Results<Group>? {
-        let realm = try? Realm()
-        let groups = realm?.objects(Group.self).filter("forUserId == %@", groupListForUserId)
-        return groups
-    }
+    var groups = [GroupFirebase]()
     var groupListForUserId = Session.shared.userId
-    private var groupsNotificationToken: NotificationToken?
+    
+    //Firebase Database
+    let appUserRef = Database.database().reference(withPath: "appUsers/\(Session.shared.userId)")
+    
+    //Firebase Firestore
+    let appUserCollection = Firestore.firestore().collection("AppUsers").document(Session.shared.userId)
+    var listener: ListenerRegistration?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.refreshControl = refresher
         
-        createGroupsNotificationToken()
+        switch FirebaseConfig.databaseType {
+        case .database:
+            appUserRef.child("groups").observe(.value) { [weak self] (snapshot) in
+                self?.groups.removeAll()
+                guard !snapshot.children.allObjects.isEmpty else {
+                    NetworkManager.loadGroupsSJ(forUserId: self?.groupListForUserId) {
+                        self?.tableView.reloadData()
+                    }
+                    return
+                }
+                for child in snapshot.children {
+                    guard let child = child as? DataSnapshot,
+                          let group = GroupFirebase(snapshot: child) else { continue }
+                    self?.groups.append(group)
+                }
+                self?.tableView.reloadData()
+            }
+        case .firestore:
+            listener = appUserCollection.collection("Groups").addSnapshotListener { [weak self] (snapshot, error) in
+                self?.groups.removeAll()
+                guard let snapshot = snapshot,
+                      !snapshot.documents.isEmpty else {
+                    NetworkManager.loadGroupsSJ(forUserId: self?.groupListForUserId) {
+                        self?.tableView.reloadData()
+                    }
+                    return
+                }
+                for doc in snapshot.documents {
+                    guard let group = GroupFirebase(dict: doc.data()) else { continue }
+                    self?.groups.append(group)
+                }
+                self?.tableView.reloadData()
+            }
+        }
     }
     
     private lazy var refresher: UIRefreshControl = {
@@ -33,39 +69,13 @@ class MyGroupsTableViewController: UITableViewController {
         return refreshControl
     }()
     
-    private func createGroupsNotificationToken() {
-        groupsNotificationToken = groups?.observe { [weak self] result in
-            switch result {
-            case .initial(let groupsData):
-                print("Initiated with \(groupsData.count) users")
-                self?.tableView.reloadData()
-                break
-            case .update(let groups, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-                print("""
-                    New count \(groups.count)
-                    Deletions \(deletions)
-                    Insertions \(insertions)
-                    Modifications \(modifications)
-                    """)
-                self?.tableView.beginUpdates()
-                let deletionsIndexPaths = deletions.map { IndexPath(row: $0, section: 0) }
-                let insertionsIndexPaths = insertions.map { IndexPath(row: $0, section: 0) }
-                let modificationsIndexPaths = modifications.map { IndexPath(row: $0, section: 0) }
-                
-                self?.tableView.deleteRows(at: deletionsIndexPaths, with: .automatic)
-                self?.tableView.insertRows(at: insertionsIndexPaths, with: .automatic)
-                self?.tableView.reloadRows(at: modificationsIndexPaths, with: .automatic)
-                self?.tableView.endUpdates()
-                break
-            case .error(let error):
-                print(error.localizedDescription)
-                break
-            }
-        }
-    }
-    
     deinit {
-        groupsNotificationToken?.invalidate()
+        switch FirebaseConfig.databaseType {
+        case .database:
+            appUserRef.removeAllObservers()
+        case .firestore:
+            listener?.remove()
+        }
     }
     
     @objc private func refresh(_ sender: UIRefreshControl) {
@@ -80,16 +90,41 @@ class MyGroupsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groups?.count ?? 0
+        return groups.count
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as? MyGroupsTableViewCell {
-            cell.configure(forGroup: groups![indexPath.row])
+            cell.configure(forGroup: groups[indexPath.row])
+            cell.delegate = self
             return cell
         }
         
         return UITableViewCell()
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            switch FirebaseConfig.databaseType {
+            case .database:
+                let group = groups[indexPath.row]
+                group.ref?.removeValue { [weak self] (error, ref) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        self?.tableView.reloadData()
+                    }
+                }
+            case .firestore:
+                appUserCollection.collection("Groups").document(groups[indexPath.row].groupId).delete { [weak self] (error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        self?.tableView.reloadData()
+                    }
+                }
+            }
+        }
     }
 
     //MARK: Add group
@@ -139,4 +174,60 @@ class MyGroupsTableViewController: UITableViewController {
     }
     */
 
+}
+
+//MARK: Cell delegate
+extension MyGroupsTableViewController: EditCellName {
+    
+    func editNameAlert(_ group: GroupFirebase) {
+        let alert = UIAlertController(title: "Редактирование группы",
+                                      message: "Введите новое название для группы",
+                                      preferredStyle: .alert)
+        alert.addTextField { (groupTextField) in
+            groupTextField.placeholder = "Название группы"
+            groupTextField.text = group.groupName
+        }
+        
+        let saveAction = UIAlertAction(title: "Сохранить", style: .default) { _ in
+            guard let newName = alert.textFields?[0].text,
+                  newName != group.groupName else { return }
+            
+            let modifiedGroup = group
+            modifiedGroup.groupName = newName
+            
+            switch FirebaseConfig.databaseType {
+            case .database:
+                self.appUserRef.child("groups")
+                    .child(group.groupId)
+                    .setValue(modifiedGroup.toAnyObj()) { [weak self] (error, _) in
+                        
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        self?.tableView.reloadData()
+                    }
+                }
+            case .firestore:
+                self.appUserCollection.collection("Groups")
+                    .document(group.groupId)
+                    .setData(modifiedGroup.toAnyObj()) { [weak self] (error) in
+                        
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        self?.tableView.reloadData()
+                    }
+                }
+            }
+        }
+
+        let cancelAction = UIAlertAction(title: "Отмена", style: .default) { _ in
+            alert.dismiss(animated: true)
+        }
+        
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
 }
