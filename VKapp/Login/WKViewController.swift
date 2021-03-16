@@ -69,6 +69,7 @@ extension WKViewController: WKNavigationDelegate {
               let userIdString = params["user_id"],
               let _ = Int(userIdString) else {
             decisionHandler(.allow)
+            dismiss(animated: true)
             return
         }
         

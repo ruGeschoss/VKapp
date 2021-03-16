@@ -37,7 +37,7 @@ class MyGroupsTableViewController: UITableViewController {
         groupsNotificationToken = groups?.observe { [weak self] result in
             switch result {
             case .initial(let groupsData):
-                print("Initiated with \(groupsData.count) users")
+                print("Initiated with \(groupsData.count) groups")
                 self?.tableView.reloadData()
                 break
             case .update(let groups, deletions: let deletions, insertions: let insertions, modifications: let modifications):

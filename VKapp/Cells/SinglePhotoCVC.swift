@@ -11,7 +11,7 @@ class SinglePhotoCVC: UICollectionViewCell {
     
     @IBOutlet weak var photoImageView: UIImageView!
     
-    static let nib = UINib(nibName: "SinglePhotoCVC", bundle: nil)
+    static let nib = UINib(nibName: "SinglePhotoCVCell", bundle: nil)
     static let identifier = "singlePhotoCell"
     
     var photo : String? {

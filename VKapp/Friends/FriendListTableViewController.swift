@@ -31,7 +31,7 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     
     var usersData: Results<UserSJ>? {
         let realm = try? Realm()
-        let users: Results<UserSJ>? = realm?.objects(UserSJ.self)
+        let users: Results<UserSJ>? = realm?.objects(UserSJ.self).filter("forUser CONTAINS %@", Session.shared.userId)
         return users?.sorted(byKeyPath: "lastName", ascending: true)
     }
     
