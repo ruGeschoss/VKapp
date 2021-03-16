@@ -18,9 +18,6 @@ class WKViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        NetworkManager.shared.advancedRequest(city: "Kaliningrad")
-//        NetworkManager.shared.sendPostRequest()
-//        NetworkManager.shared.alamofireRequest(city: "Kaliningrad")
         
         var components = URLComponents()
         components.scheme = "https"
@@ -77,11 +74,6 @@ extension WKViewController: WKNavigationDelegate {
         Session.shared.userId = userIdString
     
         NetworkManager.getProfileDataSJ()
-        
-//        NetworkManager.loadGroups()
-//        NetworkManager.loadFriends() // works fine
-//        NetworkManager.loadPhotos(count: 5) // works fine
-//        NetworkManager.searchGroup(searchText: "help") // works fine
         
         decisionHandler(.cancel)
         

@@ -19,6 +19,8 @@ class LoginVC: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var loadingStatus: UIView!
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var loginWithVKButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     
     var shouldAutoLogin = true
     
@@ -35,16 +37,7 @@ class LoginVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide (notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//      MARK:-  Three dots at top
-//        let loadingAnim = Bundle.main.loadNibNamed("LoadingProcess", owner: nil, options: nil)?.first as! LoadingProcessView
-//        loadingAnim.frame = CGRect(x: 0, y: 0, width: 120, height: 40)
-//        self.loadingStatus.addSubview(loadingAnim)
-//        loadingAnim.animate()
-    }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -146,15 +139,19 @@ class LoginVC: UIViewController {
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.05, animations: {
                 // duration 0.2 sec
                 self.stackView.alpha = 0
+                self.signUpButton.alpha = 0
+                self.loginWithVKButton.alpha = 0
             })
             UIView.addKeyframe(withRelativeStartTime: 0.05, relativeDuration: 0.1, animations: {
                 // duration 0.4 sec
                 anim.alpha = 1
             })
         }, completion: { _ in
-            self.performSegue(withIdentifier: "login_success", sender: self)
             self.stackView.alpha = 1
+            self.signUpButton.alpha = 1
+            self.loginWithVKButton.alpha = 1
             anim.removeFromSuperview()
+            self.performSegue(withIdentifier: "login_success", sender: self)
         })
     }
     private func removeCookie() {
@@ -205,13 +202,5 @@ class LoginVC: UIViewController {
     }
     
     @IBAction func signUpButton(_ sender: UIButton) {}
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 }

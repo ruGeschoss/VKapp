@@ -14,7 +14,7 @@ class GradientView: UIView {
             self.updateColors()
         }
     }
-    @IBInspectable var endColor: UIColor = .black {
+    @IBInspectable var endColor: UIColor = .systemPink {
         didSet {
             self.updateColors()
         }
@@ -29,12 +29,12 @@ class GradientView: UIView {
             self.updateLocations()
         }
     }
-    @IBInspectable var startPoint:CGPoint = .zero {
+    @IBInspectable var startPoint: CGPoint = CGPoint(x: 0, y: 1) {
         didSet {
             self.updateStartPoint()
         }
     }
-    @IBInspectable var endPoint:CGPoint = CGPoint (x: 0, y: 1) {
+    @IBInspectable var endPoint: CGPoint = CGPoint (x: 1, y: 0) {
         didSet {
             self.updateEndPoint()
         }
@@ -50,12 +50,15 @@ class GradientView: UIView {
     func updateLocations() {
         self.gradientLayer.locations = [self.startLocation as NSNumber, self.endLocation as NSNumber]
     }
+    
     func updateColors() {
         self.gradientLayer.colors = [self.startColor.cgColor, self.endColor.cgColor]
     }
+    
     func updateStartPoint() {
         self.gradientLayer.startPoint = startPoint
     }
+    
     func updateEndPoint() {
         self.gradientLayer.endPoint = endPoint
     }

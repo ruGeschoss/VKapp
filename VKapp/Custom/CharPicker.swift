@@ -11,7 +11,7 @@ import Foundation
 class CharPicker: UIControl {
 
     var maximumChars = 15
-    var chars:[String] = [] {
+    var chars: [String] = [] {
         didSet {
             if chars.count > maximumChars {
                 let step = Float((chars.count * 100) / maximumChars)
@@ -28,10 +28,11 @@ class CharPicker: UIControl {
             }
         }
     }
-    private var buttons:[UIButton] = []
-    private var stackView:UIStackView!
     
-    var selectedChar:String? = nil {
+    private var buttons: [UIButton] = []
+    private var stackView: UIStackView!
+    
+    var selectedChar: String? = nil {
         didSet {
             updateSelectedChar()
             sendActions(for: .valueChanged)
@@ -64,11 +65,13 @@ class CharPicker: UIControl {
         }
         
         stackView = UIStackView(arrangedSubviews: buttons)
-        addSubview(stackView)
+        stackView.frame = self.bounds
         stackView.axis = .vertical
         stackView.spacing = 5
         stackView.alignment = .center
         stackView.distribution = .fillEqually
+        
+        addSubview(stackView)
     }
     
     @objc func selectChar(_ sender: UIButton) {
@@ -79,7 +82,6 @@ class CharPicker: UIControl {
     
     private func updateSelectedChar() {
         for (index, button) in buttons.enumerated() {
-//            guard let char = chars[index] else { return }
             let char: String = chars[index]
             button.isSelected = char == selectedChar
         }
@@ -90,14 +92,6 @@ class CharPicker: UIControl {
         stackView.frame = bounds
     }
     
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
 }
 
 extension UIStackView {
