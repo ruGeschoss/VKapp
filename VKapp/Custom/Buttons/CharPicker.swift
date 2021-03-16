@@ -16,20 +16,22 @@ class CharPicker: UIControl {
             if chars.count > maximumChars {
                 let step = Float((chars.count * 100) / maximumChars)
                 let roundedStep = (step / 100).rounded(.awayFromZero)
-                var tmpArr:[String] = []
+                var tmpArr: [String] = []
                 for (index, char) in chars.enumerated() {
                     if index % Int(roundedStep) == 0 {
                         tmpArr.append(char)
                     }
                 }
+                
                 self.chars = tmpArr
                 setupUI()
+                
                 return
             }
         }
     }
     
-    private var buttons: [UIButton] = []
+    var buttons: [UIButton] = []
     private var stackView: UIStackView!
     
     var selectedChar: String? = nil {
@@ -56,6 +58,7 @@ class CharPicker: UIControl {
             button.setTitle(char, for: .normal)
             button.setTitleColor(.systemPink, for: .normal)
             button.setTitleColor(.systemYellow, for: .selected)
+            button.tintColor = UIColor.systemPink
             button.addTarget(self, action: #selector(selectChar), for: .touchUpInside)
             buttons.append(button)
         }
@@ -78,6 +81,7 @@ class CharPicker: UIControl {
         guard let index = buttons.firstIndex(of: sender) else { return }
         let char: String = chars[index]
         selectedChar = char
+        sender.isSelected = false
     }
     
     private func updateSelectedChar() {

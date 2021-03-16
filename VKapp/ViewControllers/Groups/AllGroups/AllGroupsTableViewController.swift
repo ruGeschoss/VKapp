@@ -52,6 +52,7 @@ class AllGroupsTableViewController: UITableViewController {
         return UITableViewCell()
     }
 }
+
 extension AllGroupsTableViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -68,6 +69,10 @@ extension AllGroupsTableViewController: UISearchBarDelegate {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.searchGroups.endEditing(true)
     }
     
 }

@@ -36,10 +36,12 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     }
     
     var searchData: Results<UserSJ>? {
-        guard !searchText.isEmpty else {
-            return usersData
-        }
-        return usersData?.filter("lastName CONTAINS[cd] %@", searchText)
+        guard !searchText.isEmpty else { return usersData }
+        
+        let lastNamePredicate = NSPredicate(format: "lastName CONTAINS[cd] %@", searchText)
+        let firstNamePredicate = NSPredicate(format: "firstName CONTAINS[cd] %@", searchText)
+        let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [firstNamePredicate, lastNamePredicate])
+        return usersData?.filter(predicate)
     }
     
     private var searchText: String {
@@ -67,6 +69,7 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         createSearchDataNotificationToken()
     }
     
+    // MARK: Notification Tokens
     private func createSingleTargetToken() {
         testToken = usersData?.last?.observe { change in
             switch change {
@@ -94,7 +97,10 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
                 self?.getSectionTitles()
                 self?.tableView.reloadData()
                 break
-            case .update(let users, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+            case .update(let users,
+                         deletions: let deletions,
+                         insertions: let insertions,
+                         modifications: let modifications):
                 print("""
                     New count \(users.count)
                     Deletions \(deletions)
@@ -156,25 +162,40 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         for (index,section) in sectionTitles.enumerated() {
             if selectedChar == section {
                 indexPath = IndexPath(item: 0, section: index)
+                break
             }
         }
+        
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
     
     @IBAction func didMakePan(_ sender: UIPanGestureRecognizer) {
+        view.endEditing(true)
+        
         let location = sender.location(in: charPicker)
-        let coeff = Int(charPicker.frame.height) /  sectionTitles.count
+        let coeff = Int(charPicker.frame.height) /  charPicker.chars.count
         let letterIndex = Int(location.y) / coeff
         
-        if letterIndex < sectionTitles.count && letterIndex >= 0 {
-            charPicker.selectedChar = sectionTitles[letterIndex]
+        if letterIndex < charPicker.chars.count && letterIndex >= 0 {
+            charPicker.selectedChar = charPicker.chars[letterIndex]
+        }
+        
+        switch sender.state {
+        case .cancelled, .ended, .failed:
+            charPicker.buttons
+                .filter { $0.isSelected == true }
+                .forEach { $0.isSelected = false }
+        default:
+            break
         }
     }
+    
     //MARK: Deinit
     deinit {
         searchDataNotificationToken?.invalidate()
         testToken?.invalidate()
     }
+    
 }
 
 //MARK: TableViewDelegate
@@ -222,6 +243,10 @@ extension FriendListTableViewController: UITableViewDelegate {
         }
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
+    }
+    
     func friendsForSectionByFirstChar(_ indexInTitles: Int) -> [UserSJ] {
         var tmpArray:[UserSJ] = []
         for each in searchData! {
@@ -231,14 +256,17 @@ extension FriendListTableViewController: UITableViewDelegate {
         }
         return tmpArray
     }
+    
     func getSectionTitles() {
         sectionTitles = []
+        
         for each in searchData! {
             let charForTitle = each.lastName.first ?? "-"
             if !sectionTitles.contains(String(charForTitle)) {
                 sectionTitles.append(String(charForTitle))
             }
         }
+        
         charPicker.chars = sectionTitles
         charPicker.setupUI()
     }
@@ -250,6 +278,18 @@ extension FriendListTableViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         getSectionTitles()
         tableView.reloadData()
+        
+        //Hiding charpicker if navigation not needed
+        guard let count = searchData?.count,
+              count > tableView.visibleCells.count else {
+            charPicker.isUserInteractionEnabled = false
+            charPicker.isHidden = true
+            
+            return
+        }
+        
+        charPicker.isUserInteractionEnabled = true
+        charPicker.isHidden = false
     }
     
 }
