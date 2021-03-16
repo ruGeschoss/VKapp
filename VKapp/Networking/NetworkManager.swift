@@ -31,6 +31,7 @@ class NetworkManager {
     static func saveUsersDataToRealm(_ users: [UserSJ], forUser: String) {
             do {
                 let realm = try Realm()
+                print(realm.configuration.fileURL ?? "")
                 realm.beginWrite()
                 realm.add(users, update: .modified)
                 try realm.commitWrite()
@@ -64,7 +65,6 @@ class NetworkManager {
     static func saveProfileDataToRealm(_ profile: ProfileSJ) {
             do { 
                 let realm = try Realm()
-                print(realm.configuration.fileURL ?? "")
                 realm.beginWrite()
                 realm.add(profile, update: .modified)
                 try realm.commitWrite()
@@ -143,7 +143,9 @@ class NetworkManager {
             case .success(let data):
                 let json = JSON(data)
                 let response = json["response"]["items"].arrayValue
-                let friends = response.map { UserSJ(from: $0) }
+                let friends = response
+                    .map { UserSJ(from: $0) }
+                    .filter { $0.lastName != "" }
                 friends.forEach { $0.forUser = target }
                 self.saveUsersDataToRealm(friends, forUser: target)
                 completion()

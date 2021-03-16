@@ -338,7 +338,7 @@
         <!--Группы-->
         <scene sceneID="OB3-NW-P4h">
             <objects>
-                <tableViewController modalPresentationStyle="fullScreen" id="li4-cW-gn9" customClass="MyGroupsTableViewController" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MyGroupsTableViewController" modalPresentationStyle="fullScreen" id="li4-cW-gn9" customClass="MyGroupsTableViewController" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Epg-Ys-pBu">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -426,7 +426,7 @@
         <!--Найти группы-->
         <scene sceneID="Z8m-ER-zEb">
             <objects>
-                <tableViewController modalPresentationStyle="fullScreen" id="woY-4n-Ax4" customClass="AllGroupsTableViewController" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AllGroupsTableViewController" modalPresentationStyle="fullScreen" id="woY-4n-Ax4" customClass="AllGroupsTableViewController" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="wf5-qM-JmJ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -511,7 +511,7 @@
         <!--Фотографии-->
         <scene sceneID="gBQ-S5-SPz">
             <objects>
-                <collectionViewController modalPresentationStyle="fullScreen" id="YVH-CT-gaD" customClass="FriendPhotoCollectionViewController" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="FriendPhotoCollectionViewController" modalPresentationStyle="fullScreen" id="YVH-CT-gaD" customClass="FriendPhotoCollectionViewController" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="qAm-8b-3Oq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -586,7 +586,7 @@
         <!--Full Screen PhotoVC-->
         <scene sceneID="d2k-OL-vof">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="8gb-UZ-bAL" customClass="FullScreenPhotoVC" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FullScreenPhotoVC" modalPresentationStyle="fullScreen" id="8gb-UZ-bAL" customClass="FullScreenPhotoVC" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KYX-8p-gsL" customClass="GradientView" customModule="VKapp" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -699,7 +699,7 @@
         <!--Новости-->
         <scene sceneID="jfM-BR-I0e">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="W4I-Ii-oaC" customClass="NewsVC" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NewsVC" modalPresentationStyle="fullScreen" id="W4I-Ii-oaC" customClass="NewsVC" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NdF-gi-v6I">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

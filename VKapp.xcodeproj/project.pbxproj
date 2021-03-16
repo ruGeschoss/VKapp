@@ -140,16 +140,12 @@
 		B751CBE425A4634D00919820 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				B78FFB212601224E00C8CF7B /* View */,
+				B78FFB202601222600C8CF7B /* BezierPathView */,
+				B78FFB1F260121FC00C8CF7B /* Buttons */,
 				B769DBE825C96D3500E0E864 /* NavigatonController */,
-				B7CA8CAC25B863D300CE256A /* FooterCRV.swift */,
-				B7CA8CA425B8573200CE256A /* HeaderCRV.swift */,
-				B751CBE125A44A6F00919820 /* LikeButtonUIButton.swift */,
-				B751CBD625A3A7B300919820 /* CustomImage.swift */,
-				B751CBB225A32C2000919820 /* GradientView.swift */,
-				B751CBF425B46F8B00919820 /* CharPicker.swift */,
 				B769DBF225C9AC6C00E0E864 /* InteractiveTransition.swift */,
 				B768A04D25CC19B4005C069E /* AppExtensions.swift */,
-				B768A06F25D03500005C069E /* CatLoadingView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -188,12 +184,9 @@
 				B768A06325D01DEF005C069E /* Networking */,
 				B7CA8CE625BDBDF900CE256A /* Cells */,
 				B7CA8CD925BD74EE00CE256A /* XIB */,
-				B7CA8CAB25B8635200CE256A /* News */,
-				B751CBE525A4636700919820 /* Login */,
 				B751CBE425A4634D00919820 /* Custom */,
-				B7795588259B4FE8006E07B1 /* Friends */,
-				B779557A259A7190006E07B1 /* Groups */,
 				B7795571259A6C85006E07B1 /* Model */,
+				B78FFB1E260121AF00C8CF7B /* ViewControllers */,
 				B76069D525920427005E1F03 /* AppDelegate.swift */,
 				B76069D725920427005E1F03 /* SceneDelegate.swift */,
 				B76069DB25920427005E1F03 /* Main.storyboard */,
@@ -276,6 +269,45 @@
 				B7795589259B500B006E07B1 /* FriendListTableViewController.swift */,
 			);
 			path = Friends;
+			sourceTree = "<group>";
+		};
+		B78FFB1E260121AF00C8CF7B /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B751CBE525A4636700919820 /* Login */,
+				B7CA8CAB25B8635200CE256A /* News */,
+				B7795588259B4FE8006E07B1 /* Friends */,
+				B779557A259A7190006E07B1 /* Groups */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		B78FFB1F260121FC00C8CF7B /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				B751CBF425B46F8B00919820 /* CharPicker.swift */,
+				B751CBE125A44A6F00919820 /* LikeButtonUIButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		B78FFB202601222600C8CF7B /* BezierPathView */ = {
+			isa = PBXGroup;
+			children = (
+				B768A06F25D03500005C069E /* CatLoadingView.swift */,
+			);
+			path = BezierPathView;
+			sourceTree = "<group>";
+		};
+		B78FFB212601224E00C8CF7B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B751CBB225A32C2000919820 /* GradientView.swift */,
+				B751CBD625A3A7B300919820 /* CustomImage.swift */,
+				B7CA8CA425B8573200CE256A /* HeaderCRV.swift */,
+				B7CA8CAC25B863D300CE256A /* FooterCRV.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		B7CA8CAB25B8635200CE256A /* News */ = {
