@@ -10,35 +10,35 @@ import SwiftyJSON
 import RealmSwift
 
 class UserSJ: Object, Decodable {
-    @objc dynamic var id: String = ""
-    @objc dynamic var firstName: String = ""
-    @objc dynamic var lastName: String = ""
-    @objc dynamic var photo: String = ""
-    @objc dynamic var photoData: Data? = nil
-    @objc dynamic var forUser: String = ""
+  @objc dynamic var id: String = ""
+  @objc dynamic var firstName: String = ""
+  @objc dynamic var lastName: String = ""
+  @objc dynamic var photo: String = ""
+  @objc dynamic var photoData: Data? = nil
+  @objc dynamic var forUser: String = ""
+  
+  convenience init(from json: JSON) {
+    self.init()
     
-    convenience init(from json: JSON) {
-        self.init()
-        
-        let userId = json["id"].stringValue
-        self.id = userId
-        
-        let firstName = json["first_name"].stringValue
-        self.firstName = firstName
-        
-        let lastName = json["last_name"].stringValue
-        self.lastName = lastName
-        
-        let photo = json["photo_50"].stringValue
-        self.photo = photo
-        
-        self.forUser = forUser
-    }
+    let userId = json["id"].stringValue
+    self.id = userId
     
-    override static func primaryKey() -> String? {
-        "id"
-    }
+    let firstName = json["first_name"].stringValue
+    self.firstName = firstName
     
+    let lastName = json["last_name"].stringValue
+    self.lastName = lastName
+    
+    let photo = json["photo_50"].stringValue
+    self.photo = photo
+    
+    self.forUser = forUser
+  }
+  
+  override static func primaryKey() -> String? {
+    "id"
+  }
+  
 }
 
 //struct VKResponseAllFriends: Codable {

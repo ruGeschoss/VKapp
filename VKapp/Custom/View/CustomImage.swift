@@ -22,11 +22,13 @@ class ShadowImage: UIImageView {
             setNeedsDisplay()
         }
     }
+  
     @IBInspectable var shadowOpacity:Float = 0.6 {
         didSet {
             setNeedsDisplay()
         }
     }
+  
     @IBInspectable var shadowColor:UIColor = .red {
         didSet {
             setNeedsDisplay()

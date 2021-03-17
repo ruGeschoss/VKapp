@@ -10,31 +10,31 @@ import SwiftyJSON
 import RealmSwift
 
 class ProfileSJ: Object, Decodable {
-    @objc dynamic var id: String = ""
-    @objc dynamic var firstName: String = ""
-    @objc dynamic var lastName: String = ""
-    @objc dynamic var city: String? = ""
+  @objc dynamic var id: String = ""
+  @objc dynamic var firstName: String = ""
+  @objc dynamic var lastName: String = ""
+  @objc dynamic var city: String? = ""
+  
+  
+  convenience init(from json: JSON) {
+    self.init()
     
+    let id = json["id"].stringValue
+    self.id = id
     
-    convenience init(from json: JSON) {
-        self.init()
-        
-        let id = json["id"].stringValue
-        self.id = id
-        
-        let firstName = json["first_name"].stringValue
-        self.firstName = firstName
-        
-        let lastName = json["last_name"].stringValue
-        self.lastName = lastName
-        
-        let city = json["home_town"].stringValue
-        self.city = city
-    }
+    let firstName = json["first_name"].stringValue
+    self.firstName = firstName
     
-    override static func primaryKey() -> String? {
-        "id"
-    }
+    let lastName = json["last_name"].stringValue
+    self.lastName = lastName
+    
+    let city = json["home_town"].stringValue
+    self.city = city
+  }
+  
+  override static func primaryKey() -> String? {
+    "id"
+  }
 }
 
 //struct Profile: Codable {

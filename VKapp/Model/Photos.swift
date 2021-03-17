@@ -10,32 +10,32 @@ import SwiftyJSON
 import RealmSwift
 
 class Photos: Object, Decodable {
-    @objc dynamic var photoId: String = ""
-    @objc dynamic var datePosted: Int = 0
-    @objc dynamic var ownerId: String = ""
-//    var imageUrl: [String] = []
-    var imageUrl = List<String>()
+  @objc dynamic var photoId: String = ""
+  @objc dynamic var datePosted: Int = 0
+  @objc dynamic var ownerId: String = ""
+  //    var imageUrl: [String] = []
+  var imageUrl = List<String>()
+  
+  convenience init(from json: JSON) {
+    self.init()
     
-    convenience init(from json: JSON) {
-        self.init()
-        
-        let photoId = json["id"].stringValue
-        self.photoId = photoId
-        
-        let datePosted = json["date"].intValue
-        self.datePosted = datePosted
-        
-        let imageSizes = json["sizes"].arrayValue
-//        self.imageUrl = imageSizes.map { $0["url"].stringValue }
-        let tmpArray = imageSizes.map { $0["url"].stringValue }
-        tmpArray.forEach({ self.imageUrl.append($0) })
-        
-        self.ownerId = ownerId
-    }
+    let photoId = json["id"].stringValue
+    self.photoId = photoId
     
-    override static func primaryKey() -> String? {
-        "photoId"
-    }
+    let datePosted = json["date"].intValue
+    self.datePosted = datePosted
+    
+    let imageSizes = json["sizes"].arrayValue
+    //        self.imageUrl = imageSizes.map { $0["url"].stringValue }
+    let tmpArray = imageSizes.map { $0["url"].stringValue }
+    tmpArray.forEach({ self.imageUrl.append($0) })
+    
+    self.ownerId = ownerId
+  }
+  
+  override static func primaryKey() -> String? {
+    "photoId"
+  }
 }
 
 //struct VKResponseAllPhotos: Codable {
