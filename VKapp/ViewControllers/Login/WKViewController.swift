@@ -40,7 +40,9 @@ class WKViewController: UIViewController {
 
 extension WKViewController: WKNavigationDelegate {
   
-  func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+  func webView(_ webView: WKWebView,
+               decidePolicyFor navigationResponse: WKNavigationResponse,
+               decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
     guard let url = navigationResponse.response.url,
           url.path == "/blank.html",
           let fragment = url.fragment else {
@@ -64,7 +66,7 @@ extension WKViewController: WKNavigationDelegate {
     
     guard let token = params["access_token"],
           let userIdString = params["user_id"],
-          let _ = Int(userIdString) else {
+          Int(userIdString) != nil else {
       decisionHandler(.allow)
       dismiss(animated: true)
       return
@@ -79,9 +81,9 @@ extension WKViewController: WKNavigationDelegate {
     
     guard Session.shared.token != "" else { return }
     
-    if let vc = self.presentingViewController as? LoginVC {
+    if let loginVC = self.presentingViewController as? LoginVC {
       dismiss(animated: true) {
-        vc.nextScreenAnim()
+        loginVC.nextScreenAnim()
       }
     }
   }

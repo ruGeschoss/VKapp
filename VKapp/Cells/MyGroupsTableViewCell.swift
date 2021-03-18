@@ -22,7 +22,8 @@ class MyGroupsTableViewCell: UITableViewCell {
     
     switch forGroup.groupAvatarData.first {
     case nil:
-      NetworkManager.getPhotoDataFromUrl(url: forGroup.groupAvatarSizes[0] ,completion: { [weak self] data in
+      NetworkManager.getPhotoDataFromUrl(url: forGroup.groupAvatarSizes[0],
+                                         completion: { [weak self] data in
         self?.myGroupPhoto.image = UIImage(data: data, scale: 0.3)
         
         do {

@@ -28,7 +28,8 @@ class MyGroupsTableViewController: UITableViewController {
   private lazy var refresher: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
     refreshControl.tintColor = .systemGray
-    refreshControl.attributedTitle = NSAttributedString(string: "Обновление...", attributes: [.font: UIFont.systemFont(ofSize: 10)])
+    refreshControl.attributedTitle = NSAttributedString(string: "Обновление...",
+                                                        attributes: [.font: UIFont.systemFont(ofSize: 10)])
     refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
     return refreshControl
   }()
@@ -39,14 +40,16 @@ class MyGroupsTableViewController: UITableViewController {
       case .initial(let groupsData):
         print("Initiated with \(groupsData.count) groups")
         self?.tableView.reloadData()
-        break
-      case .update(let groups, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+      case .update(let groups,
+                   deletions: let deletions,
+                   insertions: let insertions,
+                   modifications: let modifications):
         print("""
-                    New count \(groups.count)
-                    Deletions \(deletions)
-                    Insertions \(insertions)
-                    Modifications \(modifications)
-                    """)
+              New count \(groups.count)
+              Deletions \(deletions)
+              Insertions \(insertions)
+              Modifications \(modifications)
+              """)
         self?.tableView.beginUpdates()
         let deletionsIndexPaths = deletions.map { IndexPath(row: $0, section: 0) }
         let insertionsIndexPaths = insertions.map { IndexPath(row: $0, section: 0) }
@@ -56,10 +59,8 @@ class MyGroupsTableViewController: UITableViewController {
         self?.tableView.insertRows(at: insertionsIndexPaths, with: .automatic)
         self?.tableView.reloadRows(at: modificationsIndexPaths, with: .automatic)
         self?.tableView.endUpdates()
-        break
       case .error(let error):
         print(error.localizedDescription)
-        break
       }
     }
   }
@@ -84,7 +85,8 @@ class MyGroupsTableViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell", for: indexPath) as? MyGroupsTableViewCell {
+    if let cell = tableView.dequeueReusableCell(withIdentifier: "MyGroupCell",
+                                                for: indexPath) as? MyGroupsTableViewCell {
       cell.configure(forGroup: groups![indexPath.row])
       return cell
     }
@@ -92,8 +94,8 @@ class MyGroupsTableViewController: UITableViewController {
     return UITableViewCell()
   }
   
-  //MARK: Add group
-  @IBAction func addGroup(segue:UIStoryboardSegue) {
+  // MARK: Add group
+  @IBAction func addGroup(segue: UIStoryboardSegue) {
     //        if segue.identifier == "addGroup" {
     //            guard let allGroupsController = segue.source as? AllGroupsTableViewController else { return }
     //            if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
@@ -106,8 +108,10 @@ class MyGroupsTableViewController: UITableViewController {
     //        }
   }
   
-  //MARK: Remove group
-  //    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+  // MARK: Remove group
+//      override func tableView(_ tableView: UITableView,
+//                              commit editingStyle: UITableViewCell.EditingStyle,
+//                              forRowAt indexPath: IndexPath) {
   //        if editingStyle == .delete {
   //            groups.remove(at: indexPath.row)
   //            tableView.deleteRows(at: [indexPath], with: .fade)

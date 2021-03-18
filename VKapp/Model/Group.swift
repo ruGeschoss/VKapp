@@ -20,15 +20,13 @@ class Group: Object, Decodable {
     self.init()
     
     let groupId = json["id"].stringValue
-    self.groupId = groupId
-    
     let groupName = json["name"].stringValue
-    self.groupName = groupName
-    
     let groupAvaS = json["photo_50"].stringValue
     let groupAvaM = json["photo_100"].stringValue
     let groupAvaL = json["photo_200"].stringValue
     
+    self.groupId = groupId
+    self.groupName = groupName
     self.groupAvatarSizes.append(groupAvaS)
     self.groupAvatarSizes.append(groupAvaM)
     self.groupAvatarSizes.append(groupAvaL)

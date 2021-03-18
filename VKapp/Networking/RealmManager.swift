@@ -7,7 +7,7 @@
 
 import RealmSwift
 
-//class RealmManager {
+// class RealmManager {
 //  
 //  static let shared = RealmManager()
 //  private let realm: Realm
@@ -47,4 +47,4 @@ import RealmSwift
 //      realm.deleteAll()
 //    }
 //  }
-//}
+// }

@@ -9,13 +9,10 @@ import UIKit
 
 class HeaderCRV: UICollectionReusableView {
   
-  
-  
   @IBOutlet weak var headerView: UIView!
   @IBOutlet weak var userAvatar: RoundImage!
   @IBOutlet weak var userName: UILabel!
   @IBOutlet weak var datePosted: UILabel!
-  
   
   static let nib = UINib(nibName: "HeaderCRV", bundle: nil)
   static let identifier = "HeaderCRV"
@@ -25,7 +22,7 @@ class HeaderCRV: UICollectionReusableView {
     // Initialization code
   }
   
-  func configure (avatar:UIImage, name:String, date:Int) {
+  func configure (avatar: UIImage, name: String, date: Int) {
     self.userAvatar.image = avatar
     self.userName.text = name
     self.datePosted.text = String(date)

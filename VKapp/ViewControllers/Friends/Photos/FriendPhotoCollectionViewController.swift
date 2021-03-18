@@ -38,14 +38,15 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
   private lazy var refreshControl: UIRefreshControl = {
     let refreshControl = UIRefreshControl()
     refreshControl.tintColor = .systemGray
-    refreshControl.attributedTitle = NSAttributedString(string: "Обновление...", attributes: [.font: UIFont.systemFont(ofSize: 10)])
+    refreshControl.attributedTitle = NSAttributedString(string: "Обновление...",
+                                                        attributes: [.font: UIFont.systemFont(ofSize: 10)])
     refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
     return refreshControl
   }()
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "to_FullScreen_Photo" {
-      if let destination = segue.destination as? FullScreenPhotoVC{
+      if let destination = segue.destination as? FullScreenPhotoVC {
         destination.currentIndex = currentImageIndex
         destination.fullAlbum = allPhotosUrls!.map { $0[$0.count - 1] }
       }
@@ -56,19 +57,23 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
     1
   }
   
-  override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  override func collectionView(_ collectionView: UICollectionView,
+                               numberOfItemsInSection section: Int) -> Int {
     allPhotosOfUser!.count
   }
   
-  override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FriendPhotoCell", for: indexPath) as? FriendPhotoCollectionViewCell {
+  override func collectionView(_ collectionView: UICollectionView,
+                               cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FriendPhotoCell",
+                                                     for: indexPath) as? FriendPhotoCollectionViewCell {
       cell.configure(photoUrl: allPhotosUrls![indexPath.item][0])
       return cell
     }
     return UICollectionViewCell()
   }
   
-  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+  override func collectionView(_ collectionView: UICollectionView,
+                               didSelectItemAt indexPath: IndexPath) {
     currentImageIndex = (indexPath.section + 1) * indexPath.item
     performSegue(withIdentifier: "to_FullScreen_Photo", sender: self)
   }
@@ -86,7 +91,6 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
       case .initial(let allPhotos):
         print("Initiated with \(allPhotos.count) photos")
         self?.collectionView.reloadData()
-        break
       case .update(let photos, deletions: let deletions, insertions: let insertions, modifications: let modifications):
         print("""
                     New count \(photos.count)
@@ -102,11 +106,8 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
           let modificationsIndexPaths = modifications.map { IndexPath(item: $0, section: 0) }
           self?.collectionView.reloadItems(at: modificationsIndexPaths)
         }
-        
-        break
       case .error(let error):
         print(error.localizedDescription)
-        break
       }
     }
   }
@@ -117,21 +118,29 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
 }
 
 extension FriendPhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      sizeForItemAt indexPath: IndexPath) -> CGSize {
     let spacing = cellInsets.left * (photoPerRow - 1)
     let availableWidth = collectionView.frame.width - spacing
     let photoWidth = availableWidth / photoPerRow
     return CGSize(width: photoWidth, height: photoWidth)
   }
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      insetForSectionAt section: Int) -> UIEdgeInsets {
     cellInsets
   }
   
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      minimumLineSpacingForSectionAt section: Int) -> CGFloat {
     cellInsets.left
   }
   
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+  func collectionView(_ collectionView: UICollectionView,
+                      layout collectionViewLayout: UICollectionViewLayout,
+                      minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
     cellInsets.left
   }
   

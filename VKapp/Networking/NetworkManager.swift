@@ -22,12 +22,11 @@ class NetworkManager {
   
   static let shared = NetworkManager()
   
-  
   private init() {
     
   }
   
-  //MARK: Saving data to Realm
+  // MARK: Saving data to Realm
   static func saveUsersDataToRealm(_ users: [UserSJ], forUser: String) {
     do {
       let realm = try Realm()
@@ -73,19 +72,22 @@ class NetworkManager {
     }
   }
   
-  //MARK: Load Groups
-  static func loadGroupsSJ(forUserId: String?, completion: @escaping () -> Void) {
+  // MARK: Load Groups
+  static func loadGroupsSJ(forUserId: String?,
+                           completion: @escaping () -> Void) {
     let target = forUserId ?? Session.shared.userId
     let baseUrl = "https://api.vk.com"
     let path = "/method/groups.get"
     let params: Parameters = [
       "access_token": Session.shared.token,
-      "user_id" : target,
+      "user_id": target,
       "extended": 1,
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession.request(baseUrl + path,
+                                            method: .get,
+                                            parameters: params).responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)
@@ -100,8 +102,9 @@ class NetworkManager {
     }
   }
   
-  //MARK: Search Groups
-  static func searchGroupSJ(searchText: String?, completion: ((Result<[Group],Error>) -> Void)? = nil) {
+  // MARK: Search Groups
+  static func searchGroupSJ(searchText: String?,
+                            completion: ((Result<[Group], Error>) -> Void)? = nil) {
     let baseUrl = "https://api.vk.com"
     let path = "/method/groups.search"
     let params: Parameters = [
@@ -113,7 +116,9 @@ class NetworkManager {
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession.request(baseUrl + path,
+                                            method: .get,
+                                            parameters: params).responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)
@@ -126,7 +131,7 @@ class NetworkManager {
     }
   }
   
-  //MARK: Load Friends
+  // MARK: Load Friends
   static func loadFriendsSJ(forUser: String?, completion: @escaping () -> Void) {
     let target = forUser ?? Session.shared.userId
     let baseUrl = "https://api.vk.com"
@@ -134,11 +139,13 @@ class NetworkManager {
     let params: Parameters = [
       "access_token": Session.shared.token,
       "user_id": target,
-      "fields" : "photo_50",
+      "fields": "photo_50",
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession.request(baseUrl + path,
+                                            method: .get,
+                                            parameters: params).responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)
@@ -155,9 +162,7 @@ class NetworkManager {
     }
   }
   
-  
-  
-  //MARK: Load Photos
+  // MARK: Load Photos
   static func loadPhotosSJ(ownerId: String, completion: @escaping () -> Void) {
     let baseUrl = "https://api.vk.com"
     let path = "/method/photos.getAll"
@@ -167,7 +172,9 @@ class NetworkManager {
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession.request(baseUrl + path,
+                                            method: .get,
+                                            parameters: params).responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)
@@ -182,15 +189,16 @@ class NetworkManager {
     }
   }
   
-  //MARK: Get Photo Data
-  static func getPhotoDataFromUrl(url: String, completion: @escaping (Data) -> ()) {
+  // MARK: Get Photo Data
+  static func getPhotoDataFromUrl(url: String,
+                                  completion: @escaping (Data) -> Void) {
     NetworkManager.alamoFireSession.request(url, method: .get).responseData { (response) in
       guard let data = response.data else { return }
       completion(data)
     }
   }
   
-  //MARK: User Profile Data
+  // MARK: User Profile Data
   static func getProfileDataSJ() {
     let baseUrl = "https://api.vk.com"
     let path = "/method/account.getProfileInfo"
@@ -198,7 +206,9 @@ class NetworkManager {
       "access_token": Session.shared.token,
       "v": "5.92"
     ]
-    NetworkManager.alamoFireSession.request(baseUrl + path, method: .get, parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession.request(baseUrl + path,
+                                            method: .get,
+                                            parameters: params).responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)

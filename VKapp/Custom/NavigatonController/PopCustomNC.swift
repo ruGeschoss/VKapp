@@ -24,8 +24,6 @@ final class PopCustomNC: NSObject, UIViewControllerAnimatedTransitioning {
     source.view.layer.anchorPoint = CGPoint(x: 1, y: 0)
     source.view.layer.position = CGPoint(x: destination.view.frame.maxX, y: destination.view.frame.minY)
     
-    
-    
     UIView.animateKeyframes(withDuration: transitionDuration(using: transitionContext),
                             delay: 0,
                             options: [],
@@ -43,6 +41,4 @@ final class PopCustomNC: NSObject, UIViewControllerAnimatedTransitioning {
                               transitionContext.completeTransition(finished)
                             })
   }
-  
-  
 }

@@ -14,9 +14,9 @@ enum IndexChange {
 
 class FullScreenPhotoVC: UIViewController {
   var fullAlbum: [String] = []
-  var currentIndex:Int = 0
+  var currentIndex: Int = 0
   
-  var startingViewIsHidden:Bool = false
+  var startingViewIsHidden: Bool = false
   var centerPosition = CGPoint()
   var leftXPosition = CGFloat()
   var rightXPosition = CGFloat()
@@ -32,26 +32,27 @@ class FullScreenPhotoVC: UIViewController {
     centerPosition = view.center
     rightXPosition = frameWidth + centerPosition.x
     leftXPosition = -centerPosition.x
-    
-    
+      
     fullScreenView.backgroundColor = .clear
     photoImage.backgroundColor = .clear
     extraPhotoImage.backgroundColor = .clear
     
-    NetworkManager.getPhotoDataFromUrl(url: fullAlbum[currentIndex] , completion: { [weak self] (data) in
+    NetworkManager.getPhotoDataFromUrl(url: fullAlbum[currentIndex]) { [weak self] (data) in
       self?.photoImage.image = UIImage(data: data)
-    })
-    
-    
-    let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(goForward))
+    }
+ 
+    let swipeLeft = UISwipeGestureRecognizer(target: self,
+                                             action: #selector(goForward))
     swipeLeft.direction = .left
     self.view.addGestureRecognizer(swipeLeft)
     
-    let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(goBackwards))
+    let swipeRight = UISwipeGestureRecognizer(target: self,
+                                              action: #selector(goBackwards))
     swipeRight.direction = .right
     self.view.addGestureRecognizer(swipeRight)
     
-    let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(backToAlbum))
+    let swipeDown = UISwipeGestureRecognizer(target: self,
+                                             action: #selector(backToAlbum))
     swipeDown.direction = .down
     self.view.addGestureRecognizer(swipeDown)
   }
@@ -73,30 +74,50 @@ class FullScreenPhotoVC: UIViewController {
     navigationController?.popViewController(animated: true)
   }
   
-  //MARK: -Backwards
+  // MARK: - Backwards
   @objc func goBackwards() {
     guard currentIndex > .zero else { return }
     switch startingViewIsHidden {
     case true:
-      animationBuilder(index: .minusOne, hiddenImg: photoImage, shownImg: extraPhotoImage, hiddenImgComesFromX: leftXPosition, showImgGoesToX: rightXPosition)
+      animationBuilder(index: .minusOne,
+                       hiddenImg: photoImage,
+                       shownImg: extraPhotoImage,
+                       hiddenImgComesFromX: leftXPosition,
+                       showImgGoesToX: rightXPosition)
     case false:
-      animationBuilder(index: .minusOne, hiddenImg: extraPhotoImage, shownImg: photoImage, hiddenImgComesFromX: leftXPosition, showImgGoesToX: rightXPosition)
+      animationBuilder(index: .minusOne,
+                       hiddenImg: extraPhotoImage,
+                       shownImg: photoImage,
+                       hiddenImgComesFromX: leftXPosition,
+                       showImgGoesToX: rightXPosition)
     }
   }
   
-  //MARK: -Forward
+  // MARK: - Forward
   @objc func goForward() {
     guard currentIndex < fullAlbum.count - 1 else { return }
     switch startingViewIsHidden {
-    case true:  //photoImage is hidden
-      animationBuilder(index: .plusOne, hiddenImg: photoImage, shownImg: extraPhotoImage, hiddenImgComesFromX: rightXPosition, showImgGoesToX: leftXPosition)
-    case false: //photoImage is shown
-      animationBuilder(index: .plusOne, hiddenImg: extraPhotoImage, shownImg: photoImage, hiddenImgComesFromX: rightXPosition, showImgGoesToX: leftXPosition)
+    case true:
+      animationBuilder(index: .plusOne,
+                       hiddenImg: photoImage,
+                       shownImg: extraPhotoImage,
+                       hiddenImgComesFromX: rightXPosition,
+                       showImgGoesToX: leftXPosition)
+    case false:
+      animationBuilder(index: .plusOne,
+                       hiddenImg: extraPhotoImage,
+                       shownImg: photoImage,
+                       hiddenImgComesFromX: rightXPosition,
+                       showImgGoesToX: leftXPosition)
     }
   }
   
-  //MARK: - AnimationBuilder
-  func animationBuilder(index:IndexChange, hiddenImg:UIImageView!, shownImg:UIImageView!, hiddenImgComesFromX:CGFloat, showImgGoesToX:CGFloat) {
+  // MARK: - AnimationBuilder
+  func animationBuilder(index: IndexChange,
+                        hiddenImg: UIImageView!,
+                        shownImg: UIImageView!,
+                        hiddenImgComesFromX: CGFloat,
+                        showImgGoesToX: CGFloat) {
     startingViewIsHidden = !startingViewIsHidden
     switch index {
     case .plusOne:
@@ -105,8 +126,8 @@ class FullScreenPhotoVC: UIViewController {
       currentIndex -= 1
     }
     
-    //        hiddenImg.image = UIImage(named: fullAlbum[currentIndex])
-    NetworkManager.getPhotoDataFromUrl(url: fullAlbum[currentIndex] , completion: { (data) in
+    NetworkManager.getPhotoDataFromUrl(url: fullAlbum[currentIndex],
+                                       completion: { (data) in
       hiddenImg.image = UIImage(data: data)
     })
     hiddenImg.center.x = hiddenImgComesFromX

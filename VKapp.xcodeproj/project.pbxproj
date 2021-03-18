@@ -354,6 +354,7 @@
 				B76069CF25920427005E1F03 /* Frameworks */,
 				B76069D025920427005E1F03 /* Resources */,
 				8323CD6C5C6DF4B709FF02D1 /* [CP] Embed Pods Frameworks */,
+				B78FFB4B26029ACC00C8CF7B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -430,6 +431,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VKapp/Pods-VKapp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B78FFB4B26029ACC00C8CF7B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
 		F8657E6A1B532A1649067626 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

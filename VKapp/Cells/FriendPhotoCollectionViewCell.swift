@@ -13,8 +13,9 @@ class FriendPhotoCollectionViewCell: UICollectionViewCell {
   @IBAction func likeButton(_ sender: Any) {}
   
   func configure(photoUrl: String) {
-    NetworkManager.getPhotoDataFromUrl(url: photoUrl ,completion: { [weak self] data in
-      self?.friendAlbumPhoto.image = UIImage(data: data) //scale?
+    NetworkManager.getPhotoDataFromUrl(url: photoUrl,
+                                       completion: { [weak self] data in
+      self?.friendAlbumPhoto.image = UIImage(data: data)
     })
   }
   

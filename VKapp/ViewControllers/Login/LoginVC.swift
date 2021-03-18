@@ -11,7 +11,7 @@ import RealmSwift
 import WebKit
 
 class LoginVC: UIViewController {
-  //    MARK: - Outlets
+  // MARK: - Outlets
   
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var loginTextField: UITextField!
@@ -24,7 +24,7 @@ class LoginVC: UIViewController {
   
   var shouldAutoLogin = true
   
-  //    MARK: - Functions
+  // MARK: - Functions
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -33,8 +33,14 @@ class LoginVC: UIViewController {
     view.addGestureRecognizer(tapGesture)
     view.isUserInteractionEnabled = true
     
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow (notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide (notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(keyboardWillShow (notification:)),
+                                           name: UIResponder.keyboardWillShowNotification,
+                                           object: nil)
+    NotificationCenter.default.addObserver(self,
+                                           selector: #selector(keyboardWillHide (notification:)),
+                                           name: UIResponder.keyboardWillHideNotification,
+                                           object: nil)
     
   }
   
@@ -48,7 +54,8 @@ class LoginVC: UIViewController {
   }
   
   @objc func keyboardWillShow (notification: Notification) {
-    guard let kbSize = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+    guard let kbSize = notification
+            .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
     let insets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.size.height, right: 0)
     scrollView.contentInset = insets
   }
@@ -76,7 +83,8 @@ class LoginVC: UIViewController {
   //    }
   
   func checkUserData () -> Bool {
-    guard let login = loginTextField.text, let password = passwordTextField.text else { return false }
+    guard let login = loginTextField.text,
+          let password = passwordTextField.text else { return false }
     if login == "admin" && password == "admin" {
       return true
     } else {
@@ -85,7 +93,9 @@ class LoginVC: UIViewController {
   }
   
   func showLoginError() {
-    let alert = UIAlertController(title: "Ошибка", message: "Введите имя, пароль можно не вводить", preferredStyle: .alert)
+    let alert = UIAlertController(title: "Ошибка",
+                                  message: "Введите имя, пароль можно не вводить",
+                                  preferredStyle: .alert)
     let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
     alert.addAction(action)
     present(alert, animated: true, completion: nil)
@@ -126,15 +136,15 @@ class LoginVC: UIViewController {
     anim.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
     anim.alpha = 0
     
-    //MARK: Loading data to storage
+    // MARK: Loading data to storage
     let realm = try? Realm()
-    if realm!.objects(UserSJ.self).isEmpty || realm!.objects(Group.self).isEmpty  {
+    if realm!.objects(UserSJ.self).isEmpty || realm!.objects(Group.self).isEmpty {
       print("Started loading")
       NetworkManager.loadFriendsSJ(forUser: nil) {}
       NetworkManager.loadGroupsSJ(forUserId: nil) {}
     }
     
-    //MARK: Show animation
+    // MARK: Show animation
     UIView.animateKeyframes(withDuration: 4, delay: 0, options: [], animations: {
       UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.05, animations: {
         // duration 0.2 sec
@@ -169,7 +179,7 @@ class LoginVC: UIViewController {
     }
   }
   
-  //    MARK: - Actions
+  // MARK: - Actions
   
   @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {
     shouldAutoLogin = false
@@ -196,9 +206,10 @@ class LoginVC: UIViewController {
   }
   
   @IBAction func loginWithVK(_ sender: UIButton) {
-    let vc = storyboard?.instantiateViewController(identifier: "WKViewController") as! WKViewController
-    vc.modalPresentationStyle = .fullScreen
-    present(vc, animated: true, completion: nil)
+    guard let webkit = storyboard?
+            .instantiateViewController(identifier: "WKViewController") as? WKViewController else { return }
+    webkit.modalPresentationStyle = .fullScreen
+    present(webkit, animated: true, completion: nil)
   }
   
   @IBAction func signUpButton(_ sender: UIButton) {}

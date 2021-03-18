@@ -17,13 +17,14 @@ class MyFriendsTableViewCell: UITableViewCell {
   override func awakeFromNib() {
     super.awakeFromNib()
     self.backgroundColor = .clear
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedOnImage))
+    let tapGesture = UITapGestureRecognizer(target: self,
+                                            action: #selector(tappedOnImage))
     avatarImage.addGestureRecognizer(tapGesture)
     avatarImage.isUserInteractionEnabled = true
   }
   
-  
-  override func setSelected(_ selected: Bool, animated: Bool) {
+  override func setSelected(_ selected: Bool,
+                            animated: Bool) {
     //        super.setSelected(selected, animated: animated)
     // Configure the view for the selected state
   }
@@ -33,10 +34,16 @@ class MyFriendsTableViewCell: UITableViewCell {
   }
   
   private func tapAnimation() {
-    UIView.animate(withDuration: 0.1, delay: 0, options: .curveLinear, animations: {
+    UIView.animate(withDuration: 0.1,
+                   delay: 0,
+                   options: .curveLinear,
+                   animations: {
       self.avatarImage.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
     })
-    UIView.animate(withDuration: 0.1, delay: 0.1, options: .curveLinear, animations: {
+    UIView.animate(withDuration: 0.1,
+                   delay: 0.1,
+                   options: .curveLinear,
+                   animations: {
       self.avatarImage.transform = CGAffineTransform.identity
     })
   }

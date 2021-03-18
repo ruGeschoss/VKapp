@@ -34,7 +34,7 @@ class GradientView: UIView {
       self.updateStartPoint()
     }
   }
-  @IBInspectable var endPoint: CGPoint = CGPoint (x: 1, y: 0) {
+  @IBInspectable var endPoint: CGPoint = CGPoint(x: 1, y: 0) {
     didSet {
       self.updateEndPoint()
     }
@@ -43,23 +43,25 @@ class GradientView: UIView {
   override static var layerClass: AnyClass {
     CAGradientLayer.self
   }
-  var gradientLayer: CAGradientLayer {
-    self.layer as! CAGradientLayer
+  var gradientLayer: CAGradientLayer? {
+    self.layer as? CAGradientLayer
   }
   
   func updateLocations() {
-    self.gradientLayer.locations = [self.startLocation as NSNumber, self.endLocation as NSNumber]
+    self.gradientLayer?.locations = [self.startLocation as NSNumber,
+                                    self.endLocation as NSNumber]
   }
   
   func updateColors() {
-    self.gradientLayer.colors = [self.startColor.cgColor, self.endColor.cgColor]
+    self.gradientLayer?.colors = [self.startColor.cgColor,
+                                 self.endColor.cgColor]
   }
   
   func updateStartPoint() {
-    self.gradientLayer.startPoint = startPoint
+    self.gradientLayer?.startPoint = startPoint
   }
   
   func updateEndPoint() {
-    self.gradientLayer.endPoint = endPoint
+    self.gradientLayer?.endPoint = endPoint
   }
 }

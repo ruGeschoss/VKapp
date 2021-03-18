@@ -20,7 +20,7 @@ final class InteractiveTransition: UIPercentDrivenInteractiveTransition {
   var panStarted = false
   var shouldFinish = false
   
-  @objc func screenEdgePan(_ recognizer:UIScreenEdgePanGestureRecognizer) {
+  @objc func screenEdgePan(_ recognizer: UIScreenEdgePanGestureRecognizer) {
     switch recognizer.state {
     case .began:
       panStarted = true

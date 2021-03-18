@@ -9,16 +9,16 @@ import UIKit
 
 class LikeButtonUIButton: UIButton {
   
-  var likesCount:UInt = 0
-  var alreadyLiked:Bool = false
+  var likesCount: UInt = 0
+  var alreadyLiked: Bool = false
   
-  let preLikeImage:UIImage? = UIImage(systemName: "heart")
-  let preLikeColor:UIColor = UIColor.gray
-  var preLikeText:String = ""
+  let preLikeImage: UIImage? = UIImage(systemName: "heart")
+  let preLikeColor: UIColor = UIColor.gray
+  var preLikeText: String = ""
   
-  let afterLikeImage:UIImage? = UIImage(systemName: "heart.fill")
-  let afterLikeColor:UIColor = UIColor.red
-  var afterLikeText:String = ""
+  let afterLikeImage: UIImage? = UIImage(systemName: "heart.fill")
+  let afterLikeColor: UIColor = UIColor.red
+  var afterLikeText: String = ""
   
   override func draw(_ rect: CGRect) {
     super.draw(rect)

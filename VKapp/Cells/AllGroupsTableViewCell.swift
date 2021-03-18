@@ -25,7 +25,8 @@ class AllGroupsTableViewCell: UITableViewCell {
   
   func configure(forGroup: Group) {
     self.groupName.text = forGroup.groupName
-    NetworkManager.getPhotoDataFromUrl(url: forGroup.groupAvatarSizes[0] ,completion: { [weak self] data in
+    NetworkManager.getPhotoDataFromUrl(url: forGroup.groupAvatarSizes[0],
+                                       completion: { [weak self] data in
       self?.groupPhoto.image = UIImage(data: data, scale: 0.5)
     })
   }

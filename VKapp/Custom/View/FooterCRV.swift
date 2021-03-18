@@ -23,7 +23,10 @@ class FooterCRV: UICollectionReusableView {
     // Initialization code
   }
   
-  func configure(viewCount:Int, likeCount:Int, commentCount:Int, shareCount:Int) {
+  func configure (viewCount: Int,
+                  likeCount: Int,
+                  commentCount: Int,
+                  shareCount: Int) {
     self.viewCount.text = String(viewCount)
     self.commentButtonCounter.setTitle(String(commentCount), for: .normal)
     self.shareButtonCounter.setTitle(String(shareCount), for: .normal)
