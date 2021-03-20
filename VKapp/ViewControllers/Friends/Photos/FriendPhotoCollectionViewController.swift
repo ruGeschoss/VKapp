@@ -11,8 +11,6 @@ import RealmSwift
 class FriendPhotoCollectionViewController: UICollectionViewController {
   
   var currentImageIndex = 0
-  let photoPerRow: CGFloat = 3
-  let cellInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
   
   var photosForUserID = String()           // id of user
   var allPhotosOfUser: Results<Photos>? {  // detailed photo info (if needed more info)
@@ -115,33 +113,4 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
   deinit {
     allPhotosOfUserNotificationToken?.invalidate()
   }
-}
-
-extension FriendPhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let spacing = cellInsets.left * (photoPerRow - 1)
-    let availableWidth = collectionView.frame.width - spacing
-    let photoWidth = availableWidth / photoPerRow
-    return CGSize(width: photoWidth, height: photoWidth)
-  }
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      insetForSectionAt section: Int) -> UIEdgeInsets {
-    cellInsets
-  }
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    cellInsets.left
-  }
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    cellInsets.left
-  }
-  
 }

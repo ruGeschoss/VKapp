@@ -9,12 +9,29 @@ import UIKit
 
 class NewsCVC: UICollectionViewCell {
   
+  @IBOutlet weak var newsText: UILabel!
+  @IBOutlet weak var newsView: UIView!
+  @IBOutlet weak var photoCollectionView: UICollectionView! {
+    didSet {
+      photoCollectionView.register(SinglePhotoCVC.nib,
+                                   forCellWithReuseIdentifier: SinglePhotoCVC.identifier)
+      photoCollectionView.delegate = self
+      photoCollectionView.dataSource = self
+      photoCollectionView.backgroundColor = .cyan
+    }
+  }
+  
+  static let nib = UINib(nibName: "NewsCell", bundle: nil)
+  static let identifier = "NewsCell"
+  
+  private var layoutAttributesArray: [UICollectionViewLayoutAttributes] = []
+  private var cellInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+  
   var photoForPost: [String]? {
     didSet {
       self.photoCollectionView.reloadData()
     }
   }
-  var cellInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
   
   var text: String? {
     didSet {
@@ -23,12 +40,12 @@ class NewsCVC: UICollectionViewCell {
     }
   }
   
-  @IBOutlet weak var newsText: UILabel!
-  @IBOutlet weak var newsView: UIView!
-  @IBOutlet weak var photoCollectionView: UICollectionView!
-  
-  static let nib = UINib(nibName: "NewsCell", bundle: nil)
-  static let identifier = "NewsCell"
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    
+    self.text?.removeAll()
+    self.photoForPost?.removeAll()
+  }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -42,24 +59,16 @@ class NewsCVC: UICollectionViewCell {
     super.awakeFromNib()
     
   }
-  
-  override func layoutSubviews() {
-    photoCollectionView.register(SinglePhotoCVC.nib,
-                                 forCellWithReuseIdentifier: SinglePhotoCVC.identifier)
-    photoCollectionView.delegate = self
-    photoCollectionView.dataSource = self
-  }
 }
 
 // MARK: - Delegate, DataSource
-extension NewsCVC: UICollectionViewDelegate, UICollectionViewDataSource {
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      didEndDisplaying cell: UICollectionViewCell,
-                      forItemAt indexPath: IndexPath) {
-    cell.prepareForReuse()
+extension NewsCVC: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    print(indexPath)
   }
-  
+}
+
+extension NewsCVC: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView,
                       numberOfItemsInSection section: Int) -> Int {
     photoForPost?.count ?? 0
@@ -70,89 +79,8 @@ extension NewsCVC: UICollectionViewDelegate, UICollectionViewDataSource {
     if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SinglePhotoCVC.identifier,
                                                      for: indexPath) as? SinglePhotoCVC {
       cell.photo = photoForPost![indexPath.item]
-      print("Cell center =  \(cell.center)\n IndexPath = \(indexPath)")
       return cell
     }
     return UICollectionViewCell()
   }
-}
-
-// MARK: - Flow Layout
-extension NewsCVC: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      sizeForItemAt indexPath: IndexPath) -> CGSize {
-    
-    return configureCellFrameSize(collectionView, indexPath)
-    
-  }
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      insetForSectionAt section: Int) -> UIEdgeInsets {
-    cellInsets
-  }
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    cellInsets.left
-  }
-  
-  func collectionView(_ collectionView: UICollectionView,
-                      layout collectionViewLayout: UICollectionViewLayout,
-                      minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    cellInsets.left
-  }
-  
-  private func configureCellFrameSize(_ collectionView: UICollectionView,
-                                      _ indexPath: IndexPath) -> CGSize {
-    let availableWidth = collectionView.bounds.width
-    let avaliableHeight = collectionView.bounds.height
-
-    // Mhe item width must be less than the width of the UICollectionView
-    // Minus the section insets left and right values,
-    // Minus the content insets left and right values.
-    switch photoForPost?.count {
-    case 1:
-      return CGSize(width: availableWidth,
-                    height: avaliableHeight)
-    case 2:
-      return CGSize(width: availableWidth,
-                    height: avaliableHeight / 2)
-    case 3:
-      if indexPath.item == 0 {
-        return CGSize(width: availableWidth / 1,
-                      height: avaliableHeight / 2)
-      } else {
-        return CGSize(width: availableWidth / 2,
-                      height: avaliableHeight / 2)
-      }
-    case 4:
-      return CGSize(width: availableWidth / 2,
-                    height: avaliableHeight / 2)
-    case 5:
-      // first 2 at top, next 3 at bottom
-      if indexPath.item == 0 || indexPath.item == 1 {
-        return CGSize(width: availableWidth / 2,
-                      height: avaliableHeight / 2)
-      } else {
-        return CGSize(width: availableWidth / 3 - 0.01,
-                      height: avaliableHeight / 2)
-      }
-    case 6:
-      // first big at top left, others fill
-      if indexPath.item == 0 {
-        return CGSize(width: availableWidth * 2 / 3,
-                      height: avaliableHeight * 2 / 3)
-      } else {
-        return CGSize(width: availableWidth / 3 - 0.01,
-                      height: avaliableHeight / 3)
-      }
-    default:
-      return CGSize(width: availableWidth / CGFloat(photoForPost?.count ?? 1),
-                    height: avaliableHeight / CGFloat(photoForPost?.count ?? 1))
-    }
-  }
-  
 }

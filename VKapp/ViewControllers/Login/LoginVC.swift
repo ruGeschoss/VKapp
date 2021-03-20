@@ -23,8 +23,7 @@ class LoginVC: UIViewController {
   @IBOutlet weak var signUpButton: UIButton!
   
   var shouldAutoLogin = true
-  
-  // MARK: - Functions
+  var tokenIsExpired = true
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -41,11 +40,35 @@ class LoginVC: UIViewController {
                                            selector: #selector(keyboardWillHide (notification:)),
                                            name: UIResponder.keyboardWillHideNotification,
                                            object: nil)
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     
+    // MARK: Check if token expired
+    let currentTime = Date.timeIntervalSinceReferenceDate
+    let tokenExpires = Session.shared.tokenExpires
+    let dateExpires = Date(timeIntervalSinceReferenceDate: tokenExpires)
+    print("Текущее время: \(Date())")
+    print("Токен действует до \(dateExpires)")
+
+    switch tokenExpires < currentTime && tokenExpires != 0 {
+    case true:
+      shouldAutoLogin = false
+      tokenIsExpired = true
+    case false:
+      tokenIsExpired = false
+      if tokenExpires == 0 {
+        removeVkCookies()
+        loginWithVK(loginWithVKButton)
+      }
+    }
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    
+    tokenIsExpired ? (showTokenExpiredAlert()) : ()
     
     if shouldAutoLogin {
       guard Session.shared.token != "" else { return }
@@ -69,80 +92,29 @@ class LoginVC: UIViewController {
     view.endEditing(true)
   }
   
-  //    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-  //        switch identifier {
-  //        case "login_success":
-  //            let checkResult = checkUserData()
-  //            if !checkResult {
-  //                showLoginError()
-  //            }
-  //            return checkResult
-  //        default:
-  //            return true
-  //        }
-  //    }
-  
-  func checkUserData () -> Bool {
-    guard let login = loginTextField.text,
-          let password = passwordTextField.text else { return false }
-    if login == "admin" && password == "admin" {
-      return true
-    } else {
-      return false
-    }
-  }
-  
-  func showLoginError() {
-    let alert = UIAlertController(title: "Ошибка",
-                                  message: "Введите имя, пароль можно не вводить",
-                                  preferredStyle: .alert)
-    let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
-    alert.addAction(action)
-    present(alert, animated: true, completion: nil)
-  }
-  
-  func addAnimations() -> CAAnimationGroup {
-    let strokeStartAnimation = CABasicAnimation(keyPath: "strokeStart")
-    strokeStartAnimation.fromValue = 0
-    strokeStartAnimation.toValue = 1
-    let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
-    strokeEndAnimation.fromValue = 0
-    strokeEndAnimation.toValue = 1.2
-    let animationGroup = CAAnimationGroup()
-    animationGroup.duration = 4
-    animationGroup.repeatCount = .infinity
-    animationGroup.speed = 1.1
-    animationGroup.animations = [strokeStartAnimation, strokeEndAnimation]
-    return animationGroup
-  }
+//  func checkCredentials () -> Bool {
+//    guard let login = loginTextField.text,
+//          let password = passwordTextField.text else { return false }
+//    if login == "admin" && password == "admin" {
+//      return true
+//    } else {
+//      return false
+//    }
+//  }
   
   func nextScreenAnim() {
-    let anim = CatLoadingView() // adding cat's face
-    anim.backgroundColor = .clear
-    anim.frame = CGRect(x: 0, y: 0, width: 77*3, height: 55*3)
-    anim.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-    view.addSubview(anim)
-    
-    let customLayer = CAShapeLayer() // adding animated layer
-    customLayer.path = anim.addFace().cgPath
-    customLayer.backgroundColor = UIColor.clear.cgColor
-    customLayer.fillColor = .none
-    customLayer.strokeColor = UIColor.white.cgColor
-    customLayer.lineCap = .round
-    customLayer.lineWidth = 10
-    customLayer.add(addAnimations(), forKey: nil)
-    anim.layer.addSublayer(customLayer)
-    
-    anim.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-    anim.alpha = 0
+    let anim = createAnimatedCatFace()
     
     // MARK: Loading data to storage
-    let realm = try? Realm()
-    if realm!.objects(UserSJ.self).isEmpty || realm!.objects(Group.self).isEmpty {
-      print("Started loading")
-      NetworkManager.loadFriendsSJ(forUser: nil) {}
-      NetworkManager.loadGroupsSJ(forUserId: nil) {}
-    }
+    do {
+      let realm = try Realm()
+      if realm.objects(UserSJ.self).isEmpty || realm.objects(Group.self).isEmpty {
+        NetworkManager.loadFriendsSJ(forUser: nil) {}
+        NetworkManager.loadGroupsSJ(forUserId: nil) {}
+      }
+    } catch {
+        print("Realm error")
+      }
     
     // MARK: Show animation
     UIView.animateKeyframes(withDuration: 4, delay: 0, options: [], animations: {
@@ -164,7 +136,9 @@ class LoginVC: UIViewController {
       self.performSegue(withIdentifier: "login_success", sender: self)
     })
   }
-  private func removeCookie() {
+  
+  // MARK: - Private functions
+  private func removeVkCookies() {
     //        URLCache.shared.removeAllCachedResponses()
     //        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
     //        print("[WebCacheCleaner] All cookies deleted")
@@ -179,6 +153,68 @@ class LoginVC: UIViewController {
     }
   }
   
+  private func addAnimations() -> CAAnimationGroup {
+    let strokeStartAnimation = CABasicAnimation(keyPath: "strokeStart")
+    strokeStartAnimation.fromValue = 0
+    strokeStartAnimation.toValue = 1
+    let strokeEndAnimation = CABasicAnimation(keyPath: "strokeEnd")
+    strokeEndAnimation.fromValue = 0
+    strokeEndAnimation.toValue = 1.2
+    let animationGroup = CAAnimationGroup()
+    animationGroup.duration = 4
+    animationGroup.repeatCount = .infinity
+    animationGroup.speed = 1.1
+    animationGroup.animations = [strokeStartAnimation, strokeEndAnimation]
+    return animationGroup
+  }
+  
+  private func createAnimatedCatFace() -> CatLoadingView {
+    let anim = CatLoadingView() // adding cat's face
+    anim.backgroundColor = .clear
+    anim.frame = CGRect(x: 0, y: 0, width: 77*3, height: 55*3)
+    anim.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+    view.addSubview(anim)
+    
+    let customLayer = CAShapeLayer() // adding animated layer
+    customLayer.path = anim.addFace().cgPath
+    customLayer.backgroundColor = UIColor.clear.cgColor
+    customLayer.fillColor = .none
+    customLayer.strokeColor = UIColor.white.cgColor
+    customLayer.lineCap = .round
+    customLayer.lineWidth = 10
+    customLayer.add(addAnimations(), forKey: nil)
+    anim.layer.addSublayer(customLayer)
+    
+    anim.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    anim.alpha = 0
+    
+    return anim
+  }
+  
+  // MARK: - Alerts
+  private func showLoginError() {
+    let alert = UIAlertController(title: "Ошибка",
+                                  message: "Введите имя, пароль можно не вводить",
+                                  preferredStyle: .alert)
+    let action = UIAlertAction(title: "ОК", style: .cancel, handler: nil)
+    alert.addAction(action)
+    present(alert, animated: true, completion: nil)
+  }
+  
+  private func showTokenExpiredAlert() {
+    let tokenExpires = Session.shared.tokenExpires
+    let dateExpires = Date(timeIntervalSinceReferenceDate: tokenExpires)
+    let alert = UIAlertController(title: "Внимание",
+                                  message: "Токен устарел \(dateExpires)",
+                                  preferredStyle: .alert)
+    let action = UIAlertAction(title: "ОК", style: .cancel) { [weak self] _ in
+      self?.removeVkCookies()
+      self?.loginWithVK(self!.loginWithVKButton)
+    }
+    alert.addAction(action)
+    present(alert, animated: true, completion: nil)
+  }
+  
   // MARK: - Actions
   
   @IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue) {
@@ -187,7 +223,7 @@ class LoginVC: UIViewController {
     KeychainWrapper.standard.remove(forKey: "userId")
     KeychainWrapper.standard.remove(forKey: "userName")
     
-    removeCookie()
+    removeVkCookies()
   }
   
   @IBAction func signInButton(_ sender: UIButton) {

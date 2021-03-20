@@ -21,11 +21,18 @@ class Session {
     }
   }
   
+  var tokenExpires = KeychainWrapper.standard.double(forKey: "tokenExpires") ?? 0 {
+    didSet {
+      KeychainWrapper.standard.set(tokenExpires, forKey: "tokenExpires")
+    }
+  }
+  
   var userId = KeychainWrapper.standard.string(forKey: "userId") ?? "" {
     didSet {
       KeychainWrapper.standard.set(userId, forKey: "userId")
     }
   }
+  
   var userName = KeychainWrapper.standard.string(forKey: "userName") ?? "" {
     didSet {
       KeychainWrapper.standard.set(userName, forKey: "userName")

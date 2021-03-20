@@ -67,7 +67,6 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-
     createSingleTargetToken()
     createSearchDataNotificationToken()
   }
@@ -96,7 +95,7 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
     searchDataNotificationToken = usersData?.observe { [weak self] result in
       switch result {
       case .initial(let usersData):
-        print("Initiated with \(usersData.count) users")
+        print("Initiated with \(usersData.count)")
         self?.getSectionTitles()
         self?.tableView.reloadData()
       case .update(let users,
@@ -115,7 +114,6 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
         }
       case .error(let error):
         print(error.localizedDescription)
-
       }
     }
   }
@@ -176,7 +174,6 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
 // MARK: TableViewDelegate
 
 extension FriendListTableViewController: UITableViewDelegate {
-
   func numberOfSections(in tableView: UITableView) -> Int {
     return sectionTitles.count
   }
@@ -197,15 +194,6 @@ extension FriendListTableViewController: UITableViewDelegate {
     guard let header = view as? UITableViewHeaderFooterView else { return }
     header.textLabel?.textColor = UIColor.black
     header.alpha = 0.5
-  }
-
-  func tableView(_ tableView: UITableView,
-                 didEndDisplaying cell: UITableViewCell,
-                 forRowAt indexPath: IndexPath) {
-    if let cell = cell as? MyFriendsTableViewCell {
-      cell.friendPhoto.image = UIImage(named: "No_Image")
-    }
-    cell.prepareForReuse()
   }
 
   func tableView(_ tableView: UITableView,

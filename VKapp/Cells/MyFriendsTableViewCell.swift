@@ -33,6 +33,12 @@ class MyFriendsTableViewCell: UITableViewCell {
     tapAnimation()
   }
   
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    friendName.text = nil
+    friendPhoto.image = UIImage(named: "No_Image")
+  }
+  
   private func tapAnimation() {
     UIView.animate(withDuration: 0.1,
                    delay: 0,

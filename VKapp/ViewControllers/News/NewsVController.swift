@@ -102,7 +102,8 @@ extension NewsVC: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: collectionView.bounds.width - 10, height: collectionView.bounds.height * 0.7)
+    return CGSize(width: collectionView.bounds.width,
+                  height: collectionView.bounds.height * 0.6)
     // MARK: - autoresizing height???
   }
 }

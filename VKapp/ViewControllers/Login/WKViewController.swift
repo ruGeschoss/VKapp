@@ -25,7 +25,7 @@ class WKViewController: UIViewController {
     components.path = "/authorize"
     components.queryItems = [
       URLQueryItem(name: "client_id", value: "7758387"),
-      URLQueryItem(name: "scope", value: "262150"),
+      URLQueryItem(name: "scope", value: "270342"),
       URLQueryItem(name: "display", value: "mobile"),
       URLQueryItem(name: "redirect_uri", value: "https://oauth.vk.com/blank.html"),
       URLQueryItem(name: "response_type", value: "token"),
@@ -66,14 +66,17 @@ extension WKViewController: WKNavigationDelegate {
     
     guard let token = params["access_token"],
           let userIdString = params["user_id"],
+          let expiresIn = params["expires_in"],
+          Double(expiresIn) != nil,
           Int(userIdString) != nil else {
       decisionHandler(.allow)
       dismiss(animated: true)
       return
     }
-    
+    let currentTime = Date.timeIntervalSinceReferenceDate
     Session.shared.token = token
     Session.shared.userId = userIdString
+    Session.shared.tokenExpires = currentTime.advanced(by: Double(expiresIn)!)
     
     NetworkManager.getProfileDataSJ()
     

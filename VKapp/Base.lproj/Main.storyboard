@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -511,51 +510,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5Qh-83-tqi">
-                            <size key="itemSize" width="150" height="150"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
+                        <collectionViewLayout key="collectionViewLayout" id="0cu-vC-bqf" customClass="SingleAlbumCollectionViewLayout" customModule="VKapp" customModuleProvider="target"/>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FriendPhotoCell" id="dYY-0n-9tC" customClass="FriendPhotoCollectionViewCell" customModule="VKapp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dhL-FV-Y6E">
-                                    <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="d3n-6d-mIs">
-                                            <rect key="frame" x="8" y="8" width="134" height="134"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="d3n-6d-mIs" secondAttribute="height" multiplier="1:1" id="sQf-W5-CIq"/>
-                                            </constraints>
+                                            <rect key="frame" x="1" y="1" width="48" height="48"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xvR-Tb-dxH" customClass="LikeButtonUIButton" customModule="VKapp" customModuleProvider="target">
-                                            <rect key="frame" x="8" y="128.66666666666666" width="13.333333333333336" height="13.333333333333343"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" secondItem="xvR-Tb-dxH" secondAttribute="height" multiplier="1:1" id="2Mh-Cu-ivp"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                            <state key="normal" title="like" image="heart" catalog="system">
-                                                <color key="titleColor" systemColor="systemGreenColor"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="likeButton:" destination="dYY-0n-9tC" eventType="touchUpInside" id="eP2-rl-Bd6"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="d3n-6d-mIs" firstAttribute="trailing" secondItem="dhL-FV-Y6E" secondAttribute="trailingMargin" id="1hu-OZ-R1Y"/>
-                                        <constraint firstItem="d3n-6d-mIs" firstAttribute="leading" secondItem="dhL-FV-Y6E" secondAttribute="leadingMargin" id="JCh-dQ-Gp5"/>
-                                        <constraint firstItem="d3n-6d-mIs" firstAttribute="bottom" secondItem="dhL-FV-Y6E" secondAttribute="bottomMargin" id="T9E-eC-jf5"/>
-                                        <constraint firstItem="d3n-6d-mIs" firstAttribute="centerX" secondItem="dhL-FV-Y6E" secondAttribute="centerX" id="W68-DH-ssN"/>
-                                        <constraint firstItem="d3n-6d-mIs" firstAttribute="top" secondItem="dhL-FV-Y6E" secondAttribute="topMargin" id="Z3p-O9-QI8"/>
-                                        <constraint firstItem="xvR-Tb-dxH" firstAttribute="width" secondItem="d3n-6d-mIs" secondAttribute="width" multiplier="0.1" id="fgK-QS-mXE"/>
-                                        <constraint firstItem="d3n-6d-mIs" firstAttribute="centerY" secondItem="dhL-FV-Y6E" secondAttribute="centerY" id="gWE-Mb-w4G"/>
-                                        <constraint firstItem="xvR-Tb-dxH" firstAttribute="leading" secondItem="d3n-6d-mIs" secondAttribute="leading" id="ha8-qW-PDt"/>
-                                        <constraint firstItem="xvR-Tb-dxH" firstAttribute="bottom" secondItem="d3n-6d-mIs" secondAttribute="bottom" id="knY-wP-FLc"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xvR-Tb-dxH" secondAttribute="trailing" id="zQj-gR-QQO"/>
+                                        <constraint firstAttribute="bottom" secondItem="d3n-6d-mIs" secondAttribute="bottom" constant="1" id="Ayf-d6-rtk"/>
+                                        <constraint firstItem="d3n-6d-mIs" firstAttribute="top" secondItem="dhL-FV-Y6E" secondAttribute="top" constant="1" id="Mu7-lM-NXh"/>
+                                        <constraint firstAttribute="trailing" secondItem="d3n-6d-mIs" secondAttribute="trailing" constant="1" id="at5-Ay-Oz5"/>
+                                        <constraint firstItem="d3n-6d-mIs" firstAttribute="leading" secondItem="dhL-FV-Y6E" secondAttribute="leading" constant="1" id="hNF-25-xLc"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <connections>
@@ -702,7 +674,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pfl-tA-NKc">
                                 <rect key="frame" x="0.0" y="56" width="414" height="611"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UBk-SF-dGk">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Ber-VV-kFp">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -895,7 +867,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="heart" catalog="system" width="128" height="109"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="newspaper.fill" catalog="system" width="128" height="111"/>
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
