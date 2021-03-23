@@ -10,8 +10,6 @@ import UIKit
 class SingleAlbumCollectionViewLayout: UICollectionViewLayout {
   
   private var cacheAttributes = [IndexPath: UICollectionViewLayoutAttributes]()
-  private var lastX: CGFloat = 0
-  private var lastY: CGFloat = 0
   private var contentHeight: CGFloat = 0
   private var contentWidth: CGFloat {
     guard let collectionView = collectionView else { return 0 }
@@ -26,6 +24,8 @@ class SingleAlbumCollectionViewLayout: UICollectionViewLayout {
     let firstRow = Int.random(in: 2...4)
     let secondRow = Int.random(in: 2...4)
     var cellHeight: CGFloat = 0
+    var lastX: CGFloat = 0
+    var lastY: CGFloat = 0
     
     let firstRowCellsWidth = contentWidth / CGFloat(firstRow)
     let secondCellsWidth = contentWidth / CGFloat(secondRow)

@@ -231,14 +231,21 @@ extension FriendListTableViewController: UITableViewDelegate {
 
   func getSectionTitles() {
     sectionTitles = []
-
-    for each in searchData! {
-      let charForTitle = each.lastName.first ?? "-"
+    var shouldAppendEmptySection = false
+    
+    for friend in searchData! {
+      let charForTitle = friend.lastName.first ?? "-"
+      
+      guard charForTitle != "-" else {
+        shouldAppendEmptySection = true
+        continue
+      }
       if !sectionTitles.contains(String(charForTitle)) {
         sectionTitles.append(String(charForTitle))
       }
     }
-
+    
+    shouldAppendEmptySection ? (sectionTitles.append("-")) : ()
     charPicker.chars = sectionTitles
     charPicker.setupUI()
   }

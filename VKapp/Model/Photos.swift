@@ -21,8 +21,9 @@ class Photos: Object, Decodable {
     let photoId = json["id"].stringValue
     let datePosted = json["date"].intValue
     let imageSizes = json["sizes"].arrayValue
-    let tmpArray = imageSizes.map { $0["url"].stringValue }
-    tmpArray.forEach({ self.imageUrl.append($0) })
+    imageSizes
+      .map { $0["url"].stringValue }
+      .forEach { self.imageUrl.append($0) }
     
     self.photoId = photoId
     self.datePosted = datePosted
@@ -33,36 +34,3 @@ class Photos: Object, Decodable {
     "photoId"
   }
 }
-
-//  struct VKResponseAllPhotos: Codable {
-//      let response: PhotoResponse
-//  }
-//
-//  // MARK: - Response
-//  struct PhotoResponse: Codable {
-//      let count: Int
-//      let items: [Photo]
-//  }
-//
-//  // MARK: - Item
-//  struct Photo: Codable {
-//      let photoId: Int
-//      let datePosted: Int
-//      let photoSizes: [Size]  // contains width, height, url, size letter
-//
-//      enum CodingKeys: String, CodingKey {
-//          case photoId = "id"
-//          case datePosted = "date"
-//          case photoSizes = "sizes"
-//      }
-//  }
-//
-//  // MARK: - Size
-//  struct Size: Codable {
-//      let imageUrl: String
-//
-//      enum CodingKeys: String, CodingKey {
-//          //case x,m,s - photo sizes (VK documetation)
-//          case imageUrl = "url"
-//      }
-//  }

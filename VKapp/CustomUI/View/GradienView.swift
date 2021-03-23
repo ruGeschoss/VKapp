@@ -1,12 +1,13 @@
 //
-//  GradientView.swift
+//  GradienView.swift
 //  VKapp
 //
-//  Created by Alexander Andrianov on 04.01.2021.
+//  Created by Alexander Andrianov on 21.03.2021.
 //
 
 import UIKit
 
+// MARK: - Gradien View
 class GradientView: UIView {
   
   @IBInspectable var startColor: UIColor = .white {

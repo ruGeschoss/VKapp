@@ -85,9 +85,11 @@ class NetworkManager {
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession.request(baseUrl + path,
-                                            method: .get,
-                                            parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession
+      .request(baseUrl + path,
+               method: .get,
+               parameters: params)
+      .responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)
@@ -116,9 +118,11 @@ class NetworkManager {
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession.request(baseUrl + path,
-                                            method: .get,
-                                            parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession
+      .request(baseUrl + path,
+               method: .get,
+               parameters: params)
+      .responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)
@@ -143,9 +147,11 @@ class NetworkManager {
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession.request(baseUrl + path,
-                                            method: .get,
-                                            parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession
+      .request(baseUrl + path,
+               method: .get,
+               parameters: params)
+      .responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)
@@ -172,9 +178,11 @@ class NetworkManager {
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession.request(baseUrl + path,
-                                            method: .get,
-                                            parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession
+      .request(baseUrl + path,
+               method: .get,
+               parameters: params)
+      .responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)
@@ -192,7 +200,10 @@ class NetworkManager {
   // MARK: Get Photo Data
   static func getPhotoDataFromUrl(url: String,
                                   completion: @escaping (Data) -> Void) {
-    NetworkManager.alamoFireSession.request(url, method: .get).responseData { (response) in
+    NetworkManager.alamoFireSession
+      .request(url,
+               method: .get)
+      .responseData { (response) in
       guard let data = response.data else { return }
       completion(data)
     }
@@ -206,9 +217,11 @@ class NetworkManager {
       "access_token": Session.shared.token,
       "v": "5.92"
     ]
-    NetworkManager.alamoFireSession.request(baseUrl + path,
-                                            method: .get,
-                                            parameters: params).responseJSON { (response) in
+    NetworkManager.alamoFireSession
+      .request(baseUrl + path,
+               method: .get,
+               parameters: params)
+      .responseJSON { (response) in
       switch response.result {
       case .success(let data):
         let json = JSON(data)

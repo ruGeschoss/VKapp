@@ -17,7 +17,6 @@ class LoginVC: UIViewController {
   @IBOutlet weak var loginTextField: UITextField!
   @IBOutlet weak var passwordTextField: UITextField!
   @IBOutlet weak var signInButton: UIButton!
-  @IBOutlet weak var loadingStatus: UIView!
   @IBOutlet weak var stackView: UIStackView!
   @IBOutlet weak var loginWithVKButton: UIButton!
   @IBOutlet weak var signUpButton: UIButton!

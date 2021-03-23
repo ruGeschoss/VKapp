@@ -7,6 +7,7 @@
 
 import UIKit
 
+// MARK: - Round Image
 class RoundImage: UIImageView {
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -15,6 +16,7 @@ class RoundImage: UIImageView {
     }
 }
 
+// MARK: - Shadow Image
 class ShadowImage: UIImageView {
     
     @IBInspectable var shadowRadius: CGFloat = 5 {
