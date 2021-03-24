@@ -59,7 +59,8 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
   
   override func collectionView(_ collectionView: UICollectionView,
                                numberOfItemsInSection section: Int) -> Int {
-    allPhotosOfUser!.count
+    guard let allPhotosCount = allPhotosOfUser?.count else { return 0 }
+    return allPhotosCount
   }
   
   override func collectionView(_ collectionView: UICollectionView,
@@ -86,7 +87,9 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
   }
   
   private func createSingleTargetToken() {
-    testToken = allPhotosOfUser?[9].observe { change in
+    guard let allPhotosOfUser = allPhotosOfUser,
+          allPhotosOfUser.count != 0 else { return }
+    testToken = allPhotosOfUser.last?.observe { change in
       switch change {
       case .change(let object, let properties):
         let changes = properties.reduce("") { (res, new) in
@@ -131,7 +134,7 @@ class FriendPhotoCollectionViewController: UICollectionViewController {
         self?.collectionView.performBatchUpdates {
             self?.collectionView.insertItems(at: insertionsIndexPaths)
             self?.collectionView.deleteItems(at: deletionsIndexPaths)
-//            self?.collectionView.reloadItems(at: modificationsIndexPaths)
+            self?.collectionView.reloadItems(at: modificationsIndexPaths)
         }
       case .error(let error):
         print(error.localizedDescription)

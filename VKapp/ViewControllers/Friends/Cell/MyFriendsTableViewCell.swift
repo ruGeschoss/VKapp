@@ -35,32 +35,21 @@ class MyFriendsTableViewCell: UITableViewCell {
   
   override func prepareForReuse() {
     super.prepareForReuse()
-    friendName.text = nil
-    friendPhoto.image = UIImage(named: "No_Image")
   }
   
   private func tapAnimation() {
-    UIView.animate(withDuration: 0.1,
-                   delay: 0,
-                   options: .curveLinear,
-                   animations: {
-      self.avatarImage.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-    })
-    UIView.animate(withDuration: 0.1,
-                   delay: 0.1,
-                   options: .curveLinear,
-                   animations: {
-      self.avatarImage.transform = CGAffineTransform.identity
-    })
+    avatarImage.animatedTap()
   }
   
   func configure(forUser: UserSJ) {
     self.friendName.text = "\(forUser.firstName) \(forUser.lastName)"
     
-    switch forUser.photoData {
-    case nil:
-      NetworkManager.getPhotoDataFromUrl(url: forUser.photo) { [weak self] data in
-        self?.friendPhoto.image = UIImage(data: data, scale: 0.3)
+    guard let photoData = forUser.photoData else {
+      NetworkManager
+        .getPhotoDataFromUrl(url: forUser.photo) { [weak self] data in
+          DispatchQueue.main.async {
+            self?.friendPhoto.image = UIImage(data: data, scale: 0.3)
+          }
         do {
           let realm = try Realm()
           realm.beginWrite()
@@ -70,9 +59,9 @@ class MyFriendsTableViewCell: UITableViewCell {
           print(error.localizedDescription)
         }
       }
-    default:
-      self.friendPhoto.image = UIImage(data: forUser.photoData!, scale: 0.3)
+      return
     }
+    self.friendPhoto.image = UIImage(data: photoData, scale: 0.3)
   }
   
 }
