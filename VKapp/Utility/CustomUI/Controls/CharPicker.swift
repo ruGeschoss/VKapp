@@ -8,32 +8,18 @@
 import UIKit
 import Foundation
 
-class CharPicker: UIControl {
+final class CharPicker: UIControl {
+
+  private var maximumChars = Constants.maximumCharpickerChars
+  private var stackView: UIStackView!
+  var buttons: [UIButton] = []
   
-  var maximumChars = 15
   var chars: [String] = [] {
     didSet {
-      if chars.count > maximumChars {
-        let step = Float((chars.count * 100) / maximumChars)
-        let roundedStep = (step / 100).rounded(.awayFromZero)
-        var tmpArr: [String] = []
-        for (index, char) in chars.enumerated() {
-          if index % Int(roundedStep) == 0 {
-            tmpArr.append(char)
-          }
-        }
-        
-        self.chars = tmpArr
-        setupUI()
-        
-        return
-      }
+      restrictCount()
+      setupUI()
     }
   }
-  
-  var buttons: [UIButton] = []
-  private var stackView: UIStackView!
-  
   var selectedChar: String? = nil {
     didSet {
       updateSelectedChar()
@@ -51,21 +37,33 @@ class CharPicker: UIControl {
     setupUI()
   }
   
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    stackView.frame = bounds
+  }
+  
   func setupUI () {
     buttons.removeAll()
-    for char in chars {
-      let button = UIButton(type: UIButton.ButtonType.system)
-      button.setTitle(char, for: .normal)
-      button.setTitleColor(.systemPink, for: .normal)
-      button.setTitleColor(.systemYellow, for: .selected)
-      button.tintColor = UIColor.systemPink
-      button.addTarget(self, action: #selector(selectChar), for: .touchUpInside)
-      buttons.append(button)
-    }
+    createButtons()
+    setupStackView()
+  }
+  
+}
+
+// MARK: - Functions
+extension CharPicker {
+  
+  @objc private func selectChar(_ sender: UIButton) {
+    guard let index = buttons.firstIndex(of: sender) else { return }
     
-    if stackView != nil {
-      stackView.removeFullyAllArrangedSubviews()
-    }
+    let char: String = chars[index]
+    selectedChar = char
+    sender.isSelected = false
+  }
+  
+  private func setupStackView() {
+    stackView != nil ?
+      (stackView.removeFullyAllArrangedSubviews()) : ()
     
     stackView = UIStackView(arrangedSubviews: buttons)
     stackView.frame = self.bounds
@@ -77,11 +75,17 @@ class CharPicker: UIControl {
     addSubview(stackView)
   }
   
-  @objc func selectChar(_ sender: UIButton) {
-    guard let index = buttons.firstIndex(of: sender) else { return }
-    let char: String = chars[index]
-    selectedChar = char
-    sender.isSelected = false
+  private func createButtons() {
+    chars.forEach { (char) in
+      let button = UIButton(type: UIButton.ButtonType.system)
+      button.setTitle(char, for: .normal)
+      button.setTitleColor(.systemPink, for: .normal)
+      button.setTitleColor(.systemYellow, for: .selected)
+      button.tintColor = UIColor.systemPink
+      button.addTarget(self, action: #selector(selectChar),
+                       for: .touchUpInside)
+      buttons.append(button)
+    }
   }
   
   private func updateSelectedChar() {
@@ -91,23 +95,17 @@ class CharPicker: UIControl {
     }
   }
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    stackView.frame = bounds
-  }
-  
-}
-
-extension UIStackView {
-  
-  func removeFully(view: UIView) {
-    removeArrangedSubview(view)
-    view.removeFromSuperview()
-  }
-  
-  func removeFullyAllArrangedSubviews() {
-    arrangedSubviews.forEach { (view) in
-      removeFully(view: view)
+  private func restrictCount() {
+    if chars.count > maximumChars {
+      let step = Float((chars.count * 100) / maximumChars)
+      let roundedStep = (step / 100).rounded(.awayFromZero)
+      var tmpArr: [String] = []
+      chars.enumerated().forEach { (index, char) in
+        let shouldAppend = index % Int(roundedStep) == 0
+        shouldAppend ? (tmpArr.append(char)) : ()
+      }
+      self.chars = tmpArr
+      setupUI()
     }
   }
 }

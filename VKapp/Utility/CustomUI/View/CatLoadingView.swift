@@ -7,14 +7,16 @@
 
 import UIKit
 
-class CatLoadingView: UIView {
+final class CatLoadingView: UIView {
   
-  let shape = UIBezierPath()
-  let lineWidth: CGFloat = 10
+  private let shape = UIBezierPath()
+  private let lineWidth: CGFloat = 10
   
   override func draw(_ rect: CGRect) {
     super.draw(rect)
-    guard let context = UIGraphicsGetCurrentContext() else { return }
+    guard let context = UIGraphicsGetCurrentContext()
+    else { return }
+    
     context.setStrokeColor(UIColor.red.cgColor)
     context.setLineWidth(lineWidth)
     context.setLineCap(.round)
@@ -31,7 +33,7 @@ class CatLoadingView: UIView {
   }
   
   // MARK: - Draw Mustache
-  func addMustache() -> UIBezierPath {
+  private func addMustache() -> UIBezierPath {
     let path = UIBezierPath()
     path.move(to: CGPoint(x: 38.5, y: 97.5))
     path.addCurve(to: CGPoint(x: 1.5, y: 99.5),
@@ -61,7 +63,7 @@ class CatLoadingView: UIView {
     return path
   }
   // MARK: - Draw Bows
-  func addBow() -> UIBezierPath {
+  private func addBow() -> UIBezierPath {
     let path = UIBezierPath()
     path.move(to: CGPoint(x: 150, y: 50.2))
     path.addCurve(to: CGPoint(x: 117.5, y: 39),
@@ -98,7 +100,7 @@ class CatLoadingView: UIView {
     return path
   }
   
-  func addBowTwo() -> UIBezierPath {
+  private func addBowTwo() -> UIBezierPath {
     let path = UIBezierPath()
     path.move(to: CGPoint(x: 180.5, y: 37))
     path.addCurve(to: CGPoint(x: 163, y: 28),
@@ -138,6 +140,7 @@ class CatLoadingView: UIView {
   }
   
   // MARK: - Draw Face
+  // Also used to create animation
   func addFace() -> UIBezierPath {
     let path = UIBezierPath()
     path.move(to: CGPoint(x: 41.19, y: 9.7))

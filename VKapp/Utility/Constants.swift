@@ -8,11 +8,22 @@
 import UIKit
 
 final class Constants {
+  
   // MARK: - News Table View
   static let newsTableViewBackgroundColor: UIColor =
     UIColor.clear
   
-  // MARK: - News Table View Cell
+  // MARK: - News Post Table View Cell
+  static let newsPostCellNib: UINib =
+  UINib(nibName: "NewsPostTableViewCell", bundle: nil)
+  static let newsPostCellId: String = "NewsPostTableViewCell"
+  static let newsPostCellBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
+  
+  // MARK: - News Photo Table ViewCell
+  static let newsPhotoCellNib: UINib =
+  UINib(nibName: "NewsPhotoTableViewCell", bundle: nil)
+  static let newsPhotoCellId: String = "NewsPhotoTableViewCell"
+  static let newsPhotoCellBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
   
   // MARK: - Header View
   static let newsHeaderViewNib: UINib =
@@ -21,11 +32,7 @@ final class Constants {
   static let newsHeaderCornersToRound: UIRectCorner =
     [.topLeft, .topRight]
   static let newsHeaderCornerRadius: CGFloat = 30
-  static let newsHeaderViewBackgroundcolor: UIColor = #colorLiteral(red: 0.3730416298, green: 1, blue: 0, alpha: 1)
-  static let newsHeaderViewBackgroudAlpha: CGFloat = 0.3
-  static let newsHeaderInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 10, left: 20,
-                 bottom: 0, right: 20)
+  static let newsHeaderViewBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
   
   // MARK: - Footer View
   static let newsFooterViewNib: UINib =
@@ -34,9 +41,8 @@ final class Constants {
   static let newsFooterCornersToRound: UIRectCorner =
     [.bottomLeft, .bottomRight]
   static let newsFooterCornerRadius: CGFloat = 30
-  static let newsFooterViewBackgroundcolor: UIColor = #colorLiteral(red: 0.3730416298, green: 1, blue: 0, alpha: 1)
-  static let newsFooterViewBackgroudAlpha: CGFloat = 0.3
-  static let newsFooterInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 0, left: 20,
-                 bottom: 10, right: 20)
+  static let newsFooterViewBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
+  
+  // MARK: - Charpicker
+  static let maximumCharpickerChars: Int = 15
 }

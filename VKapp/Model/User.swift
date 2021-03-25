@@ -9,7 +9,7 @@ import Foundation
 import SwiftyJSON
 import RealmSwift
 
-class UserSJ: Object, Decodable {
+final class UserSJ: Object, Decodable {
   @objc dynamic var userId: String = ""
   @objc dynamic var firstName: String = ""
   @objc dynamic var lastName: String = ""
@@ -29,7 +29,6 @@ class UserSJ: Object, Decodable {
     self.firstName = firstName
     self.lastName = lastName
     self.photo = photo
-    self.forUser = forUser
   }
   
   override static func primaryKey() -> String? {

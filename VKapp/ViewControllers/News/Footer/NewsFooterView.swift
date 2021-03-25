@@ -39,8 +39,6 @@ final class NewsFooterView: UITableViewHeaderFooterView {
       radius: Constants.newsFooterCornerRadius)
     contentView.backgroundColor = Constants
       .newsFooterViewBackgroundcolor
-    contentView.alpha = Constants
-      .newsFooterViewBackgroudAlpha
     self.backgroundView = self.contentView
   }
   

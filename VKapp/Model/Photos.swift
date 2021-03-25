@@ -9,7 +9,7 @@ import Foundation
 import SwiftyJSON
 import RealmSwift
 
-class Photos: Object, Decodable {
+final class Photos: Object, Decodable {
   @objc dynamic var photoId: String = ""
   @objc dynamic var datePosted: Int = 0
   @objc dynamic var ownerId: String = ""
@@ -27,7 +27,6 @@ class Photos: Object, Decodable {
     
     self.photoId = photoId
     self.datePosted = datePosted
-    self.ownerId = ownerId
   }
   
   override static func primaryKey() -> String? {

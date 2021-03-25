@@ -7,9 +7,9 @@
 
 import UIKit
 
-class FriendPhotoCollectionViewCell: UICollectionViewCell {
+final class FriendPhotoCollectionViewCell: UICollectionViewCell {
   
-  @IBOutlet weak var friendAlbumPhoto: UIImageView!
+  @IBOutlet private weak var friendAlbumPhoto: UIImageView!
   
   func configure(photoUrl: String) {
     NetworkManager
@@ -19,5 +19,4 @@ class FriendPhotoCollectionViewCell: UICollectionViewCell {
         }
       }
   }
-  
 }

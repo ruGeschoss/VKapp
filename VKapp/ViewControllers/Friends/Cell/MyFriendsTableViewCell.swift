@@ -8,60 +8,59 @@
 import UIKit
 import RealmSwift
 
-class MyFriendsTableViewCell: UITableViewCell {
+final class MyFriendsTableViewCell: UITableViewCell {
   
-  @IBOutlet weak var friendName: UILabel!
-  @IBOutlet weak var friendPhoto: UIImageView!
+  @IBOutlet private weak var friendName: UILabel!
+  @IBOutlet private weak var friendPhoto: UIImageView!
   @IBOutlet private weak var avatarImage: ShadowImage!
+  
+  private lazy var realm = RealmManager.shared
   
   override func awakeFromNib() {
     super.awakeFromNib()
     self.backgroundColor = .clear
-    let tapGesture = UITapGestureRecognizer(target: self,
-                                            action: #selector(tappedOnImage))
-    avatarImage.addGestureRecognizer(tapGesture)
-    avatarImage.isUserInteractionEnabled = true
+    addGestureRecognizer()
   }
   
-  override func setSelected(_ selected: Bool,
-                            animated: Bool) {
-    //        super.setSelected(selected, animated: animated)
-    // Configure the view for the selected state
-  }
-  
-  @objc func tappedOnImage() {
-    tapAnimation()
-  }
+  override func setSelected(_ selected: Bool, animated: Bool) {}
   
   override func prepareForReuse() {
     super.prepareForReuse()
   }
   
-  private func tapAnimation() {
-    avatarImage.animatedTap()
-  }
-  
   func configure(forUser: UserSJ) {
-    self.friendName.text = "\(forUser.firstName) \(forUser.lastName)"
+    self.friendName.text =
+      "\(forUser.firstName) \(forUser.lastName)"
     
     guard let photoData = forUser.photoData else {
       NetworkManager
         .getPhotoDataFromUrl(url: forUser.photo) { [weak self] data in
-          DispatchQueue.main.async {
-            self?.friendPhoto.image = UIImage(data: data, scale: 0.3)
+          DispatchQueue.main.async { [weak self] in
+            self?.friendPhoto.image =
+              UIImage(data: data, scale: 0.3)
           }
-        do {
-          let realm = try Realm()
-          realm.beginWrite()
-          forUser.photoData = data
-          try realm.commitWrite()
-        } catch {
-          print(error.localizedDescription)
-        }
+          try? self?.realm?
+            .update(type: forUser.self,
+                    primaryKeyValue: forUser.userId,
+                    setNewValue: data, forField: "photoData")
       }
       return
     }
     self.friendPhoto.image = UIImage(data: photoData, scale: 0.3)
+  }
+}
+
+// MARK: - Functions
+extension MyFriendsTableViewCell {
+  @objc private func tappedOnImage() {
+    avatarImage.animatedTap()
+  }
+  
+  private func addGestureRecognizer() {
+    let tapGesture = UITapGestureRecognizer(
+      target: self, action: #selector(tappedOnImage))
+    avatarImage.addGestureRecognizer(tapGesture)
+    avatarImage.isUserInteractionEnabled = true
   }
   
 }

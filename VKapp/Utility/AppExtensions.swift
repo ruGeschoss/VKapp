@@ -56,20 +56,32 @@ extension UIView {
   }
   
   func animatedTap() {
-    UIView.animate(withDuration: 0.1,
-                   delay: 0,
-                   options: .curveLinear,
-                   animations: {
-                    self.transform =
-                      CGAffineTransform(scaleX: 0.8,
-                                        y: 0.8)
-                   })
-    UIView.animate(withDuration: 0.1,
-                   delay: 0.1,
-                   options: .curveLinear,
-                   animations: {
-                    self.transform =
-                      CGAffineTransform.identity
-                   })
+    UIView.animate(
+      withDuration: 0.1, delay: 0,
+      options: .curveLinear, animations: {
+        self.transform =
+          CGAffineTransform(scaleX: 0.8, y: 0.8)
+      })
+    UIView.animate(
+      withDuration: 0.1, delay: 0.1,
+      options: .curveLinear, animations: {
+        self.transform =
+          CGAffineTransform.identity
+      })
+  }
+}
+
+// MARK: - UIStackView
+extension UIStackView {
+  
+  func removeFully(view: UIView) {
+    removeArrangedSubview(view)
+    view.removeFromSuperview()
+  }
+  
+  func removeFullyAllArrangedSubviews() {
+    arrangedSubviews.forEach { (view) in
+      removeFully(view: view)
+    }
   }
 }

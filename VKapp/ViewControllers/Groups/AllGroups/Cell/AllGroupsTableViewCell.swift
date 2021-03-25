@@ -7,21 +7,17 @@
 
 import UIKit
 
-class AllGroupsTableViewCell: UITableViewCell {
-  @IBOutlet weak var groupName: UILabel!
-  @IBOutlet weak var groupPhoto: UIImageView!
+final class AllGroupsTableViewCell: UITableViewCell {
+  @IBOutlet private weak var groupName: UILabel!
+  @IBOutlet private weak var groupPhoto: UIImageView!
   
   override func awakeFromNib() {
     super.awakeFromNib()
-    // Initialization code
-    groupPhoto.layer.cornerRadius = groupPhoto.frame.width / 2
+    groupPhoto.layer.cornerRadius =
+      groupPhoto.frame.width / 2
   }
   
-  override func setSelected(_ selected: Bool, animated: Bool) {
-    //        super.setSelected(selected, animated: animated)
-    
-    // Configure the view for the selected state
-  }
+  override func setSelected(_ selected: Bool, animated: Bool) {}
   
   func configure(forGroup: Group) {
     self.groupName.text = forGroup.groupName

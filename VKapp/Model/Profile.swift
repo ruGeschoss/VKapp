@@ -9,7 +9,7 @@ import Foundation
 import SwiftyJSON
 import RealmSwift
 
-class ProfileSJ: Object, Decodable {
+final class ProfileSJ: Object, Decodable {
   @objc dynamic var userId: String = ""
   @objc dynamic var firstName: String = ""
   @objc dynamic var lastName: String = ""
