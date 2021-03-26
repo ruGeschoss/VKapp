@@ -181,8 +181,7 @@ final class NetworkManager {
     completion: @escaping (Data) -> Void) {
     
     NetworkManager.alamoFireSession
-      .request(url,
-               method: .get)
+      .request(url, method: .get)
       .responseData { (response) in
       guard let data = response.data else { return }
       completion(data)

@@ -168,10 +168,12 @@ extension FriendPhotoCollectionViewController {
         let deletionsIndexPaths = deletions
           .map { IndexPath(item: $0, section: 0) }
         
-        self?.collectionView.performBatchUpdates {
-            self?.collectionView.insertItems(at: insertionsIndexPaths)
-            self?.collectionView.deleteItems(at: deletionsIndexPaths)
-            self?.collectionView.reloadItems(at: modificationsIndexPaths)
+        DispatchQueue.main.async {
+          self?.collectionView.performBatchUpdates {
+              self?.collectionView.insertItems(at: insertionsIndexPaths)
+              self?.collectionView.deleteItems(at: deletionsIndexPaths)
+              self?.collectionView.reloadItems(at: modificationsIndexPaths)
+          }
         }
       case .error(let error):
         print(error.localizedDescription)

@@ -101,7 +101,6 @@ extension MyGroupsTableViewController {
               Modifications \(modifications)
               """)
           #endif
-          self?.tableView.beginUpdates()
           let deletionsIndexPaths =
             deletions.map { IndexPath(row: $0, section: 0) }
           let insertionsIndexPaths =
@@ -109,13 +108,16 @@ extension MyGroupsTableViewController {
           let modificationsIndexPaths =
             modifications.map { IndexPath(row: $0, section: 0) }
           
-          self?.tableView
-            .deleteRows(at: deletionsIndexPaths, with: .automatic)
-          self?.tableView
-            .insertRows(at: insertionsIndexPaths, with: .automatic)
-          self?.tableView
-            .reloadRows(at: modificationsIndexPaths, with: .automatic)
-          self?.tableView.endUpdates()
+          DispatchQueue.main.async {
+            self?.tableView.beginUpdates()
+            self?.tableView
+              .deleteRows(at: deletionsIndexPaths, with: .automatic)
+            self?.tableView
+              .insertRows(at: insertionsIndexPaths, with: .automatic)
+            self?.tableView
+              .reloadRows(at: modificationsIndexPaths, with: .automatic)
+            self?.tableView.endUpdates()
+          }
         case .error(let error):
           print(error.localizedDescription)
         }

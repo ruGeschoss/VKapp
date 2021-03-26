@@ -22,13 +22,13 @@ final class RealmManager {
   
   func add<T: Object>(object: T) throws {
     try realm.write {
-      realm.add(object)
+      realm.add(object, update: .modified)
     }
   }
   
   func add<T: Object>(objects: [T]) throws {
     try realm.write {
-      realm.add(objects, update: .all)
+      realm.add(objects, update: .modified)
     }
   }
   
