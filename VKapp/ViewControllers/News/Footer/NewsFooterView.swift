@@ -42,17 +42,72 @@ final class NewsFooterView: UITableViewHeaderFooterView {
     self.backgroundView = self.contentView
   }
   
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    self.likeImage.image =
+      UIImage(systemName: "heart")
+    self.likeCount.text = ""
+    self.commentImage.image =
+      UIImage(systemName: "message")
+    self.commentCount.text = ""
+    self.shareImage.image =
+    UIImage(systemName: "arrowshape.turn.up.forward")
+    self.shareCount.text = ""
+    self.viewsCount.text = ""
+  }
+  
   // MARK: - Setup
-  func configure() {
+  func configure(likes: Likes, comments: Comments, reposts: Reposts, views: Views) {
     #if DEBUG
-    self.likeCount.text = "\(Int.random(in: 1...100))"
-    self.commentCount.text = "\(Int.random(in: 1...100))"
-    self.shareCount.text = "\(Int.random(in: 1...100))"
-    self.viewsCount.text = "\(Int.random(in: 1...100))"
+    configureLikes(likes: likes)
+    configureComments(comments: comments)
+    configureReposts(reposts: reposts)
+    configureViews(views: views)
     print("Footer configured")
     #endif
   }
+}
+
+extension NewsFooterView {
   
+  // MARK: - Configure likes
+  private func configureLikes(likes: Likes) {
+    guard likes.canLike else {
+      self.likeStackView.isHidden = true
+      return
+    }
+    self.likeCount.text = "\(likes.count)"
+    self.alreadyLiked = likes.userLikes
+    if alreadyLiked {
+      self.likeImage.image =
+        UIImage(systemName: "heart.fill")
+    }
+  }
+  
+  // MARK: - Configure comments
+  private func configureComments(comments: Comments) {
+    guard comments.canPost else {
+      self.commentStackView.isHidden = true
+      return
+    }
+    self.commentCount.text = "\(comments.count)"
+  }
+  
+  // MARK: - Configure reposts
+  private func configureReposts(reposts: Reposts) {
+    if reposts.userReposted {
+      self.shareImage.image =
+        UIImage(systemName: "arrowshape.turn.up.forward.fill")
+    }
+    self.shareCount.text = "\(reposts.count)"
+  }
+  
+  // MARK: - Configure views
+  private func configureViews(views: Views) {
+    self.viewsCount.text = "\(views.count)"
+  }
+  
+  // MARK: - Recognisers
   private func addGestureRecogniser() {
     let likeTap = UITapGestureRecognizer(
       target: self,

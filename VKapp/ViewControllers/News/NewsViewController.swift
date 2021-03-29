@@ -11,26 +11,46 @@ final class NewsViewController: UIViewController {
   @IBOutlet private weak var backgroundView: GradientView!
   @IBOutlet private weak var newsTableView: UITableView!
   
+  private var news: [NewsPostModel] = []
+  private var users: [UserSJ] = []
+  private var groups: [Group] = []
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTableView()
     registerReusableViews()
+    
+    NewsfeedService.getPostNews { (news, users, groups, nextFrom) in
+      print("Got post news: \(news.count), from: \(users.count) users and \(groups.count) groups")
+      print("Next request from: \(nextFrom)")
+      DispatchQueue.main.async {
+        self.news = news
+        self.groups = groups
+        self.users = users
+        self.newsTableView.reloadData()
+      }
+    }
+    NewsfeedService.getPhotoNews { (news, users, groups, nextFrom) in
+      print("Got photo news: \(news.count), from: \(users.count) users and \(groups.count) groups")
+      print("Next request from: \(nextFrom)")
+      print(news.first?.photos.count)
+    }
   }
 }
 
 // MARK: - TableView DataSource
 extension NewsViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    20
+    news.count
   }
   
   func tableView(_ tableView: UITableView,
                  numberOfRowsInSection section: Int) -> Int {
-    switch (section + 1) % 2 {
-    case 0:
-      return 1
-    default:
+    switch news[section].text != "" {
+    case true:
       return 2
+    default:
+      return 1
     }
   }
   
@@ -43,19 +63,20 @@ extension NewsViewController: UITableViewDataSource {
             withIdentifier: Constants.newsPhotoCellId)
             as? NewsPhotoTableViewCell else { return UITableViewCell() }
     
+    guard let attachment = news[indexPath.section].photoAttachments.first,
+          let photo = attachment.imageUrl.last else { return UITableViewCell() }
+    
     switch indexPath.row {
     case 0:
-      postCell.configure(text: """
-                               Some text to test multilane
-                               textfield for news cell and etc
-                               """)
+      if news[indexPath.section].text == "" {
+        photoCell.configure(url: photo)
+        return photoCell
+      }
+      postCell.configure(text: news[indexPath.section].text)
       return postCell
     default:
-      if (indexPath.section + 1) % 3 == 0 {
-        photoCell.configure(image: UIImage(named: "Batz_Maru")!)
-      } else {
-        photoCell.configure(image: UIImage(named: "photo1")!)
-      }
+      
+      photoCell.configure(url: photo)
       return photoCell
     }
   }
@@ -65,8 +86,26 @@ extension NewsViewController: UITableViewDataSource {
     guard let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: Constants.newsHeaderViewId)
             as? NewsHeaderView else { return UIView() }
-    header.configure()
-    return header
+    
+    guard users.first != nil,
+          groups.first != nil else { return UIView() }
+    
+    switch news[section].sourceId > 0 {
+    case true:
+      let sourceId = news[section].sourceId
+      let owner = users.filter { (postOwner) -> Bool in
+        return postOwner.userId == String(sourceId)
+      }
+      header.configureForUser(date: news[section].date, user: owner.first!)
+      return header
+    case false:
+      let sourceId = news[section].sourceId * news[section].sourceId.signum()
+      let owner = groups.filter { (postOwner) -> Bool in
+        return postOwner.groupId == String(sourceId)
+      }
+      header.configureForGroup(date: news[section].date, group: owner.first!)
+      return header
+    }
   }
   
   func tableView(_ tableView: UITableView,
@@ -74,7 +113,9 @@ extension NewsViewController: UITableViewDataSource {
     guard let footer = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: Constants.newsFooterViewId)
             as? NewsFooterView else { return UIView() }
-    footer.configure()
+    let post = news[section]
+    footer.configure(likes: post.likes, comments: post.comments,
+                     reposts: post.reposts, views: post.views)
     return footer
   }
   

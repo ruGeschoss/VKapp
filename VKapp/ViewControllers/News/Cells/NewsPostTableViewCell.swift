@@ -19,6 +19,12 @@ final class NewsPostTableViewCell: UITableViewCell {
     super.layoutSubviews()
     setupUI()
   }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    self.newsPostText.text = ""
+    self.backgroundView?.backgroundColor = .clear
+  }
 
   override func setSelected(_ selected: Bool, animated: Bool) {
     // Don't wanna set selected

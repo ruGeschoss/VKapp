@@ -32,21 +32,57 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
   }
   
   // MARK: Setup
-  func configure() {
+  func configureForUser(date: Int, user: UserSJ) {
+    self.profileName.text = user.firstName + " " + user.lastName
+    setDateToUnderline(date)
+    
+    NetworkManager.getPhotoDataFromUrl(url: user.photo) { data in
+      DispatchQueue.main.async {
+        self.profileAvatar.image = UIImage(data: data)
+      }
+    }
     #if DEBUG
-    self.profileAvatar.image = UIImage(named: "Chococat")
-    self.profileName.text = "Alexander Andrianov"
-    self.profileNameUnderline.text = "23 марта 2021 18:31"
     print("Header configured")
     #endif
   }
   
+  func configureForGroup(date: Int, group: Group) {
+    self.profileName.text = group.groupName
+    setDateToUnderline(date)
+    
+    NetworkManager.getPhotoDataFromUrl(url: group.groupAvatarSizes.first!) { data in
+      DispatchQueue.main.async {
+        self.profileAvatar.image = UIImage(data: data)
+      }
+    }
+    #if DEBUG
+    print("Header configured")
+    #endif
+  }
+}
+
+extension NewsHeaderView {
+  
+  // MARK: - Recogniser
   private func addGestureRecogniser() {
     let tapGesture = UITapGestureRecognizer(
       target: self,
       action: #selector(tappedOnProfile))
     profileStackView.addGestureRecognizer(tapGesture)
     profileStackView.isUserInteractionEnabled = true
+  }
+  
+  // MARK: - Date formatter
+  private func setDateToUnderline(_ date: Int) {
+    DispatchQueue.global().async {
+      let date = Date(timeIntervalSince1970: Double(date))
+      let dateformatter = DateFormatter()
+      dateformatter.locale = Locale(identifier: "ru")
+      dateformatter.dateFormat = "d MMMM yyyy HH:mm"
+      DispatchQueue.main.async {
+        self.profileNameUnderline.text = dateformatter.string(from: date)
+      }
+    }
   }
   
   // MARK: - Actions

@@ -20,12 +20,22 @@ final class NewsPhotoTableViewCell: UITableViewCell {
     setupUI()
   }
   
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    self.cellImageView.image = nil
+    self.backgroundView?.backgroundColor = .clear
+  }
+  
   override func setSelected(_ selected: Bool, animated: Bool) {
     // Don't wanna set selected
   }
   
-  func configure(image: UIImage) {
-    self.cellImageView.image = image
+  func configure(url: String) {
+    NetworkManager.getPhotoDataFromUrl(url: url) { data in
+      DispatchQueue.main.async {
+        self.cellImageView.image = UIImage(data: data)
+      }
+    }
   }
   
   private func setupUI() {

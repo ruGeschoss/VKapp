@@ -6,66 +6,63 @@
 //
 
 import Foundation
+import SwiftyJSON
 
-final class NewsPostModel {
+final class NewsPostModel: Decodable {
   
-  var sourceId: Int  // source_id : int
-  var date: Int     // date : int
-  var postType: String // post_type : str
-  var text: String    // text : str
-  var markedAsAds: Int // marked_as_ads : 0 1
+  var sourceId: Int = 0
+  var date: Int = 0
+  var postType: String = ""
+  var text: String = ""
+  var markedAsAds: Bool = false
+  var postId: Int = 0
+  var isFavorite: Bool = false
+  var type: String = ""
+  var photoAttachments: [Photos] = []
+  var comments: Comments = Comments()
+  var likes: Likes = Likes()
+  var reposts: Reposts = Reposts()
+  var views: Views = Views()
   
-  // comments
-  var comments: [String: Int] // comments: [str: int]
-  var commentscount: Int // count: int
-  var commentscanPost: Int // can_post: int 0 1
-  
-  //
-  
-  // attachments
-  var attachments: [Any] // attachments : [Any] /// [{}]
-  var type: String // type : str
-  
-  /// photo
-  var photo: [String: Any] // photo : [Str: Any]
-  var photoalbumId: Int // album_id : int
-  var photodate: Int // date: int
-  var photoid: Int // id: int
-  var photoownerId: Int // owner_id: int
-  var photopostId: Int // post_id: int
-  
-  ////  photosizes
-  var photosizes: [Any] // sizes: [Any] /// [{}]
-  var photosizesType: [String: Any] // each photo
-  var photoSizesHeight: Int // height: Int
-  var photoSizesWidth: Int // hidth: Int
-  var photoSizesUrl: String // url: Str
-  
-  
-  init() {
-  }
-  
-  var a = [
+  convenience init(from json: JSON) {
+    self.init()
     
-    "comments": {
-      "count": 0,
-      "can_post": 1
-    },
-    "likes": {
-      "count": 18,
-      "user_likes": 0,
-      "can_like": 1,
-      "can_publish": 1
-    },
-    "reposts": {
-      "count": 0,
-      "user_reposted": 0
-    },
-    "views": {
-      "count": 556
-    },
-    "post_id": 5122447,
-    "type": "post"
+    let sourceId = json["source_id"].intValue
+    let date = json["date"].intValue
+    let postType = json["post_type"].stringValue
+    let text = json["text"].stringValue
+    let markedAsAds = json["marked_as_ads"].intValue
+    let isFavorite = json["is_favorite"].boolValue
+    let postId = json["post_id"].intValue
+    let type = json["type"].stringValue
+    
+    #if DEBUG
+    let attachments = json["attachments"].arrayValue
+    if attachments.count != 0 {
+      let photoAttachments = attachments.filter { (element) in
+        element["type"] == "photo"
+      }
+      self.photoAttachments = photoAttachments
+        .map { Photos(from: $0["photo"]) }
+    }
+    #endif
+    let likes = json["likes"]
+    let comments = json["comments"]
+    let reposts = json["reposts"]
+    let views = json["views"]
+    
+    self.sourceId = sourceId
+    self.date = date
+    self.postType = postType
+    self.text = text
+    self.markedAsAds = markedAsAds == 1
+    self.isFavorite = isFavorite
+    self.postId = postId
+    self.type = type
+    self.likes = Likes(from: likes)
+    self.comments = Comments(from: comments)
+    self.reposts = Reposts(from: reposts)
+    self.views = Views(from: views)
   }
-]
+  
 }

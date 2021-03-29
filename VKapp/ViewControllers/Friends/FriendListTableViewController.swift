@@ -152,6 +152,7 @@ extension FriendListTableViewController: UITableViewDataSource {
   }
 }
 
+// MARK: - TableView Delegate
 extension FriendListTableViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView,
                  didSelectRowAt indexPath: IndexPath) {
