@@ -17,17 +17,19 @@ class RoundImage: UIImageView {
 
 class ShadowImage: UIImageView {
     
-    @IBInspectable var shadowRadius:CGFloat = 5 {
+    @IBInspectable var shadowRadius: CGFloat = 5 {
         didSet {
             setNeedsDisplay()
         }
     }
-    @IBInspectable var shadowOpacity:Float = 0.6 {
+  
+    @IBInspectable var shadowOpacity: Float = 0.6 {
         didSet {
             setNeedsDisplay()
         }
     }
-    @IBInspectable var shadowColor:UIColor = .red {
+  
+    @IBInspectable var shadowColor: UIColor = .red {
         didSet {
             setNeedsDisplay()
         }

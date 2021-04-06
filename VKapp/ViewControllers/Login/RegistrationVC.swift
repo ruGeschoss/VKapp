@@ -8,8 +8,8 @@
 import UIKit
 
 class RegistrationVC: UIViewController {
-        
-    override func viewDidLoad() {
-    }
-    
+  
+  override func viewDidLoad() {
+  }
+  
 }

@@ -10,38 +10,35 @@ import SwiftyJSON
 import RealmSwift
 
 class ProfileSJ: Object, Decodable {
-    @objc dynamic var id: String = ""
-    @objc dynamic var firstName: String = ""
-    @objc dynamic var lastName: String = ""
-    @objc dynamic var city: String? = ""
+  @objc dynamic var userId: String = ""
+  @objc dynamic var firstName: String = ""
+  @objc dynamic var lastName: String = ""
+  @objc dynamic var city: String? = ""
+  
+  convenience init(from json: JSON) {
+    self.init()
     
+    let userId = json["id"].stringValue
+    let firstName = json["first_name"].stringValue
+    let lastName = json["last_name"].stringValue
+    let city = json["home_town"].stringValue
     
-    convenience init(from json: JSON) {
-        self.init()
-        
-        let id = json["id"].stringValue
-        self.id = id
-        
-        let firstName = json["first_name"].stringValue
-        self.firstName = firstName
-        
-        let lastName = json["last_name"].stringValue
-        self.lastName = lastName
-        
-        let city = json["home_town"].stringValue
-        self.city = city
-    }
-    
-    override static func primaryKey() -> String? {
-        "id"
-    }
+    self.userId = userId
+    self.firstName = firstName
+    self.lastName = lastName
+    self.city = city
+  }
+  
+  override static func primaryKey() -> String? {
+    "userId"
+  }
 }
 
-//struct Profile: Codable {
+// struct Profile: Codable {
 //    let response: MyProfile
-//}
+// }
 //
-//struct MyProfile: Codable {
+// struct MyProfile: Codable {
 //    let firstName: String
 //    let id: Int
 //    let lastName, homeTown, status, bdate: String
@@ -63,9 +60,9 @@ class ProfileSJ: Object, Decodable {
 //        case screenName = "screen_name"
 //        case sex
 //    }
-//}
+// }
 //
-//struct City: Codable {
+// struct City: Codable {
 //    let id: Int
 //    let title: String
-//}
+// }
