@@ -58,6 +58,10 @@
 		B7FB6E84260F93A5005B31C8 /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E83260F93A5005B31C8 /* Comments.swift */; };
 		B7FB6E87260F9647005B31C8 /* Reposts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E86260F9647005B31C8 /* Reposts.swift */; };
 		B7FB6E8A260F9762005B31C8 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E89260F9762005B31C8 /* Views.swift */; };
+		B7FB6E96261C71B0005B31C8 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E95261C71AF005B31C8 /* AsyncOperation.swift */; };
+		B7FB6E9A261C7470005B31C8 /* RequestDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E99261C7470005B31C8 /* RequestDataOperation.swift */; };
+		B7FB6E9D261C7D51005B31C8 /* ParseDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E9C261C7D51005B31C8 /* ParseDataOperation.swift */; };
+		B7FB6EA0261C813B005B31C8 /* SavingToRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E9F261C813B005B31C8 /* SavingToRealmOperation.swift */; };
 		B7FFEECE25D58363006959EC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7FFEECD25D58363006959EC /* WebKit.framework */; };
 		B7FFEED125DBFF8C006959EC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFEED025DBFF8C006959EC /* User.swift */; };
 		F93254088670A60AFF7D2476 /* Pods_VKapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E38BF168BE93A3F0089FA6F /* Pods_VKapp.framework */; };
@@ -120,6 +124,10 @@
 		B7FB6E83260F93A5005B31C8 /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		B7FB6E86260F9647005B31C8 /* Reposts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reposts.swift; sourceTree = "<group>"; };
 		B7FB6E89260F9762005B31C8 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		B7FB6E95261C71AF005B31C8 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		B7FB6E99261C7470005B31C8 /* RequestDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDataOperation.swift; sourceTree = "<group>"; };
+		B7FB6E9C261C7D51005B31C8 /* ParseDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataOperation.swift; sourceTree = "<group>"; };
+		B7FB6E9F261C813B005B31C8 /* SavingToRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingToRealmOperation.swift; sourceTree = "<group>"; };
 		B7FFEECD25D58363006959EC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B7FFEED025DBFF8C006959EC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -215,6 +223,7 @@
 		B768A06325D01DEF005C069E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				B7FB6E94261C719B005B31C8 /* Operations */,
 				B7FB6E7E260F8BF3005B31C8 /* Parsers */,
 				B768A07625D5412E005C069E /* NetworkManager.swift */,
 				B79B16E425F79B39001DA787 /* RealmManager.swift */,
@@ -449,6 +458,17 @@
 			path = Parsers;
 			sourceTree = "<group>";
 		};
+		B7FB6E94261C719B005B31C8 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				B7FB6E95261C71AF005B31C8 /* AsyncOperation.swift */,
+				B7FB6E99261C7470005B31C8 /* RequestDataOperation.swift */,
+				B7FB6E9C261C7D51005B31C8 /* ParseDataOperation.swift */,
+				B7FB6E9F261C813B005B31C8 /* SavingToRealmOperation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -589,11 +609,13 @@
 				B7CA8CF225C19CB100CE256A /* FullScreenPhotoVC.swift in Sources */,
 				B769DBED25C96DA800E0E864 /* PushCustomNC.swift in Sources */,
 				B7FB6E19260A218C005B31C8 /* NewsHeaderView.swift in Sources */,
+				B7FB6EA0261C813B005B31C8 /* SavingToRealmOperation.swift in Sources */,
 				B76069D625920427005E1F03 /* AppDelegate.swift in Sources */,
 				B79B16E525F79B3A001DA787 /* RealmManager.swift in Sources */,
 				B769DBF325C9AC6C00E0E864 /* InteractiveTransition.swift in Sources */,
 				B779558A259B500B006E07B1 /* FriendListTableViewController.swift in Sources */,
 				B7FB6E8A260F9762005B31C8 /* Views.swift in Sources */,
+				B7FB6E9D261C7D51005B31C8 /* ParseDataOperation.swift in Sources */,
 				B7FB6DB02607E0DB005B31C8 /* NewsViewController.swift in Sources */,
 				B751CBE225A44A6F00919820 /* LikeButtonUIButton.swift in Sources */,
 				B79B16D125DFE644001DA787 /* Group.swift in Sources */,
@@ -612,6 +634,7 @@
 				B7FB6E1D260A21A2005B31C8 /* NewsFooterView.swift in Sources */,
 				B7FB6E70260E828B005B31C8 /* NewsPhotoModel.swift in Sources */,
 				B7FB6DBC2607E463005B31C8 /* Constants.swift in Sources */,
+				B7FB6E9A261C7470005B31C8 /* RequestDataOperation.swift in Sources */,
 				B768A07725D5412E005C069E /* NetworkManager.swift in Sources */,
 				B7795564259A45A2006E07B1 /* AllGroupsTableViewController.swift in Sources */,
 				B779557E259A7238006E07B1 /* FriendPhotoCollectionViewController.swift in Sources */,
@@ -619,6 +642,7 @@
 				B7795586259A7604006E07B1 /* FriendPhotoCollectionViewCell.swift in Sources */,
 				B768A06525D01E02005C069E /* Session.swift in Sources */,
 				B79B16CE25DF280F001DA787 /* Profile.swift in Sources */,
+				B7FB6E96261C71B0005B31C8 /* AsyncOperation.swift in Sources */,
 				B769DBEA25C96D8E00E0E864 /* CustomNavigationController.swift in Sources */,
 				B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */,
 				B79B16CA25DEFF91001DA787 /* Photos.swift in Sources */,

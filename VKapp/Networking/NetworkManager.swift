@@ -69,22 +69,23 @@ final class NetworkManager {
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession
+    let request = NetworkManager.alamoFireSession
       .request(baseUrl + path, method: .get, parameters: params)
-      .responseJSON { (response) in
-      switch response.result {
-      case .success(let data):
-        let json = JSON(data)
-        let response = json["response"]["items"].arrayValue
-        let friends = response
-          .map { UserSJ(from: $0) }
-          .filter { $0.lastName != "" }
-        friends.forEach { $0.forUser = target }
-        try? realm?.add(objects: friends)
-        completion()
-      case .failure(let error):
-        print(error.localizedDescription)
-      }
+    
+    let requestOperation = RequestDataOperation(
+      request: request, forUser: target)
+    let parseOperation = ParseDataOperation()
+    let savingOperation = SavingToRealmOperation()
+    parseOperation.addDependency(requestOperation)
+    savingOperation.addDependency(parseOperation)
+    
+    let requestQueue = OperationQueue()
+    requestQueue.addOperation(requestOperation)
+    requestQueue.addOperation(parseOperation)
+    requestQueue.addOperation(savingOperation)
+    
+    savingOperation.completionBlock = {
+      completion()
     }
   }
   
