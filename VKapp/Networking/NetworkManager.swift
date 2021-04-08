@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 import RealmSwift
+import PromiseKit
 
 final class NetworkManager {
   
@@ -21,40 +22,8 @@ final class NetworkManager {
   }()
   
   private static let realm = RealmManager.shared
-
-  // MARK: Load Groups
-  static func loadGroupsSJ(
-    forUserId: String?,
-    completion: @escaping () -> Void) {
-    
-    let target = forUserId ?? Session.shared.userId
-    let baseUrl = "https://api.vk.com"
-    let path = "/method/groups.get"
-    let params: Parameters = [
-      "access_token": Session.shared.token,
-      "user_id": target,
-      "extended": 1,
-      "v": "5.92"
-    ]
-    
-    NetworkManager.alamoFireSession
-      .request(baseUrl + path, method: .get, parameters: params)
-      .responseJSON { (response) in
-      switch response.result {
-      case .success(let data):
-        let json = JSON(data)
-        let response = json["response"]["items"].arrayValue
-        let groups = response.map { Group(from: $0) }
-        groups.forEach { $0.forUserId = target }
-        try? realm?.add(objects: groups)
-        completion()
-      case .failure(let error):
-        print(error.localizedDescription)
-      }
-    }
-  }
   
-  // MARK: Load Friends
+  // MARK: - Load Friends
   static func loadFriendsSJ(
     forUser: String?,
     completion: @escaping () -> Void) {
@@ -89,7 +58,7 @@ final class NetworkManager {
     }
   }
   
-  // MARK: Load Photos
+  // MARK: - Load Photos
   static func loadPhotosSJ(
     ownerId: String,
     completion: @escaping () -> Void) {
@@ -119,7 +88,7 @@ final class NetworkManager {
     }
   }
  
-  // MARK: Load User Profile
+  // MARK: - Load User Profile
   static func getProfileDataSJ() {
     
     let baseUrl = "https://api.vk.com"
@@ -143,40 +112,123 @@ final class NetworkManager {
     }
   }
   
-  // MARK: Search Groups
-  static func searchGroupSJ(
-    searchText: String?,
-    completion: ((Result<[Group], Error>) -> Void)? = nil) {
+  // MARK: - Load Groups
+  static func loadGroupsSJ(
+    forUserId: String?, completion: @escaping () -> Void) {
+    let target = forUserId ?? Session.shared.userId
     
+    firstly {
+      requestGroups(target: target)
+    }.then { (data) in
+      parseGroups(target: target, fromData: data)
+    }.done { (groups) in
+      storeToRealm(groups: groups)
+    }.catch { (error) in
+      print(error.localizedDescription)
+    }.finally {
+      completion()
+      #if DEBUG
+      print("NM.loadGroupsSJ successfully finished tasks")
+      #endif
+    }
+  }
+  
+  private static func requestGroups(
+    target: String) -> Promise<Data> {
+    let (promise, resolver) = Promise<Data>.pending()
+    let baseUrl = "https://api.vk.com"
+    let path = "/method/groups.get"
+    let params: Parameters = [
+      "access_token": Session.shared.token,
+      "user_id": target,
+      "extended": 1,
+      "v": "5.92"
+    ]
+    
+    Self.alamoFireSession
+      .request(baseUrl + path, method: .get,
+               parameters: params)
+      .response { response in
+        switch response.result {
+        case .success(let data):
+          if let data = data {
+            resolver.fulfill(data)
+          }
+        case .failure(let error):
+          resolver.reject(error)
+        }
+      }
+    return promise
+  }
+  
+  private static func parseGroups(
+    target: String,
+    fromData: Data) -> Promise<[Group]> {
+    let promise = Promise<[Group]> { resolver in
+      let json = JSON(fromData)
+      let response = json["response"]["items"].arrayValue
+      let groups = response.map { Group(from: $0) }
+      groups.forEach { $0.forUserId = target }
+      resolver.fulfill(groups)
+    }
+    return promise
+  }
+  
+  private static func storeToRealm(groups: [Group]) {
+    do {
+      try realm?.add(objects: groups)
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
+  // MARK: - Search Groups
+  static func searchGroupSJ(
+    searchText: String?, completion: @escaping ([Group]) -> Void) {
+    let text = searchText ?? " "
+    
+    firstly {
+      requestGroupSearch(searchText: text)
+    }.then { (data) in
+      parseGroups(target: "", fromData: data)
+    }.done(on: .main) { (groups) in
+      completion(groups)
+    }.catch { (error) in
+      print(error.localizedDescription)
+    }
+    
+  }
+  
+  private static func requestGroupSearch(searchText: String) -> Promise<Data> {
+    let (promise, resolver) = Promise<Data>.pending()
     let baseUrl = "https://api.vk.com"
     let path = "/method/groups.search"
     let params: Parameters = [
       "access_token": Session.shared.token,
-      "q": searchText ?? " ",
+      "q": searchText,
       "type": "group",
       "sort": "0",
       "count": "50",
       "v": "5.92"
     ]
     
-    NetworkManager.alamoFireSession
-      .request(baseUrl + path,
-               method: .get,
+    Self.alamoFireSession
+      .request(baseUrl + path, method: .get,
                parameters: params)
-      .responseJSON { (response) in
-      switch response.result {
-      case .success(let data):
-        let json = JSON(data)
-        let response = json["response"]["items"].arrayValue
-        let groups = response.map { Group(from: $0) }
-        completion?(.success(groups))
-      case .failure(let error):
-        completion?(.failure(error))
+      .response { response in
+        switch response.result {
+        case .success(let data):
+          if let data = data {
+            resolver.fulfill(data)
+          }
+        case .failure(let error):
+          resolver.reject(error)
+        }
       }
-    }
+    return promise
   }
   
-  // MARK: Get Single Photo Data
+  // MARK: - Get Single Photo Data
   static func getPhotoDataFromUrl(
     url: String,
     completion: @escaping (Data) -> Void) {

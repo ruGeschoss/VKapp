@@ -8,6 +8,7 @@ target 'VKapp' do
   # Pods for VKapp
   pod 'Alamofire', '~> 5.2'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'PromiseKit'
   pod 'RealmSwift'
   pod 'SwiftKeychainWrapper'
 #  pod 'SDWebImage', '~> 5.0'
