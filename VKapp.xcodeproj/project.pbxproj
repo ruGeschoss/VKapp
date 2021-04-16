@@ -62,6 +62,7 @@
 		B7FB6E9A261C7470005B31C8 /* RequestDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E99261C7470005B31C8 /* RequestDataOperation.swift */; };
 		B7FB6E9D261C7D51005B31C8 /* ParseDataOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E9C261C7D51005B31C8 /* ParseDataOperation.swift */; };
 		B7FB6EA0261C813B005B31C8 /* SavingToRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6E9F261C813B005B31C8 /* SavingToRealmOperation.swift */; };
+		B7FB6EE42620AD81005B31C8 /* PhotoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FB6EE32620AD81005B31C8 /* PhotoService.swift */; };
 		B7FFEECE25D58363006959EC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7FFEECD25D58363006959EC /* WebKit.framework */; };
 		B7FFEED125DBFF8C006959EC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFEED025DBFF8C006959EC /* User.swift */; };
 		F93254088670A60AFF7D2476 /* Pods_VKapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E38BF168BE93A3F0089FA6F /* Pods_VKapp.framework */; };
@@ -128,6 +129,7 @@
 		B7FB6E99261C7470005B31C8 /* RequestDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDataOperation.swift; sourceTree = "<group>"; };
 		B7FB6E9C261C7D51005B31C8 /* ParseDataOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseDataOperation.swift; sourceTree = "<group>"; };
 		B7FB6E9F261C813B005B31C8 /* SavingToRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavingToRealmOperation.swift; sourceTree = "<group>"; };
+		B7FB6EE32620AD81005B31C8 /* PhotoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoService.swift; sourceTree = "<group>"; };
 		B7FFEECD25D58363006959EC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B7FFEED025DBFF8C006959EC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -229,6 +231,7 @@
 				B79B16E425F79B39001DA787 /* RealmManager.swift */,
 				B768A06425D01E02005C069E /* Session.swift */,
 				B7FB6E69260E7907005B31C8 /* NewsfeedService.swift */,
+				B7FB6EE32620AD81005B31C8 /* PhotoService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -645,6 +648,7 @@
 				B7FB6E96261C71B0005B31C8 /* AsyncOperation.swift in Sources */,
 				B769DBEA25C96D8E00E0E864 /* CustomNavigationController.swift in Sources */,
 				B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */,
+				B7FB6EE42620AD81005B31C8 /* PhotoService.swift in Sources */,
 				B79B16CA25DEFF91001DA787 /* Photos.swift in Sources */,
 				B7FB6E80260F8C0D005B31C8 /* Likes.swift in Sources */,
 				B751CBD725A3A7B300919820 /* CustomImage.swift in Sources */,

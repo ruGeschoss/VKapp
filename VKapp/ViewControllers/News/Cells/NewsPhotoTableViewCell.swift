@@ -9,7 +9,7 @@ import UIKit
 
 final class NewsPhotoTableViewCell: UITableViewCell {
   @IBOutlet private weak var cellBackgroundView: UIView!
-  @IBOutlet private weak var cellImageView: UIImageView!
+  @IBOutlet weak var cellImageView: UIImageView!
   
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -28,14 +28,6 @@ final class NewsPhotoTableViewCell: UITableViewCell {
   
   override func setSelected(_ selected: Bool, animated: Bool) {
     // Don't wanna set selected
-  }
-  
-  func configure(url: String) {
-    NetworkManager.getPhotoDataFromUrl(url: url) { data in
-      DispatchQueue.main.async {
-        self.cellImageView.image = UIImage(data: data)
-      }
-    }
   }
   
   private func setupUI() {
