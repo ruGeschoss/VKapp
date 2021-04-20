@@ -41,23 +41,17 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
         self.profileAvatar.image = UIImage(data: data)
       }
     }
-    #if DEBUG
-    print("Header configured")
-    #endif
   }
   
   func configureForGroup(date: Int, group: Group) {
     self.profileName.text = group.groupName
     setDateToUnderline(date)
-    
-    NetworkManager.getPhotoDataFromUrl(url: group.groupAvatarSizes.first!) { data in
+    let avatar = group.groupAvatarSizes.first!
+    NetworkManager.getPhotoDataFromUrl(url: avatar) { data in
       DispatchQueue.main.async {
         self.profileAvatar.image = UIImage(data: data)
       }
     }
-    #if DEBUG
-    print("Header configured")
-    #endif
   }
 }
 

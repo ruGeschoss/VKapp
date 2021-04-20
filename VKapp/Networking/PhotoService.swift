@@ -109,7 +109,7 @@ final class PhotoService {
     }
   }
   
-  // MARK: - Set photo from cache or web
+  // MARK: - Set photo from cache
   func photo(indexPath: IndexPath, url: String) -> UIImage? {
     var image: UIImage?
     
@@ -135,7 +135,7 @@ extension PhotoService {
     }
     
     func reloadRow(indexPath: IndexPath) {
-      table.reloadRows(at: [indexPath], with: .automatic)
+      table.reloadRows(at: [indexPath], with: .none)
     }
   }
   

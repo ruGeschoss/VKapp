@@ -266,10 +266,10 @@ extension FriendListTableViewController {
         }
         let user = object as? UserSJ
         #if DEBUG
-        print("""
-              Changed properties for user:
-              \(user?.lastName ?? "")\n\(changes)
-              """)
+//        print("""
+//              Changed properties for user:
+//              \(user?.lastName ?? "")\n\(changes)
+//              """)
         #endif
       case .deleted:
         print("obj deleted")
@@ -292,12 +292,12 @@ extension FriendListTableViewController {
                      insertions: let insertions,
                      modifications: let modifications):
           #if DEBUG
-          print("""
-              New count \(users.count)
-              Deletions \(deletions)
-              Insertions \(insertions)
-              Modifications \(modifications)
-              """)
+//          print("""
+//              New count \(users.count)
+//              Deletions \(deletions)
+//              Insertions \(insertions)
+//              Modifications \(modifications)
+//              """)
           #endif
           if !deletions.isEmpty || !insertions.isEmpty {
             self?.getSectionTitles()

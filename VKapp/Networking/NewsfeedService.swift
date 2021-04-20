@@ -30,7 +30,7 @@ final class NewsfeedService {
       "access_token": Session.shared.token,
       "v": "5.92",
       "filters": "post",
-      "count": 10
+      "count": 5
     ]
     
     NewsfeedService.alamoFireSession
