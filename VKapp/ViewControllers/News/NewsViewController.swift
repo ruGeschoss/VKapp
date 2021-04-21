@@ -12,29 +12,34 @@ final class NewsViewController: UIViewController {
   @IBOutlet private weak var newsTableView: UITableView!
   
   private lazy var photoService = PhotoService(container: newsTableView)
+  private lazy var refreshControl: UIRefreshControl = {
+    createRefreshControl()
+  }()
   private var news: [NewsPostModel] = []
   private var users: [UserSJ] = []
   private var groups: [Group] = []
   private var aspects: [IndexPath: CGFloat] = [:]
+  private var nextNewsRequestFrom: String = ""
+  private var newsAreLoading: Bool = false
   
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTableView()
     registerReusableViews()
     
-    NewsfeedService.getPostNews { (news, users, groups, nextFrom) in
-      print("Got post news: \(news.count), from: \(users.count) users and \(groups.count) groups")
-      print("Next request from: \(nextFrom)")
+    NewsfeedService.getPostNews(startFrom: nil) { (news, users, groups, nextFrom) in
       DispatchQueue.main.async {
         self.news = news
         self.groups = groups
         self.users = users
+        self.nextNewsRequestFrom = nextFrom
         self.newsTableView.reloadData()
       }
     }
+    
     NewsfeedService.getPhotoNews { (news, users, groups, nextFrom) in
       print("Got photo news: \(news.count), from: \(users.count) users and \(groups.count) groups")
-      print("Next request from: \(nextFrom)")
+      print("Next photoNews request from: \(nextFrom)")
     }
   }
 }
@@ -197,7 +202,65 @@ extension NewsViewController {
     newsTableView.dataSource = self
     newsTableView.delegate = self
     newsTableView.separatorStyle = .none
+    newsTableView.refreshControl = refreshControl
+    newsTableView.prefetchDataSource = self
+    
     newsTableView.backgroundColor =
       Constants.newsTableViewBackgroundColor
+  }
+  
+  // MARK: - Refresh Control
+  private func createRefreshControl() -> UIRefreshControl {
+    let refreshControl = UIRefreshControl()
+    refreshControl.tintColor = .systemGray
+    refreshControl.attributedTitle =
+      NSAttributedString(
+        string: "Обновление...",
+        attributes: [.font: UIFont.systemFont(ofSize: 10)])
+    refreshControl.addTarget(
+      self, action: #selector(refresh(_:)),
+      for: .valueChanged)
+    return refreshControl
+  }
+  
+  @objc private func refresh(_ sender: UIRefreshControl) {
+    NewsfeedService.getPostNews(startFrom: nil) { (news, users, groups, nextFrom) in
+      DispatchQueue.main.async {
+        self.news = news
+        self.groups = groups
+        self.users = users
+        self.nextNewsRequestFrom = nextFrom
+        self.refreshControl.endRefreshing()
+        self.newsTableView.reloadData()
+      }
+    }
+  }
+}
+
+// MARK: - DataSource Prefetching
+extension NewsViewController: UITableViewDataSourcePrefetching {
+  func tableView(_ tableView: UITableView,
+                 prefetchRowsAt indexPaths: [IndexPath]) {
+    guard
+      let maxSection = indexPaths.map({ $0.section }).max()
+    else { return }
+    
+    if maxSection > news.count - 3,
+       !newsAreLoading {
+      newsAreLoading = true
+      
+      NewsfeedService
+        .getPostNews(startFrom: nextNewsRequestFrom) { [weak self] (news, users, groups, nextFrom) in
+          guard let self = self else { return }
+          let indexSet = IndexSet(
+            integersIn: self.news.count ..< self.news.count + news.count)
+          self.news.append(contentsOf: news)
+          self.users.append(contentsOf: users)
+          self.groups.append(contentsOf: groups)
+          self.nextNewsRequestFrom = nextFrom
+          self.newsTableView.insertSections(indexSet, with: .none)
+          self.newsAreLoading = false
+      }
+    }
   }
 }

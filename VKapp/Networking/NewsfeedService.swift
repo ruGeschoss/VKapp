@@ -24,13 +24,15 @@ final class NewsfeedService {
   
   // MARK: - get "post"
   static func getPostNews(
+    startFrom: String?,
     completion: @escaping ([NewsPostModel], [UserSJ], [Group], String) -> Void) {
     
     let params: Parameters = [
       "access_token": Session.shared.token,
       "v": "5.92",
       "filters": "post",
-      "count": 5
+      "count": 5,
+      "start_from": startFrom ?? ""
     ]
     
     NewsfeedService.alamoFireSession
