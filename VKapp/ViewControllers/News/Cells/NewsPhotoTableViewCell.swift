@@ -32,13 +32,15 @@ final class NewsPhotoTableViewCell: UITableViewCell {
   
   override func prepareForReuse() {
     super.prepareForReuse()
+    self.cellImageView.image = nil
   }
   
   override func setSelected(_ selected: Bool, animated: Bool) {
   }
   
   func configure(image: UIImage?) {
-    cellImageView.image = image ?? UIImage(named: "No_Image")!
+    guard let image = image else { return }
+    cellImageView.image = image
     layoutCellBackgroundView()
     layoutCellImageView()
   }
@@ -49,11 +51,37 @@ final class NewsPhotoTableViewCell: UITableViewCell {
   }
   
   private func layoutCellImageView() {
+    print(
+      """
+      /n
+      *******STARTED LAYING OUT CELLIMAGEVIEW******
+      superView.frame = \(frame)
+      superview.bounds = \(bounds)
+      cellBackgroundView.frame = \(cellBackgroundView.frame)
+      cellBackgroundView.bounds = \(cellBackgroundView.bounds)
+      cellImageView.frame = \(cellImageView.frame)
+      cellImageView.bounds = \(cellImageView.bounds)
+      *********************************************
+      /n
+      """)
     guard let image = cellImageView.image else {
       cellBackgroundView.frame = bounds
       cellImageView.frame = CGRect(
         x: bounds.minX + inset, y: bounds.minY,
-        width: bounds.width - inset * 2, height: bounds.height)
+        width: ceil(bounds.width - inset * 2), height: ceil(bounds.height))
+      print(
+        """
+        /n
+        *******QUIT BY GUARD FROM LAYING OUT CELLIMAGEVIEW******
+        superView.frame = \(frame)
+        superview.bounds = \(bounds)
+        cellBackgroundView.frame = \(cellBackgroundView.frame)
+        cellBackgroundView.bounds = \(cellBackgroundView.bounds)
+        cellImageView.frame = \(cellImageView.frame)
+        cellImageView.bounds = \(cellImageView.bounds)
+        *********************************************
+        /n
+        """)
       return
     }
     
@@ -63,13 +91,39 @@ final class NewsPhotoTableViewCell: UITableViewCell {
     let imageHeight = aspect < 1 ? width : width / aspect
     let imageWidth = imageHeight * aspect
     let imageX = (width - imageWidth) / 2
-    let imageOrigin = CGPoint(x: imageX, y: 0)
+    let imageOrigin = CGPoint(x: ceil(imageX), y: 0)
     let imageSize = CGSize(width: ceil(imageWidth), height: ceil(imageHeight))
     self.cellImageView.frame = CGRect(origin: imageOrigin, size: imageSize)
     cellImageView.layoutSubviews()
+    print(
+      """
+      /n
+      *******FINISHED LAYING OUT CELLIMAGEVIEW******
+      superView.frame = \(frame)
+      superview.bounds = \(bounds)
+      cellBackgroundView.frame = \(cellBackgroundView.frame)
+      cellBackgroundView.bounds = \(cellBackgroundView.bounds)
+      cellImageView.frame = \(cellImageView.frame)
+      cellImageView.bounds = \(cellImageView.bounds)
+      *********************************************
+      /n
+      """)
   }
   
   private func layoutCellBackgroundView() {
+    print(
+      """
+      /n
+      *******STARTED LAYING OUT CELLBACKGROUNDVIEW******
+      superView.frame = \(frame)
+      superview.bounds = \(bounds)
+      cellBackgroundView.frame = \(cellBackgroundView.frame)
+      cellBackgroundView.bounds = \(cellBackgroundView.bounds)
+      cellImageView.frame = \(cellImageView.frame)
+      cellImageView.bounds = \(cellImageView.bounds)
+      *********************************************
+      /n
+      """)
     let width = bounds.width - inset * 2
     let height = bounds.height
     let backgroundOrigin = CGPoint(x: bounds.minX + inset, y: bounds.minY)
@@ -77,5 +131,18 @@ final class NewsPhotoTableViewCell: UITableViewCell {
     self.cellBackgroundView.frame = CGRect(
       origin: backgroundOrigin, size: backgroundSize)
     cellBackgroundView.layoutSubviews()
+    print(
+      """
+      /n
+      *******FINISHED LAYING OUT CELLBACKGROUNDVIEW******
+      superView.frame = \(frame)
+      superview.bounds = \(bounds)
+      cellBackgroundView.frame = \(cellBackgroundView.frame)
+      cellBackgroundView.bounds = \(cellBackgroundView.bounds)
+      cellImageView.frame = \(cellImageView.frame)
+      cellImageView.bounds = \(cellImageView.bounds)
+      *********************************************
+      /n
+      """)
   }
 }

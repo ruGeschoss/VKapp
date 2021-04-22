@@ -63,36 +63,59 @@ extension NewsViewController: UITableViewDataSource {
   // MARK: - CellForRowAt
   func tableView(_ tableView: UITableView,
                  cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let postCell = tableView.dequeueReusableCell(
-            withIdentifier: Constants.newsPostCellId)
-            as? NewsPostTableViewCell,
-          let photoCell = tableView.dequeueReusableCell(
-            withIdentifier: Constants.newsPhotoCellId)
-            as? NewsPhotoTableViewCell else { return UITableViewCell() }
-    
     switch indexPath.row {
     case 0:
-      if news[indexPath.section].text != "" {
-        postCell.configure(text: news[indexPath.section].text)
-        return postCell
-      }
-      fallthrough
+      guard news[indexPath.section].text != "" else { fallthrough }
+      print("""
+            *--------*****--------*****--------*
+            DEQUED TEXT CELL:
+            SECTION \(indexPath.section)
+            ROW \(indexPath.row)
+            *--------*****--------*****--------*
+            """)
+      guard let postCell = tableView.dequeueReusableCell(
+              withIdentifier: Constants.newsPostCellId)
+              as? NewsPostTableViewCell else { return UITableViewCell() }
+      postCell.configure(text: news[indexPath.section].text)
+      print("""
+            *--------*****--------*****--------*
+            CONFIGURED TEXT CELL:
+            SECTION \(indexPath.section)
+            ROW \(indexPath.row)
+            *--------*****--------*****--------*
+            """)
+      return postCell
       
     default:
       guard let attachment = news[indexPath.section].photoAttachments.first,
-            let photo = attachment.imageUrl.last
+            let photo = attachment.imageUrl.last,
+            let image = photoService
+              .photo(indexPath: indexPath, url: photo),
+            let photoCell = tableView.dequeueReusableCell(
+                    withIdentifier: Constants.newsPhotoCellId)
+                    as? NewsPhotoTableViewCell
       else { return UITableViewCell() }
-      
-      let image = photoService
-        .photo(indexPath: indexPath, url: photo)
-      photoCell.configure(image: image)
-      
-      if let size = image?.size,
-         aspects[indexPath] == nil {
-        
+      print("""
+            *--------*****--------*****--------*
+            DEQUED PHOTO CELL:
+            SECTION \(indexPath.section)
+            ROW \(indexPath.row)
+            *--------*****--------*****--------*
+            """)
+      if aspects[indexPath] == nil {
+        let size = image.size
         let aspect = size.width / size.height
         aspects[indexPath] = aspect
       }
+      
+      photoCell.configure(image: image)
+      print("""
+            *--------*****--------*****--------*
+            CONFIGURED PHOTO CELL:
+            SECTION \(indexPath.section)
+            ROW \(indexPath.row)
+            *--------*****--------*****--------*
+            """)
       return photoCell
     }
   }
