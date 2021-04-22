@@ -8,141 +8,92 @@
 import UIKit
 
 final class NewsPhotoTableViewCell: UITableViewCell {
-  @IBOutlet private weak var cellBackgroundView: UIView! {
-    didSet {
-      self.cellBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-    }
-  }
   
-  @IBOutlet private weak var cellImageView: UIImageView! {
-    didSet {
-      self.cellImageView.translatesAutoresizingMaskIntoConstraints = false
-      cellImageView.contentMode = .scaleAspectFit
-    }
-  }
-  
-  private let inset: CGFloat = 10
+  private var contentImage: UIImage?
+  private var aspectRatio: CGFloat?
+  private var superBounds: CGRect?
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    setupUI()
-    layoutCellBackgroundView()
-    layoutCellImageView()
+    if superBounds == nil {
+      superBounds = bounds
+      layoutContent()
+    }
   }
   
   override func prepareForReuse() {
     super.prepareForReuse()
-    self.cellImageView.image = nil
+    superBounds = nil
+    contentView
+      .subviews
+      .forEach { $0.removeFromSuperview() }
   }
   
   override func setSelected(_ selected: Bool, animated: Bool) {
   }
   
-  func configure(image: UIImage?) {
-    guard let image = image else { return }
-    cellImageView.image = image
-    layoutCellBackgroundView()
-    layoutCellImageView()
+  func configure(image: UIImage?, aspectRatio: CGFloat?) {
+    guard
+      let image = image,
+      let aspect = aspectRatio
+    else { return }
+    self.contentImage = image
+    self.aspectRatio = aspect
+    layoutContent()
   }
   
-  private func setupUI() {
-    self.cellBackgroundView.backgroundColor =
-      Constants.newsPhotoCellBackgroundcolor
-  }
-  
-  private func layoutCellImageView() {
-    print(
-      """
-      /n
-      *******STARTED LAYING OUT CELLIMAGEVIEW******
-      superView.frame = \(frame)
-      superview.bounds = \(bounds)
-      cellBackgroundView.frame = \(cellBackgroundView.frame)
-      cellBackgroundView.bounds = \(cellBackgroundView.bounds)
-      cellImageView.frame = \(cellImageView.frame)
-      cellImageView.bounds = \(cellImageView.bounds)
-      *********************************************
-      /n
-      """)
-    guard let image = cellImageView.image else {
-      cellBackgroundView.frame = bounds
-      cellImageView.frame = CGRect(
-        x: bounds.minX + inset, y: bounds.minY,
-        width: ceil(bounds.width - inset * 2), height: ceil(bounds.height))
-      print(
-        """
-        /n
-        *******QUIT BY GUARD FROM LAYING OUT CELLIMAGEVIEW******
-        superView.frame = \(frame)
-        superview.bounds = \(bounds)
-        cellBackgroundView.frame = \(cellBackgroundView.frame)
-        cellBackgroundView.bounds = \(cellBackgroundView.bounds)
-        cellImageView.frame = \(cellImageView.frame)
-        cellImageView.bounds = \(cellImageView.bounds)
-        *********************************************
-        /n
-        """)
-      return
+  private func layoutContent() {
+    guard
+      let image = contentImage,
+      let aspect = aspectRatio
+    else { return }
+    
+    DispatchQueue.global().async { [weak self] in
+      guard let self = self,
+            let superBounds = self.superBounds else { return }
+      let insets = Constants.newsPhotoCellInsets
+      let contentInsets = Constants.newsPhotoCellContentInsets
+      
+      let insetsWidthSum = insets.left + insets.right
+      let contentInsetsWidthSum = contentInsets.left + contentInsets.right
+      let contentInsetsHeightSum = contentInsets.top + contentInsets.bottom
+      
+      let cellWidth = superBounds.width - insetsWidthSum
+      let maxCellContentWitdh = cellWidth - contentInsetsWidthSum
+      let cellContentHeight =
+        aspect < 1 ? maxCellContentWitdh : maxCellContentWitdh / aspect
+      let cellContentWidth =
+        aspect > 1 ? maxCellContentWitdh : maxCellContentWitdh * aspect
+      let cellHeight = cellContentHeight + contentInsetsHeightSum
+      
+      let cellOrigin =
+        CGPoint(x: superBounds.minX + insets.left, y: insets.top)
+      let cellSize = CGSize(width: ceil(cellWidth), height: ceil(cellHeight))
+      
+      let contentX = (cellWidth - cellContentWidth) / 2
+      let contentOrigin = CGPoint(x: ceil(contentX), y: contentInsets.top)
+      let contentSize =
+        CGSize(width: ceil(cellContentWidth), height: ceil(cellContentHeight))
+      
+      DispatchQueue.main.async {
+        
+        self.contentView
+          .subviews
+          .forEach { $0.removeFromSuperview() }
+        
+        let myBackgroundView = UIView()
+        myBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        myBackgroundView.frame = CGRect(origin: cellOrigin, size: cellSize)
+        myBackgroundView.backgroundColor = Constants.newsPhotoCellBackgroundcolor
+        
+        let myContentView = UIImageView()
+        myContentView.translatesAutoresizingMaskIntoConstraints = false
+        myContentView.frame = CGRect(origin: contentOrigin, size: contentSize)
+        myContentView.image = image
+        myBackgroundView.addSubview(myContentView)
+        self.contentView.addSubview(myBackgroundView)
+      }
     }
-    
-    let aspect = image.size.width / image.size.height
-    let width = bounds.width - inset * 2
-    
-    let imageHeight = aspect < 1 ? width : width / aspect
-    let imageWidth = imageHeight * aspect
-    let imageX = (width - imageWidth) / 2
-    let imageOrigin = CGPoint(x: ceil(imageX), y: 0)
-    let imageSize = CGSize(width: ceil(imageWidth), height: ceil(imageHeight))
-    self.cellImageView.frame = CGRect(origin: imageOrigin, size: imageSize)
-    cellImageView.layoutSubviews()
-    print(
-      """
-      /n
-      *******FINISHED LAYING OUT CELLIMAGEVIEW******
-      superView.frame = \(frame)
-      superview.bounds = \(bounds)
-      cellBackgroundView.frame = \(cellBackgroundView.frame)
-      cellBackgroundView.bounds = \(cellBackgroundView.bounds)
-      cellImageView.frame = \(cellImageView.frame)
-      cellImageView.bounds = \(cellImageView.bounds)
-      *********************************************
-      /n
-      """)
   }
   
-  private func layoutCellBackgroundView() {
-    print(
-      """
-      /n
-      *******STARTED LAYING OUT CELLBACKGROUNDVIEW******
-      superView.frame = \(frame)
-      superview.bounds = \(bounds)
-      cellBackgroundView.frame = \(cellBackgroundView.frame)
-      cellBackgroundView.bounds = \(cellBackgroundView.bounds)
-      cellImageView.frame = \(cellImageView.frame)
-      cellImageView.bounds = \(cellImageView.bounds)
-      *********************************************
-      /n
-      """)
-    let width = bounds.width - inset * 2
-    let height = bounds.height
-    let backgroundOrigin = CGPoint(x: bounds.minX + inset, y: bounds.minY)
-    let backgroundSize = CGSize(width: ceil(width), height: ceil(height))
-    self.cellBackgroundView.frame = CGRect(
-      origin: backgroundOrigin, size: backgroundSize)
-    cellBackgroundView.layoutSubviews()
-    print(
-      """
-      /n
-      *******FINISHED LAYING OUT CELLBACKGROUNDVIEW******
-      superView.frame = \(frame)
-      superview.bounds = \(bounds)
-      cellBackgroundView.frame = \(cellBackgroundView.frame)
-      cellBackgroundView.bounds = \(cellBackgroundView.bounds)
-      cellImageView.frame = \(cellImageView.frame)
-      cellImageView.bounds = \(cellImageView.bounds)
-      *********************************************
-      /n
-      """)
-  }
 }

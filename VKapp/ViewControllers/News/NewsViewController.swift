@@ -66,24 +66,10 @@ extension NewsViewController: UITableViewDataSource {
     switch indexPath.row {
     case 0:
       guard news[indexPath.section].text != "" else { fallthrough }
-      print("""
-            *--------*****--------*****--------*
-            DEQUED TEXT CELL:
-            SECTION \(indexPath.section)
-            ROW \(indexPath.row)
-            *--------*****--------*****--------*
-            """)
       guard let postCell = tableView.dequeueReusableCell(
               withIdentifier: Constants.newsPostCellId)
               as? NewsPostTableViewCell else { return UITableViewCell() }
       postCell.configure(text: news[indexPath.section].text)
-      print("""
-            *--------*****--------*****--------*
-            CONFIGURED TEXT CELL:
-            SECTION \(indexPath.section)
-            ROW \(indexPath.row)
-            *--------*****--------*****--------*
-            """)
       return postCell
       
     default:
@@ -95,27 +81,14 @@ extension NewsViewController: UITableViewDataSource {
                     withIdentifier: Constants.newsPhotoCellId)
                     as? NewsPhotoTableViewCell
       else { return UITableViewCell() }
-      print("""
-            *--------*****--------*****--------*
-            DEQUED PHOTO CELL:
-            SECTION \(indexPath.section)
-            ROW \(indexPath.row)
-            *--------*****--------*****--------*
-            """)
+      
       if aspects[indexPath] == nil {
         let size = image.size
         let aspect = size.width / size.height
         aspects[indexPath] = aspect
       }
       
-      photoCell.configure(image: image)
-      print("""
-            *--------*****--------*****--------*
-            CONFIGURED PHOTO CELL:
-            SECTION \(indexPath.section)
-            ROW \(indexPath.row)
-            *--------*****--------*****--------*
-            """)
+      photoCell.configure(image: image, aspectRatio: aspects[indexPath])
       return photoCell
     }
   }
@@ -126,8 +99,9 @@ extension NewsViewController: UITableViewDataSource {
     guard
       let aspect = aspects[indexPath]
     else { return UITableView.automaticDimension }
-    // 20 - cell insets left + right
-    let maxWidth = tableView.bounds.width - 20
+    print(#function)
+    let cellInsets = Constants.newsPhotoCellInsets
+    let maxWidth = tableView.bounds.width - cellInsets.left - cellInsets.right
     let height = aspect < 1 ? maxWidth : maxWidth / aspect
     return ceil(height)
   }

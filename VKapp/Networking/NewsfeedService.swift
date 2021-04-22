@@ -31,7 +31,7 @@ final class NewsfeedService {
       "access_token": Session.shared.token,
       "v": "5.92",
       "filters": "post",
-      "count": 5,
+      "count": 10,
       "start_from": startFrom ?? ""
     ]
     

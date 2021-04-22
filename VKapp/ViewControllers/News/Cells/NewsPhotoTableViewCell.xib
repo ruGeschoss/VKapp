@@ -14,24 +14,8 @@
             <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="500" height="500"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                <subviews>
-                    <view autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xv6-tQ-v51">
-                        <rect key="frame" x="0.0" y="0.0" width="500" height="500"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aD1-Ud-SuE">
-                                <rect key="frame" x="0.0" y="0.0" width="500" height="500"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                    </view>
-                </subviews>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <connections>
-                <outlet property="cellBackgroundView" destination="Xv6-tQ-v51" id="Agr-d1-22A"/>
-                <outlet property="cellImageView" destination="aD1-Ud-SuE" id="1iH-pO-uDe"/>
-            </connections>
             <point key="canvasLocation" x="-75.362318840579718" y="123.54910714285714"/>
         </tableViewCell>
     </objects>
