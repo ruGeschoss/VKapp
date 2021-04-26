@@ -16,35 +16,35 @@
                 <rect key="frame" x="0.0" y="0.0" width="146" height="111"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7j-8p-J1Q">
+                    <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h7j-8p-J1Q">
                         <rect key="frame" x="10" y="0.0" width="126" height="111"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OU8-l6-xrm">
-                                <rect key="frame" x="5" y="5" width="116" height="101"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OU8-l6-xrm">
+                                <rect key="frame" x="5" y="5" width="69" height="58"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O7n-kR-eub">
+                                <rect key="frame" x="8" y="62" width="41" height="13"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="didTapOnExpandButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="5Ak-AD-US8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="OU8-l6-xrm" firstAttribute="top" secondItem="h7j-8p-J1Q" secondAttribute="top" constant="5" id="Ig0-wX-2kA"/>
-                            <constraint firstAttribute="trailing" secondItem="OU8-l6-xrm" secondAttribute="trailing" constant="5" id="QAr-lW-EXc"/>
-                            <constraint firstAttribute="bottom" secondItem="OU8-l6-xrm" secondAttribute="bottom" constant="5" id="Vhh-PZ-Azc"/>
-                            <constraint firstItem="OU8-l6-xrm" firstAttribute="leading" secondItem="h7j-8p-J1Q" secondAttribute="leading" constant="5" id="bnE-Yk-msL"/>
-                        </constraints>
                     </view>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="h7j-8p-J1Q" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="3Mt-5F-ePi"/>
-                    <constraint firstItem="h7j-8p-J1Q" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Eul-Ej-XaV"/>
-                    <constraint firstAttribute="bottom" secondItem="h7j-8p-J1Q" secondAttribute="bottom" id="Ye5-UY-G32"/>
-                    <constraint firstAttribute="trailing" secondItem="h7j-8p-J1Q" secondAttribute="trailing" constant="10" id="tmc-c6-kYl"/>
-                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="newsPostBackgroundView" destination="h7j-8p-J1Q" id="BVa-aD-I5Y"/>
+                <outlet property="newsPostExpandButton" destination="O7n-kR-eub" id="Jg8-4b-bAa"/>
                 <outlet property="newsPostText" destination="OU8-l6-xrm" id="kal-ZH-S8z"/>
             </connections>
             <point key="canvasLocation" x="-237.68115942028987" y="79.352678571428569"/>

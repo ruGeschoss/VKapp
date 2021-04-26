@@ -19,6 +19,7 @@ final class NewsViewController: UIViewController {
   private var users: [UserSJ] = []
   private var groups: [Group] = []
   private var aspects: [IndexPath: CGFloat] = [:]
+  private var cellHeight: [IndexPath: CGFloat] = [:]
   private var nextNewsRequestFrom: String = ""
   private var newsAreLoading: Bool = false
   
@@ -70,6 +71,8 @@ extension NewsViewController: UITableViewDataSource {
               withIdentifier: Constants.newsPostCellId)
               as? NewsPostTableViewCell else { return UITableViewCell() }
       postCell.configure(text: news[indexPath.section].text)
+      cellHeight[indexPath] = postCell.totalHeight
+      print(postCell.totalHeight)
       return postCell
       
     default:
@@ -98,15 +101,18 @@ extension NewsViewController: UITableViewDataSource {
                  heightForRowAt indexPath: IndexPath) -> CGFloat {
     guard
       let aspect = aspects[indexPath]
-    else { return UITableView.automaticDimension }
+    else {
+      if cellHeight[indexPath] != nil {
+        return cellHeight[indexPath]!
+      }
+      return UITableView.automaticDimension }
     print(#function)
     let cellInsets = Constants.newsPhotoCellInsets
     let maxWidth = tableView.bounds.width - cellInsets.left - cellInsets.right
     let height = aspect < 1 ? maxWidth : maxWidth / aspect
     return ceil(height)
   }
-  
-  // MARK: - Header
+     // MARK: - Header
   func tableView(_ tableView: UITableView,
                  viewForHeaderInSection section: Int) -> UIView? {
     guard let header = tableView.dequeueReusableHeaderFooterView(
