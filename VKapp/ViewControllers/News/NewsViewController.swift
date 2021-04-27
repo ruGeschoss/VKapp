@@ -68,31 +68,31 @@ extension NewsViewController: UITableViewDataSource {
     case 0:
       guard news[indexPath.section].text != "" else { fallthrough }
       guard let postCell = tableView.dequeueReusableCell(
-              withIdentifier: Constants.newsPostCellId)
+              withIdentifier: NewsPostTableViewCell.reuseID)
               as? NewsPostTableViewCell else { return UITableViewCell() }
       postCell.configure(text: news[indexPath.section].text)
-      cellHeight[indexPath] = postCell.totalHeight
-      print(postCell.totalHeight)
+      cellHeight[indexPath] = postCell.cellHeight
       return postCell
       
     default:
-      guard let attachment = news[indexPath.section].photoAttachments.first,
-            let photo = attachment.imageUrl.last,
-            let image = photoService
-              .photo(indexPath: indexPath, url: photo),
-            let photoCell = tableView.dequeueReusableCell(
-                    withIdentifier: Constants.newsPhotoCellId)
-                    as? NewsPhotoTableViewCell
-      else { return UITableViewCell() }
-      
-      if aspects[indexPath] == nil {
-        let size = image.size
-        let aspect = size.width / size.height
-        aspects[indexPath] = aspect
-      }
-      
-      photoCell.configure(image: image, aspectRatio: aspects[indexPath])
-      return photoCell
+//      guard let attachment = news[indexPath.section].photoAttachments.first,
+//            let photo = attachment.imageUrl.last,
+//            let image = photoService
+//              .photo(indexPath: indexPath, url: photo),
+//            let photoCell = tableView.dequeueReusableCell(
+//                    withIdentifier: Constants.newsPhotoCellId)
+//                    as? NewsPhotoTableViewCell
+//      else { return UITableViewCell() }
+//
+//      if aspects[indexPath] == nil {
+//        let size = image.size
+//        let aspect = size.width / size.height
+//        aspects[indexPath] = aspect
+//      }
+//
+//      photoCell.configure(image: image, aspectRatio: aspects[indexPath])
+//      return photoCell
+      return UITableViewCell()
     }
   }
   
@@ -106,7 +106,7 @@ extension NewsViewController: UITableViewDataSource {
         return cellHeight[indexPath]!
       }
       return UITableView.automaticDimension }
-    print(#function)
+    
     let cellInsets = Constants.newsPhotoCellInsets
     let maxWidth = tableView.bounds.width - cellInsets.left - cellInsets.right
     let height = aspect < 1 ? maxWidth : maxWidth / aspect
@@ -115,29 +115,30 @@ extension NewsViewController: UITableViewDataSource {
      // MARK: - Header
   func tableView(_ tableView: UITableView,
                  viewForHeaderInSection section: Int) -> UIView? {
-    guard let header = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: Constants.newsHeaderViewId)
-            as? NewsHeaderView else { return UIView() }
-    
-    guard users.first != nil,
-          groups.first != nil else { return UIView() }
-
-    switch news[section].sourceId > 0 {
-    case true:
-      let sourceId = news[section].sourceId
-      let owner = users.filter { (postOwner) -> Bool in
-        return postOwner.userId == String(sourceId)
-      }
-      header.configureForUser(date: news[section].date, user: owner.first!)
-      return header
-    case false:
-      let sourceId = news[section].sourceId * news[section].sourceId.signum()
-      let owner = groups.filter { (postOwner) -> Bool in
-        return postOwner.groupId == String(sourceId)
-      }
-      header.configureForGroup(date: news[section].date, group: owner.first!)
-      return header
-    }
+//    guard let header = tableView.dequeueReusableHeaderFooterView(
+//            withIdentifier: Constants.newsHeaderViewId)
+//            as? NewsHeaderView else { return UIView() }
+//
+//    guard users.first != nil,
+//          groups.first != nil else { return UIView() }
+//
+//    switch news[section].sourceId > 0 {
+//    case true:
+//      let sourceId = news[section].sourceId
+//      let owner = users.filter { (postOwner) -> Bool in
+//        return postOwner.userId == String(sourceId)
+//      }
+//      header.configureForUser(date: news[section].date, user: owner.first!)
+//      return header
+//    case false:
+//      let sourceId = news[section].sourceId * news[section].sourceId.signum()
+//      let owner = groups.filter { (postOwner) -> Bool in
+//        return postOwner.groupId == String(sourceId)
+//      }
+//      header.configureForGroup(date: news[section].date, group: owner.first!)
+//      return header
+//    }
+    return UIView()
   }
   
   func tableView(_ tableView: UITableView,
@@ -151,13 +152,14 @@ extension NewsViewController: UITableViewDataSource {
   // MARK: - Footer
   func tableView(_ tableView: UITableView,
                  viewForFooterInSection section: Int) -> UIView? {
-    guard let footer = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: Constants.newsFooterViewId)
-            as? NewsFooterView else { return UIView() }
-    let post = news[section]
-    footer.configure(likes: post.likes, comments: post.comments,
-                     reposts: post.reposts, views: post.views)
-    return footer
+//    guard let footer = tableView.dequeueReusableHeaderFooterView(
+//            withIdentifier: Constants.newsFooterViewId)
+//            as? NewsFooterView else { return UIView() }
+//    let post = news[section]
+//    footer.configure(likes: post.likes, comments: post.comments,
+//                     reposts: post.reposts, views: post.views)
+//    return footer
+    return UIView()
   }
   
   func tableView(_ tableView: UITableView,
@@ -192,9 +194,7 @@ extension NewsViewController {
       Constants.newsFooterViewNib,
       forHeaderFooterViewReuseIdentifier: Constants.newsFooterViewId)
     
-    newsTableView.register(
-      Constants.newsPostCellNib,
-      forCellReuseIdentifier: Constants.newsPostCellId)
+    newsTableView.register(NewsPostTableViewCell.self, forCellReuseIdentifier: NewsPostTableViewCell.reuseID)
     
     newsTableView.register(
       Constants.newsPhotoCellNib,

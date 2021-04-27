@@ -52,7 +52,7 @@ extension Double {
   }
 }
 
-// MARK: = Int
+// MARK: - Int
 extension Int {
   func convertToDate() -> String {
     let date = Date(timeIntervalSince1970: Double(self))
@@ -61,6 +61,17 @@ extension Int {
     dateformatter.dateFormat = "d MMMM yyyy HH:mm"
     dateformatter.timeZone = .current
     return dateformatter.string(from: date)
+  }
+}
+
+// MARK: - TableViewCell
+extension UITableViewCell: Reusable {}
+
+protocol Reusable {}
+
+extension Reusable where Self: UITableViewCell {
+  static var reuseID: String {
+    String(describing: self)
   }
 }
 
