@@ -23,9 +23,8 @@ final class NewsfeedService {
   private static let getPath = "/method/newsfeed.get"
   
   // MARK: - get "post"
-  static func getPostNews(
-    startFrom: String?,
-    completion: @escaping ([NewsPostModel], [UserSJ], [Group], String) -> Void) {
+  static func getPostNews(startFrom: String?,
+                          completion: @escaping (NewsFeedResponse) -> Void) {
     
     let params: Parameters = [
       "access_token": Session.shared.token,
@@ -67,7 +66,9 @@ final class NewsfeedService {
         }
         
         dispatchGroup.notify(queue: DispatchQueue.main) {
-          completion(parsedNews, parsedUsers, parsedGroups, nextFrom)
+          let response = NewsFeedResponse(news: parsedNews, users: parsedUsers,
+                                          groups: parsedGroups, nextRequest: nextFrom)
+          completion(response)
         }
       case .failure(let error):
         print(error.localizedDescription)
@@ -78,12 +79,14 @@ final class NewsfeedService {
   // MARK: - get "photo"
   static func getPhotoNews(
     completion: @escaping ([NewsPhotoModel], [UserSJ], [Group], String) -> Void) {
+    
     let params: Parameters = [
       "access_token": Session.shared.token,
       "v": "5.92",
       "filters": "photo",
       "count": 10
     ]
+    
     NewsfeedService.alamoFireSession
       .request(baseUrl + getPath, method: .get, parameters: params)
       .responseJSON { (response) in

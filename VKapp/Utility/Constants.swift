@@ -22,6 +22,9 @@ final class Constants {
     UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
   static let newsPostCellContentInsets: UIEdgeInsets =
     UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+  static let newsPostCellContentHeightLimit: CGFloat = 100
+  static let newsPostCellButtonMoreTitle: String = "Show more"
+  static let newsPostCellButtonLessTitle: String = "Show less"
   
   // MARK: - News Photo Table ViewCell
   static let newsPhotoCellNib: UINib =

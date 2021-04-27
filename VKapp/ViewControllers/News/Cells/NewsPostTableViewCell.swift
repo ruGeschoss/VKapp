@@ -7,49 +7,42 @@
 
 import UIKit
 
+protocol CellExpandDelegate: AnyObject {
+  func updateCellHeight(newConfig: CellConfiguration)
+}
+
 final class NewsPostTableViewCell: UITableViewCell {
   
   private let contentInsets = Constants.newsPostCellContentInsets
   private let cellInsets = Constants.newsPostCellInsets
-  private var shouldShowFully: Bool = true
+  private let heightLimit = Constants.newsPostCellContentHeightLimit
+  
+  private let cellInsetsSumm =
+    Constants.newsPostCellInsets.left + Constants.newsPostCellInsets.right
+  private let contentInsetsSumm =
+    Constants.newsPostCellContentInsets.left + Constants.newsPostCellContentInsets.right
+  private var insetsSumm: CGFloat {
+    cellInsetsSumm + contentInsetsSumm
+  }
+  
   private var shouldShowExpandButton: Bool = false
-  var cellHeight: CGFloat = 0
-  
-  private var cellBackgroundView: UIView = {
-    let background = UIView()
-    background.backgroundColor = Constants.newsPostCellBackgroundcolor
-    background.translatesAutoresizingMaskIntoConstraints = false
-    background.autoresizesSubviews = false
-    return background
-  }()
-  
-  private var cellExpandButton: UIButton = {
-    let expandButton = UIButton()
-    expandButton.setTitle("Show more", for: .normal)
-    expandButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
-    expandButton.backgroundColor = Constants.newsPostCellBackgroundcolor
-    expandButton.setTitleColor(.cyan, for: .normal)
-    expandButton.translatesAutoresizingMaskIntoConstraints = false
-    expandButton.addTarget(self, action: #selector(didTapOnExpandButton),
-                           for: .touchUpInside)
-    return expandButton
-  }()
-  
-  private var cellTextLabel: UILabel = {
-    let myTextLabel = UILabel()
-    myTextLabel.translatesAutoresizingMaskIntoConstraints = false
-    myTextLabel.backgroundColor = Constants.newsPostCellBackgroundcolor
-    myTextLabel.numberOfLines = 0
-    myTextLabel.font = UIFont.systemFont(ofSize: 13)
-    return myTextLabel
-  }()
+  private var contentText: String?
+  weak var expandDelegate: CellExpandDelegate?
+  var cellConfig: CellConfiguration?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    selectionStyle = .none
     backgroundColor = .clear
     contentView.backgroundColor = .clear
-    contentView.translatesAutoresizingMaskIntoConstraints = false
-    contentView.autoresizesSubviews = false
+    
+    let background = createBackgroundView()
+    let content = createTextLabel()
+    let button = createExpandButton()
+    
+    contentView.addSubview(background)
+    contentView.addSubview(content)
+    contentView.addSubview(button)
   }
   
   required init?(coder: NSCoder) {
@@ -62,111 +55,163 @@ final class NewsPostTableViewCell: UITableViewCell {
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    renewSubviews()
-//    print("""
-//          TEST
-//          contView bounds \(self.contentView.bounds)
-//          backgView bounds \(self.contentView.subviews.first?.bounds)
-//          backgrView frame \(self.contentView.subviews.first?.frame)
-//          *************
-//          text frame \(self.contentView.subviews[1].frame)
-//          text bounds \(self.contentView.subviews[1].bounds)
-//          button frame \(self.contentView.subviews[2].frame)
-//          button bounds \(self.contentView.subviews[2].bounds)
-//          """)
+    setupSubviews()
   }
   
   override func prepareForReuse() {
     super.prepareForReuse()
-    contentView.subviews.forEach { $0.removeFromSuperview() }
-  }
-  
-  override func setSelected(_ selected: Bool, animated: Bool) {
-    super.setSelected(selected, animated: animated)
+    shouldShowExpandButton = false
+    contentText = nil
+    expandDelegate = nil
+    cellConfig = nil
   }
   
   func configure(text: String) {
-    cellTextLabel.text = text
-    renewSubviews()
+    contentText = text
+    setupSubviews()
   }
   
-  @objc private func didTapOnExpandButton() {
-    print("ContentView frame: \(self.contentView.frame)")
-    print("BackgroundView frame: \(cellBackgroundView.frame)")
-    print("TextLabel frame: \(cellTextLabel.frame)")
-    print("ExpandButton frame: \(cellExpandButton.frame)")
+  @objc private func didTapOnExpandButton(sender: UIButton!) {
+    guard
+      let expandDelegate = expandDelegate,
+      cellConfig != nil,
+      let isExpanded = cellConfig?.isExpanded
+    else { return }
     
-    
-//    self.contentView.subviews.first?.frame = CGRect(x: 0, y: 5, width: 150, height: 30)
-//    self.contentView.subviews.first?.backgroundColor = .cyan
+    cellConfig?.isExpanded = !isExpanded
+    setupSubviews()
+    expandDelegate.updateCellHeight(newConfig: cellConfig!)
   }
 }
 
+// MARK: - Update frames
 extension NewsPostTableViewCell {
   
-  private func getTextFrame(text: String, font: UIFont) -> CGSize {
-    let insetsSumm = cellInsets.left + cellInsets.right + contentInsets.left + contentInsets.right
-    let maxWidth = bounds.width - insetsSumm
-    
-    let textBlock = CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude)
-    let textRect = text.boundingRect(
-      with: textBlock, options: .usesLineFragmentOrigin,
-      attributes: [.font: font], context: nil)
-    
-    let textWidth = Double(textRect.size.width)
-    let textHeight = Double(textRect.size.height)
-    let textSize = CGSize(width: ceil(textWidth), height: ceil(textHeight))
-    return textSize
-  }
-  
-  private func setupTextLabelFrame() {
-    guard let text = cellTextLabel.text else { return }
-    let textSize = getTextFrame(text: text, font: cellTextLabel.font)
-    let textX = bounds.minX + cellInsets.left + contentInsets.left
-    let textY = bounds.minY + cellInsets.top + contentInsets.top
-    let textOrigin = CGPoint(x: textX, y: textY)
-    
-    shouldShowExpandButton = textSize.height > 100
-    cellTextLabel.frame = CGRect(origin: textOrigin, size: textSize)
-  }
-  
-  private func setupExpandButtonFrame() {
-    guard shouldShowExpandButton else {
-      cellExpandButton.frame = .zero
-      cellExpandButton.isHidden = true
-      return }
-    let buttonWidth = bounds.width - cellInsets.left - cellInsets.right - contentInsets.left - contentInsets.right
-    let buttonHeight = getTextFrame(text: cellExpandButton.titleLabel!.text!,
-                                    font: cellExpandButton.titleLabel!.font!).height
-    let buttonSize = CGSize(width: buttonWidth, height: buttonHeight)
-    let buttonOrigin = CGPoint(x: cellTextLabel.frame.minX, y: cellTextLabel.frame.maxY)
-    
-    cellExpandButton.isHidden = false
-    cellExpandButton.frame = CGRect(origin: buttonOrigin, size: buttonSize)
-    
-  }
-  
-  private func setupBackgroundFrame() {
-    let backgroundHeight = shouldShowExpandButton ? cellExpandButton.frame.maxY : cellTextLabel.frame.maxY
-    cellHeight = backgroundHeight
-    let backgroundSize = CGSize(width: bounds.width - cellInsets.left - cellInsets.right, height: cellHeight)
-    let backgroundOrigin = CGPoint(x: cellInsets.left, y: cellInsets.top)
-    
-    cellBackgroundView.frame = CGRect(origin: backgroundOrigin, size: backgroundSize)
-    
-  }
-  
-  private func calcFrames() {
+  private func setupSubviews() {
     setupTextLabelFrame()
     setupExpandButtonFrame()
     setupBackgroundFrame()
   }
   
-  private func renewSubviews() {
-    calcFrames()
-    contentView.subviews.forEach { $0.removeFromSuperview() }
-    contentView.addSubview(cellBackgroundView)
-    contentView.addSubview(cellTextLabel)
-    contentView.addSubview(cellExpandButton)
+  // MARK: Get Text Frame
+  private func getTextFrame(text: String, font: UIFont,
+                            heightLimit: CGFloat?) -> CGSize {
+    let maxWidth = bounds.width - insetsSumm
+    let textBlock = CGSize(width: maxWidth, height: heightLimit ?? CGFloat.greatestFiniteMagnitude)
+    let textRect = text.boundingRect(
+      with: textBlock, options: .usesLineFragmentOrigin,
+      attributes: [.font: font], context: nil)
+    
+    let textWidth = Double(maxWidth)
+    let textHeight = Double(textRect.size.height)
+    let textSize = CGSize(width: ceil(textWidth), height: ceil(textHeight))
+    return textSize
+  }
+  
+  // MARK: Set Text Frame
+  private func setupTextLabelFrame() {
+    guard
+      let text = contentText,
+      let textLabel = contentView.subviews[1] as? UILabel,
+      let isExpanded = cellConfig?.isExpanded
+    else { return }
+    
+    var textSize = getTextFrame(text: text, font: textLabel.font,
+                                heightLimit: nil)
+    let textX = bounds.minX + cellInsets.left + contentInsets.left
+    let textY = bounds.minY + cellInsets.top + contentInsets.top
+    let textOrigin = CGPoint(x: textX, y: textY)
+    
+    shouldShowExpandButton = textSize.height >= heightLimit
+    if !isExpanded, shouldShowExpandButton {
+      textSize = getTextFrame(text: text, font: textLabel.font,
+                              heightLimit: heightLimit)
+    }
+    textLabel.text = text
+    textLabel.frame = CGRect(origin: textOrigin, size: textSize)
+  }
+  
+  // MARK: Set Button Frame
+  private func setupExpandButtonFrame() {
+    guard let textLabel = contentView.subviews[1] as? UILabel,
+          let expandButton = contentView.subviews[2] as? UIButton,
+          let isExpanded = cellConfig?.isExpanded
+    else { return }
+    
+    guard shouldShowExpandButton else {
+      expandButton.frame = .zero
+      expandButton.isHidden = true
+      expandButton.isUserInteractionEnabled = false
+      return
+    }
+    
+    let moreTitle = Constants.newsPostCellButtonMoreTitle
+    let lessTitle = Constants.newsPostCellButtonLessTitle
+    let buttonTitle = !isExpanded ? moreTitle : lessTitle
+    expandButton.setTitle(buttonTitle, for: .normal)
+    
+    let buttonWidth = bounds.width - insetsSumm
+    let buttonHeight = getTextFrame(text: expandButton.titleLabel!.text!,
+                                    font: expandButton.titleLabel!.font!,
+                                    heightLimit: nil).height
+    let buttonSize = CGSize(width: buttonWidth, height: buttonHeight)
+    let buttonOrigin = CGPoint(x: textLabel.frame.minX, y: textLabel.frame.maxY)
+    
+    expandButton.isHidden = false
+    expandButton.isUserInteractionEnabled = true
+    expandButton.frame = CGRect(origin: buttonOrigin, size: buttonSize)
+    
+  }
+  
+  // MARK: Set Background Frame
+  private func setupBackgroundFrame() {
+    guard
+      let background = contentView.subviews.first,
+      let textLabel = contentView.subviews[1] as? UILabel,
+      let expandButton = contentView.subviews[2] as? UIButton,
+      cellConfig != nil
+    else { return }
+    
+    let backgroundHeight = shouldShowExpandButton ?
+      expandButton.frame.maxY : textLabel.frame.maxY
+    
+    cellConfig?.height = backgroundHeight + contentInsets.bottom
+    
+    let backgroundOrigin = CGPoint(x: cellInsets.left, y: cellInsets.top)
+    let backgroundSize = CGSize(width: bounds.width - cellInsetsSumm,
+                                height: cellConfig!.height)
+    
+    background.frame = CGRect(origin: backgroundOrigin, size: backgroundSize)
+  }
+}
+
+// MARK: - Create Subviews
+extension NewsPostTableViewCell {
+  
+  private func createBackgroundView() -> UIView {
+    let background = UIView()
+    background.backgroundColor = Constants.newsPostCellBackgroundcolor
+    background.translatesAutoresizingMaskIntoConstraints = false
+    return background
+  }
+  
+  private func createExpandButton() -> UIButton {
+    let expandButton = UIButton()
+    expandButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+    expandButton.backgroundColor = .clear
+    expandButton.setTitleColor(.cyan, for: .normal)
+    expandButton.translatesAutoresizingMaskIntoConstraints = false
+    expandButton.addTarget(self, action: #selector(didTapOnExpandButton),
+                                 for: .touchUpInside)
+    return expandButton
+  }
+  
+  private func createTextLabel() -> UILabel {
+    let myTextLabel = UILabel()
+    myTextLabel.translatesAutoresizingMaskIntoConstraints = false
+    myTextLabel.backgroundColor = .clear
+    myTextLabel.numberOfLines = 0
+    myTextLabel.font = UIFont.systemFont(ofSize: 13)
+    return myTextLabel
   }
 }

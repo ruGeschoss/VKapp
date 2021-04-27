@@ -20,6 +20,7 @@ final class NewsViewController: UIViewController {
   private var groups: [Group] = []
   private var aspects: [IndexPath: CGFloat] = [:]
   private var cellHeight: [IndexPath: CGFloat] = [:]
+  private var cellConfig: [IndexPath: CellConfiguration] = [:]
   private var nextNewsRequestFrom: String = ""
   private var newsAreLoading: Bool = false
   
@@ -28,12 +29,12 @@ final class NewsViewController: UIViewController {
     setupTableView()
     registerReusableViews()
     
-    NewsfeedService.getPostNews(startFrom: nil) { (news, users, groups, nextFrom) in
+    NewsfeedService.getPostNews(startFrom: nil) { (response) in
       DispatchQueue.main.async {
-        self.news = news
-        self.groups = groups
-        self.users = users
-        self.nextNewsRequestFrom = nextFrom
+        self.news = response.news
+        self.groups = response.groups
+        self.users = response.users
+        self.nextNewsRequestFrom = response.nextRequest
         self.newsTableView.reloadData()
       }
     }
@@ -53,25 +54,29 @@ extension NewsViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView,
                  numberOfRowsInSection section: Int) -> Int {
-    switch news[section].text != "" {
-    case true:
-      return 2
-    default:
-      return 1
-    }
+    news[section].text == "" ? 1 : 2
   }
   
   // MARK: - CellForRowAt
   func tableView(_ tableView: UITableView,
                  cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    if cellConfig[indexPath] == nil {
+      cellConfig[indexPath] =
+        CellConfiguration(indexPath: indexPath, height: 0, isExpanded: false)
+    }
+    
     switch indexPath.row {
     case 0:
       guard news[indexPath.section].text != "" else { fallthrough }
       guard let postCell = tableView.dequeueReusableCell(
               withIdentifier: NewsPostTableViewCell.reuseID)
               as? NewsPostTableViewCell else { return UITableViewCell() }
+      postCell.cellConfig = cellConfig[indexPath]
+      postCell.expandDelegate = self
       postCell.configure(text: news[indexPath.section].text)
-      cellHeight[indexPath] = postCell.cellHeight
+      cellConfig[indexPath] = postCell.cellConfig
+      
       return postCell
       
     default:
@@ -99,18 +104,23 @@ extension NewsViewController: UITableViewDataSource {
   // MARK: - HeightForRowAt
   func tableView(_ tableView: UITableView,
                  heightForRowAt indexPath: IndexPath) -> CGFloat {
+//    guard
+//      let aspect = aspects[indexPath]
+//    else {
+//      if cellHeight[indexPath] != nil {
+//        return cellHeight[indexPath]!
+//      }
+//      return UITableView.automaticDimension }
+//
+//    let cellInsets = Constants.newsPhotoCellInsets
+//    let maxWidth = tableView.bounds.width - cellInsets.left - cellInsets.right
+//    let height = aspect < 1 ? maxWidth : maxWidth / aspect
+//    return ceil(height)
     guard
-      let aspect = aspects[indexPath]
-    else {
-      if cellHeight[indexPath] != nil {
-        return cellHeight[indexPath]!
-      }
-      return UITableView.automaticDimension }
+      let height = cellConfig[indexPath]?.height
+    else { return UITableView.automaticDimension }
     
-    let cellInsets = Constants.newsPhotoCellInsets
-    let maxWidth = tableView.bounds.width - cellInsets.left - cellInsets.right
-    let height = aspect < 1 ? maxWidth : maxWidth / aspect
-    return ceil(height)
+    return height
   }
      // MARK: - Header
   func tableView(_ tableView: UITableView,
@@ -143,10 +153,11 @@ extension NewsViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView,
                  heightForHeaderInSection section: Int) -> CGFloat {
-    guard let header = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: Constants.newsHeaderViewId)
-            as? NewsHeaderView else { return 0 }
-    return header.frame.height
+//    guard let header = tableView.dequeueReusableHeaderFooterView(
+//            withIdentifier: Constants.newsHeaderViewId)
+//            as? NewsHeaderView else { return 0 }
+//    return header.frame.height
+    return 10
   }
   
   // MARK: - Footer
@@ -164,10 +175,11 @@ extension NewsViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView,
                  heightForFooterInSection section: Int) -> CGFloat {
-    guard let footer = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: Constants.newsFooterViewId)
-            as? NewsFooterView else { return 0 }
-    return footer.frame.height
+//    guard let footer = tableView.dequeueReusableHeaderFooterView(
+//            withIdentifier: Constants.newsFooterViewId)
+//            as? NewsFooterView else { return 0 }
+//    return footer.frame.height
+    return 10
   }
 }
 
@@ -179,6 +191,14 @@ extension NewsViewController: UITableViewDelegate {
     print("Selected row is \(indexPath.row)")
     print("Selected section is \(indexPath.section)")
     #endif
+  }
+}
+
+// MARK: - Cell Expand Delegate
+extension NewsViewController: CellExpandDelegate {
+  func updateCellHeight(newConfig: CellConfiguration) {
+    cellConfig[newConfig.indexPath] = newConfig
+    newsTableView.reloadRows(at: [newConfig.indexPath], with: .automatic)
   }
 }
 
@@ -194,7 +214,9 @@ extension NewsViewController {
       Constants.newsFooterViewNib,
       forHeaderFooterViewReuseIdentifier: Constants.newsFooterViewId)
     
-    newsTableView.register(NewsPostTableViewCell.self, forCellReuseIdentifier: NewsPostTableViewCell.reuseID)
+    newsTableView.register(
+      NewsPostTableViewCell.self,
+      forCellReuseIdentifier: NewsPostTableViewCell.reuseID)
     
     newsTableView.register(
       Constants.newsPhotoCellNib,
@@ -227,12 +249,12 @@ extension NewsViewController {
   }
   
   @objc private func refresh(_ sender: UIRefreshControl) {
-    NewsfeedService.getPostNews(startFrom: nil) { (news, users, groups, nextFrom) in
+    NewsfeedService.getPostNews(startFrom: nil) { (response) in
       DispatchQueue.main.async {
-        self.news = news
-        self.groups = groups
-        self.users = users
-        self.nextNewsRequestFrom = nextFrom
+        self.news = response.news
+        self.groups = response.groups
+        self.users = response.users
+        self.nextNewsRequestFrom = response.nextRequest
         self.refreshControl.endRefreshing()
         self.newsTableView.reloadData()
       }
@@ -247,20 +269,19 @@ extension NewsViewController: UITableViewDataSourcePrefetching {
     guard
       let maxSection = indexPaths.map({ $0.section }).max()
     else { return }
-    
-    if maxSection > news.count - 3,
+    if maxSection > news.count - 5,
        !newsAreLoading {
       newsAreLoading = true
       
       NewsfeedService
-        .getPostNews(startFrom: nextNewsRequestFrom) { [weak self] (news, users, groups, nextFrom) in
+        .getPostNews(startFrom: nextNewsRequestFrom) { [weak self] (response) in
           guard let self = self else { return }
           let indexSet = IndexSet(
-            integersIn: self.news.count ..< self.news.count + news.count)
-          self.news.append(contentsOf: news)
-          self.users.append(contentsOf: users)
-          self.groups.append(contentsOf: groups)
-          self.nextNewsRequestFrom = nextFrom
+            integersIn: self.news.count ..< self.news.count + response.news.count)
+          self.news.append(contentsOf: response.news)
+          self.users.append(contentsOf: response.users)
+          self.groups.append(contentsOf: response.groups)
+          self.nextNewsRequestFrom = response.nextRequest
           self.newsTableView.insertSections(indexSet, with: .none)
           self.newsAreLoading = false
       }
