@@ -18,8 +18,6 @@ final class NewsViewController: UIViewController {
   private var news: [NewsPostModel] = []
   private var users: [UserSJ] = []
   private var groups: [Group] = []
-  private var aspects: [IndexPath: CGFloat] = [:]
-  private var cellHeight: [IndexPath: CGFloat] = [:]
   private var cellConfig: [IndexPath: CellConfiguration] = [:]
   private var nextNewsRequestFrom: String = ""
   private var newsAreLoading: Bool = false
@@ -60,68 +58,50 @@ extension NewsViewController: UITableViewDataSource {
   // MARK: - CellForRowAt
   func tableView(_ tableView: UITableView,
                  cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
+    let newsContent = news[indexPath.section]
     if cellConfig[indexPath] == nil {
       cellConfig[indexPath] =
-        CellConfiguration(indexPath: indexPath, height: 0, isExpanded: false)
+        CellConfiguration(indexPath: indexPath,
+                          superviewWidth: newsTableView.bounds.width,
+                          height: 0, isExpanded: false)
     }
     
     switch indexPath.row {
     case 0:
-      guard news[indexPath.section].text != "" else { fallthrough }
+      guard newsContent.text != "" else { fallthrough }
       guard let postCell = tableView.dequeueReusableCell(
               withIdentifier: NewsPostTableViewCell.reuseID)
               as? NewsPostTableViewCell else { return UITableViewCell() }
       postCell.cellConfig = cellConfig[indexPath]
-      postCell.expandDelegate = self
-      postCell.configure(text: news[indexPath.section].text)
+      postCell.cellUpdateDelegate = self
+      postCell.configure(news: newsContent)
       cellConfig[indexPath] = postCell.cellConfig
-      
       return postCell
       
     default:
-//      guard let attachment = news[indexPath.section].photoAttachments.first,
-//            let photo = attachment.imageUrl.last,
-//            let image = photoService
-//              .photo(indexPath: indexPath, url: photo),
-//            let photoCell = tableView.dequeueReusableCell(
-//                    withIdentifier: Constants.newsPhotoCellId)
-//                    as? NewsPhotoTableViewCell
-//      else { return UITableViewCell() }
-//
-//      if aspects[indexPath] == nil {
-//        let size = image.size
-//        let aspect = size.width / size.height
-//        aspects[indexPath] = aspect
-//      }
-//
-//      photoCell.configure(image: image, aspectRatio: aspects[indexPath])
-//      return photoCell
-      return UITableViewCell()
+      guard
+        let imageUrl = newsContent.photoAttachments.first?.imageUrl.last,
+        let image = photoService.photo(indexPath: indexPath, url: imageUrl),
+        let photoCell = tableView.dequeueReusableCell(
+              withIdentifier: NewsPhotoTableViewCell.reuseID)
+              as? NewsPhotoTableViewCell else { return UITableViewCell() }
+      photoCell.cellConfig = cellConfig[indexPath]
+      photoCell.configure(news: newsContent, image: image)
+      cellConfig[indexPath] = photoCell.cellConfig
+      return photoCell
     }
   }
   
   // MARK: - HeightForRowAt
+  func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    cellConfig[indexPath]?.height ?? newsTableView.bounds.width
+  }
+  
   func tableView(_ tableView: UITableView,
                  heightForRowAt indexPath: IndexPath) -> CGFloat {
-//    guard
-//      let aspect = aspects[indexPath]
-//    else {
-//      if cellHeight[indexPath] != nil {
-//        return cellHeight[indexPath]!
-//      }
-//      return UITableView.automaticDimension }
-//
-//    let cellInsets = Constants.newsPhotoCellInsets
-//    let maxWidth = tableView.bounds.width - cellInsets.left - cellInsets.right
-//    let height = aspect < 1 ? maxWidth : maxWidth / aspect
-//    return ceil(height)
-    guard
-      let height = cellConfig[indexPath]?.height
-    else { return UITableView.automaticDimension }
-    
-    return height
+    cellConfig[indexPath]?.height ?? UITableView.automaticDimension
   }
+  
      // MARK: - Header
   func tableView(_ tableView: UITableView,
                  viewForHeaderInSection section: Int) -> UIView? {
@@ -151,13 +131,18 @@ extension NewsViewController: UITableViewDataSource {
     return UIView()
   }
   
+  // MARK: - Header height
+  func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+    return 50
+  }
+  
   func tableView(_ tableView: UITableView,
                  heightForHeaderInSection section: Int) -> CGFloat {
 //    guard let header = tableView.dequeueReusableHeaderFooterView(
 //            withIdentifier: Constants.newsHeaderViewId)
 //            as? NewsHeaderView else { return 0 }
 //    return header.frame.height
-    return 10
+    return 50
   }
   
   // MARK: - Footer
@@ -173,13 +158,18 @@ extension NewsViewController: UITableViewDataSource {
     return UIView()
   }
   
+  // MARK: - Footer height
+  func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+    return 50
+  }
+  
   func tableView(_ tableView: UITableView,
                  heightForFooterInSection section: Int) -> CGFloat {
 //    guard let footer = tableView.dequeueReusableHeaderFooterView(
 //            withIdentifier: Constants.newsFooterViewId)
 //            as? NewsFooterView else { return 0 }
 //    return footer.frame.height
-    return 10
+    return 50
   }
 }
 
@@ -190,12 +180,13 @@ extension NewsViewController: UITableViewDelegate {
     #if DEBUG
     print("Selected row is \(indexPath.row)")
     print("Selected section is \(indexPath.section)")
+    print("CFG is \(String(describing: cellConfig[indexPath]))")
     #endif
   }
 }
 
 // MARK: - Cell Expand Delegate
-extension NewsViewController: CellExpandDelegate {
+extension NewsViewController: ForcedCellUpdateDelegate {
   func updateCellHeight(newConfig: CellConfiguration) {
     cellConfig[newConfig.indexPath] = newConfig
     newsTableView.reloadRows(at: [newConfig.indexPath], with: .automatic)
@@ -219,8 +210,8 @@ extension NewsViewController {
       forCellReuseIdentifier: NewsPostTableViewCell.reuseID)
     
     newsTableView.register(
-      Constants.newsPhotoCellNib,
-      forCellReuseIdentifier: Constants.newsPhotoCellId)
+      NewsPhotoTableViewCell.self,
+      forCellReuseIdentifier: NewsPhotoTableViewCell.reuseID)
   }
   
   private func setupTableView() {

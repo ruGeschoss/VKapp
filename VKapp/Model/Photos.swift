@@ -17,6 +17,7 @@ final class Photos: Object, Decodable {
   @objc dynamic var hasTags: Bool = false
   @objc dynamic var postId: Int = 0
   @objc dynamic var text: String = ""
+  @objc dynamic var aspectRatio: Double = 0
   var imageUrl = List<String>()
   
   convenience init(from json: JSON) {
@@ -31,6 +32,10 @@ final class Photos: Object, Decodable {
     let imageSizes = json["sizes"].arrayValue
     let text = json["text"].stringValue
     
+    let height = imageSizes.last!["height"].doubleValue
+    let width = imageSizes.last!["width"].doubleValue
+    let aspectRatio = width / height
+      
     imageSizes
       .map { $0["url"].stringValue }
       .forEach { self.imageUrl.append($0) }
@@ -42,6 +47,7 @@ final class Photos: Object, Decodable {
     self.hasTags = hasTags
     self.postId = postId
     self.text = text
+    self.aspectRatio = aspectRatio
   }
   
   override static func primaryKey() -> String? {

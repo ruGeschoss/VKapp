@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CellExpandDelegate: AnyObject {
+protocol ForcedCellUpdateDelegate: AnyObject {
   func updateCellHeight(newConfig: CellConfiguration)
 }
 
@@ -21,13 +21,11 @@ final class NewsPostTableViewCell: UITableViewCell {
     Constants.newsPostCellInsets.left + Constants.newsPostCellInsets.right
   private let contentInsetsSumm =
     Constants.newsPostCellContentInsets.left + Constants.newsPostCellContentInsets.right
-  private var insetsSumm: CGFloat {
-    cellInsetsSumm + contentInsetsSumm
-  }
+  private var insetsSumm: CGFloat { cellInsetsSumm + contentInsetsSumm }
   
   private var shouldShowExpandButton: Bool = false
   private var contentText: String?
-  weak var expandDelegate: CellExpandDelegate?
+  weak var cellUpdateDelegate: ForcedCellUpdateDelegate?
   var cellConfig: CellConfiguration?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -49,10 +47,6 @@ final class NewsPostTableViewCell: UITableViewCell {
     super.init(coder: coder)
   }
   
-  override var reuseIdentifier: String? {
-    String(describing: NewsPostTableViewCell.self)
-  }
-  
   override func layoutSubviews() {
     super.layoutSubviews()
     setupSubviews()
@@ -62,18 +56,18 @@ final class NewsPostTableViewCell: UITableViewCell {
     super.prepareForReuse()
     shouldShowExpandButton = false
     contentText = nil
-    expandDelegate = nil
+    cellUpdateDelegate = nil
     cellConfig = nil
   }
   
-  func configure(text: String) {
-    contentText = text
+  func configure(news: NewsPostModel) {
+    contentText = news.text
     setupSubviews()
   }
   
   @objc private func didTapOnExpandButton(sender: UIButton!) {
     guard
-      let expandDelegate = expandDelegate,
+      let expandDelegate = cellUpdateDelegate,
       cellConfig != nil,
       let isExpanded = cellConfig?.isExpanded
     else { return }
@@ -96,7 +90,7 @@ extension NewsPostTableViewCell {
   // MARK: Get Text Frame
   private func getTextFrame(text: String, font: UIFont,
                             heightLimit: CGFloat?) -> CGSize {
-    let maxWidth = bounds.width - insetsSumm
+    let maxWidth = cellConfig!.superviewWidth - insetsSumm
     let textBlock = CGSize(width: maxWidth, height: heightLimit ?? CGFloat.greatestFiniteMagnitude)
     let textRect = text.boundingRect(
       with: textBlock, options: .usesLineFragmentOrigin,
@@ -147,10 +141,10 @@ extension NewsPostTableViewCell {
     
     let moreTitle = Constants.newsPostCellButtonMoreTitle
     let lessTitle = Constants.newsPostCellButtonLessTitle
-    let buttonTitle = !isExpanded ? moreTitle : lessTitle
+    let buttonTitle = isExpanded ? lessTitle : moreTitle
     expandButton.setTitle(buttonTitle, for: .normal)
     
-    let buttonWidth = bounds.width - insetsSumm
+    let buttonWidth = cellConfig!.superviewWidth - insetsSumm
     let buttonHeight = getTextFrame(text: expandButton.titleLabel!.text!,
                                     font: expandButton.titleLabel!.font!,
                                     heightLimit: nil).height
@@ -178,7 +172,7 @@ extension NewsPostTableViewCell {
     cellConfig?.height = backgroundHeight + contentInsets.bottom
     
     let backgroundOrigin = CGPoint(x: cellInsets.left, y: cellInsets.top)
-    let backgroundSize = CGSize(width: bounds.width - cellInsetsSumm,
+    let backgroundSize = CGSize(width: cellConfig!.superviewWidth - cellInsetsSumm,
                                 height: cellConfig!.height)
     
     background.frame = CGRect(origin: backgroundOrigin, size: backgroundSize)

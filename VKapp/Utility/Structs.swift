@@ -11,10 +11,12 @@ import UIKit
 struct CellConfiguration {
   let indexPath: IndexPath
   var height: CGFloat
+  var superviewWidth: CGFloat
   var isExpanded: Bool?
   
-  init(indexPath: IndexPath, height: CGFloat, isExpanded: Bool?) {
+  init(indexPath: IndexPath, superviewWidth: CGFloat, height: CGFloat, isExpanded: Bool?) {
     self.indexPath = indexPath
+    self.superviewWidth = superviewWidth
     self.height = height
     self.isExpanded = isExpanded
   }
