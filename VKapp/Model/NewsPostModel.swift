@@ -12,6 +12,7 @@ final class NewsPostModel: Decodable {
   
   var sourceId: Int = 0
   var date: Int = 0
+  var stringDate: String?
   var postType: String = ""
   var text: String = ""
   var markedAsAds: Bool = false

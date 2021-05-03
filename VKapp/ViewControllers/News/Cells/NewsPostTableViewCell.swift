@@ -25,7 +25,7 @@ final class NewsPostTableViewCell: UITableViewCell {
   
   private var shouldShowExpandButton: Bool = false
   private var contentText: String?
-  weak var cellUpdateDelegate: ForcedCellUpdateDelegate?
+  weak var delegate: ForcedCellUpdateDelegate?
   var cellConfig: CellConfiguration?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -56,25 +56,27 @@ final class NewsPostTableViewCell: UITableViewCell {
     super.prepareForReuse()
     shouldShowExpandButton = false
     contentText = nil
-    cellUpdateDelegate = nil
+    delegate = nil
     cellConfig = nil
   }
   
+  // MARK: Configure
   func configure(news: NewsPostModel) {
     contentText = news.text
     setupSubviews()
   }
   
+  // MARK: Button Action
   @objc private func didTapOnExpandButton(sender: UIButton!) {
     guard
-      let expandDelegate = cellUpdateDelegate,
+      let delegate = delegate,
       cellConfig != nil,
       let isExpanded = cellConfig?.isExpanded
     else { return }
     
     cellConfig?.isExpanded = !isExpanded
     setupSubviews()
-    expandDelegate.updateCellHeight(newConfig: cellConfig!)
+    delegate.updateCellHeight(newConfig: cellConfig!)
   }
 }
 
@@ -82,6 +84,7 @@ final class NewsPostTableViewCell: UITableViewCell {
 extension NewsPostTableViewCell {
   
   private func setupSubviews() {
+    guard cellConfig != nil else { return }
     setupTextLabelFrame()
     setupExpandButtonFrame()
     setupBackgroundFrame()
@@ -162,8 +165,7 @@ extension NewsPostTableViewCell {
     guard
       let background = contentView.subviews.first,
       let textLabel = contentView.subviews[1] as? UILabel,
-      let expandButton = contentView.subviews[2] as? UIButton,
-      cellConfig != nil
+      let expandButton = contentView.subviews[2] as? UIButton
     else { return }
     
     let backgroundHeight = shouldShowExpandButton ?

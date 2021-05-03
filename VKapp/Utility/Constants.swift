@@ -43,7 +43,20 @@ final class Constants {
   static let newsHeaderCornersToRound: UIRectCorner =
     [.topLeft, .topRight]
   static let newsHeaderCornerRadius: CGFloat = 30
+  static let newsHeaderBackgroundInsets: UIEdgeInsets =
+    UIEdgeInsets(top: 5, left: 10, bottom: 0, right: 10)
+  static let newsHeaderContentInsets: UIEdgeInsets =
+    UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
   static let newsHeaderViewBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
+  static let newsHeaderMenuButtonHeight: CGFloat = 30
+  static let newsHeaderAvatarImageHeight: CGFloat = 30
+  
+  static var newsHeaderTotalHeight: CGFloat {
+    let contentInsetsSumm = newsHeaderContentInsets.top + newsHeaderContentInsets.bottom
+    let backgroundInsetsSumm = newsHeaderBackgroundInsets.top + newsHeaderBackgroundInsets.bottom
+    let totalHeight = newsHeaderAvatarImageHeight + contentInsetsSumm + backgroundInsetsSumm
+    return totalHeight
+  }
   
   // MARK: - News Footer View
   static let newsFooterViewNib: UINib =

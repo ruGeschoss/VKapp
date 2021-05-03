@@ -57,6 +57,7 @@ final class NewsPhotoTableViewCell: UITableViewCell {
     }
   }
   
+  // MARK: Configure
   func configure(news: NewsPostModel, image: UIImage) {
     contentNews = news
     contentImage = image
@@ -68,6 +69,7 @@ final class NewsPhotoTableViewCell: UITableViewCell {
 extension NewsPhotoTableViewCell {
   
   private func setupFrames() {
+    guard cellConfig != nil else { return }
     setupContentImageView()
     setupBackgroundView()
   }
@@ -101,8 +103,7 @@ extension NewsPhotoTableViewCell {
   private func setupBackgroundView() {
     guard
       let backgroundView = contentView.subviews.first,
-      let contentImageView = contentView.subviews[1] as? UIImageView,
-      cellConfig != nil
+      let contentImageView = contentView.subviews[1] as? UIImageView
     else { return }
     
     let maxWidth = cellConfig!.superviewWidth - cellInsetsSumm
@@ -130,7 +131,7 @@ extension NewsPhotoTableViewCell {
     let contentImage = UIImageView()
     contentImage.translatesAutoresizingMaskIntoConstraints = false
     contentImage.backgroundColor = Constants.newsPhotoCellBackgroundcolor
-    contentImage.contentMode = .scaleAspectFill
+    contentImage.contentMode = .scaleToFill
     return contentImage
   }
 }

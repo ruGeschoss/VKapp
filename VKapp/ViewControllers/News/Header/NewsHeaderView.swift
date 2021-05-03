@@ -2,100 +2,247 @@
 //  NewsHeaderView.swift
 //  VKapp
 //
-//  Created by Alexander Andrianov on 23.03.2021.
+//  Created by Alexander Andrianov on 03.05.2021.
 //
 
 import UIKit
 
 final class NewsHeaderView: UITableViewHeaderFooterView {
-  @IBOutlet private weak var headerBackgroundView: UIView!
-  @IBOutlet private weak var profileStackView: UIStackView!
-  @IBOutlet private weak var profileAvatar: RoundImage!
-  @IBOutlet private weak var profileName: UILabel!
-  @IBOutlet private weak var profileNameUnderline: UILabel!
-  @IBOutlet private weak var headerMenuButton: UIButton!
   
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    addGestureRecogniser()
+  private let backgroundInsets: UIEdgeInsets = Constants.newsHeaderBackgroundInsets
+  private let contentInsets: UIEdgeInsets = Constants.newsHeaderContentInsets
+  
+  private var backgroundHeightInsetsSumm: CGFloat {
+    backgroundInsets.top + backgroundInsets.bottom
+  }
+  private var backgroundWidthInsetsSumm: CGFloat {
+    backgroundInsets.left + backgroundInsets.right
+  }
+  private var contentHeightInsetsSumm: CGFloat {
+    contentInsets.top + contentInsets.bottom
+  }
+  private var contentWidthInsetsSumm: CGFloat {
+    backgroundInsets.left + backgroundInsets.right
+  }
+  
+  private var nameLabelText: String?
+  private var dateLabelText: String?
+  private var avatarImage: UIImage?
+  
+  override init(reuseIdentifier: String?) {
+    super.init(reuseIdentifier: reuseIdentifier)
+    addSubviews()
+  }
+  
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+  }
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    nameLabelText = nil
+    dateLabelText = nil
+    avatarImage = nil
   }
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    contentView.frame = headerBackgroundView.frame
-    contentView.roundCorners(
-      corners: Constants.newsHeaderCornersToRound,
-      radius: Constants.newsHeaderCornerRadius)
-    contentView.backgroundColor = Constants
-      .newsHeaderViewBackgroundcolor
-    self.backgroundView = self.contentView
+    setBackgroundFrame()
+    setButtonFrame()
+    setProfileViewFrame()
+    setAvatarFrame()
+    setLabelsFrame()
   }
   
-  // MARK: Setup
-  func configureForUser(date: Int, user: UserSJ) {
-    self.profileName.text = user.firstName + " " + user.lastName
-    setDateToUnderline(date)
+  func configure(for owner: NewsOwner, date: String) {
+    nameLabelText = owner.ownerName
+    dateLabelText = date
     
-    NetworkManager.getPhotoDataFromUrl(url: user.photo) { data in
-      DispatchQueue.main.async {
-        self.profileAvatar.image = UIImage(data: data)
-      }
+    NetworkManager
+      .getPhotoDataFromUrl(
+        url: owner.ownerAvatarURL) { [weak self] data in
+        self?.avatarImage = UIImage(data: data)
+        self?.layoutSubviews()
     }
   }
   
-  func configureForGroup(date: Int, group: Group) {
-    self.profileName.text = group.groupName
-    setDateToUnderline(date)
-    let avatar = group.groupAvatarSizes.first!
-    NetworkManager.getPhotoDataFromUrl(url: avatar) { data in
-      DispatchQueue.main.async {
-        self.profileAvatar.image = UIImage(data: data)
-      }
-    }
+  // MARK: Actions
+  @objc private func didTapOnMenuButton(sender: UIButton) {
+    print(#function)
+    sender.animatedSpin()
+  }
+  
+  @objc private func didTapOnProfile(sender: UITapGestureRecognizer) {
+    print(#function)
+    sender.view?.animatedTap()
   }
 }
 
+// MARK: - Set frames
 extension NewsHeaderView {
   
-  // MARK: - Recogniser
-  private func addGestureRecogniser() {
-    let tapGesture = UITapGestureRecognizer(
-      target: self,
-      action: #selector(tappedOnProfile))
-    profileStackView.addGestureRecognizer(tapGesture)
-    profileStackView.isUserInteractionEnabled = true
+  // MARK: Background frame
+  private func setBackgroundFrame() {
+    guard let background = backgroundView else { return }
+    
+    let backgroundX = bounds.minX + backgroundInsets.left
+    let backgroundY = bounds.minY + backgroundInsets.top
+    let backgroundWidth = bounds.width - backgroundWidthInsetsSumm
+    let backgroundHeight = bounds.height - backgroundHeightInsetsSumm
+    
+    let backgroundOrigin = CGPoint(x: backgroundX, y: backgroundY)
+    let backgroundSIze = CGSize(width: ceil(backgroundWidth), height: ceil(backgroundHeight))
+    
+    background.frame = CGRect(origin: backgroundOrigin, size: backgroundSIze)
+    
+    let cornersToRound = Constants.newsHeaderCornersToRound
+    let cornerRadius = Constants.newsHeaderCornerRadius
+    background.roundCorners(corners: cornersToRound, radius: cornerRadius)
+    background.backgroundColor = Constants.newsHeaderViewBackgroundcolor
   }
   
-  // MARK: - Date formatter
-  private func setDateToUnderline(_ date: Int) {
-    DispatchQueue.global().async {
-      let date = date.convertToDate()
-      DispatchQueue.main.async {
-        self.profileNameUnderline.text = date
-      }
-    }
+  // MARK: Set MenuButton Frame
+  private func setButtonFrame() {
+    guard
+      let menuButton = contentView.subviews[1] as? UIButton
+    else { return }
+    
+    let container = contentView.frame
+    let buttonHeight = Constants.newsHeaderMenuButtonHeight
+    let menuButtonX = container.maxX - buttonHeight - backgroundInsets.right - contentInsets.right
+    let menuButtonY = container.minY + backgroundInsets.top + contentInsets.top
+    
+    let menuButtonSize = CGSize(width: buttonHeight, height: buttonHeight)
+    let menuButtonOrigin = CGPoint(x: menuButtonX, y: menuButtonY)
+    
+    menuButton.frame = CGRect(origin: menuButtonOrigin, size: menuButtonSize)
   }
   
-  // MARK: - Actions
-  @objc private func tappedOnProfile() {
-    profileStackView.animatedTap()
+  // MARK: Set ProfileView Frame
+  private func setProfileViewFrame() {
+    guard
+      let profileView = contentView.subviews.first
+    else { return }
+
+    let container = contentView.frame
+    let buttonWidth = Constants.newsHeaderMenuButtonHeight
+    let profileViewX = container.minX + backgroundInsets.left
+    let profileViewY = container.minY + backgroundInsets.top
+    let profileViewWidth = container.width - backgroundWidthInsetsSumm - buttonWidth
+    let profileViewHeight = container.height - profileViewY
+
+    let profileViewOrigin = CGPoint(x: profileViewX, y: profileViewY)
+    let profileViewSize = CGSize(width: profileViewWidth, height: profileViewHeight)
+    profileView.frame = CGRect(origin: profileViewOrigin, size: profileViewSize)
   }
   
-  @IBAction private func headerMenuButton(_ sender: UIButton) {
-    UIView.animate(withDuration: 0.1,
-                   delay: 0,
-                   options: .curveLinear,
-                   animations: {
-      self.headerMenuButton.transform =
-        CGAffineTransform(rotationAngle: -60)
-    })
-    UIView.animate(withDuration: 0.1,
-                   delay: 0.1,
-                   options: .curveLinear,
-                   animations: {
-      self.headerMenuButton.transform =
-        CGAffineTransform.identity
-    })
+  // MARK: Set Avatar Frame
+  private func setAvatarFrame() {
+    guard
+      let container = contentView.subviews.first,
+      let shadowImageView = container.subviews.first as? UIImageView,
+      let avatarImageView = shadowImageView.subviews.first as? UIImageView
+    else { return }
+    let avatarHeight = Constants.newsHeaderAvatarImageHeight
+    let avatarSize = CGSize(width: avatarHeight, height: avatarHeight)
+    let shadowImageOrigin = CGPoint(x: contentInsets.left, y: contentInsets.top)
+    
+    shadowImageView.frame = CGRect(origin: shadowImageOrigin, size: avatarSize)
+    avatarImageView.frame = CGRect(origin: CGPoint.zero, size: avatarSize)
+    avatarImageView.image = avatarImage
   }
   
+  // MARK: Set Name/Date Frames
+  private func setLabelsFrame() {
+    guard
+      let container = contentView.subviews.first,
+      let avatarImageView = container.subviews.first as? UIImageView,
+      let nameLabel = container.subviews[1] as? UILabel,
+      let dateLabel = container.subviews[2] as? UILabel
+    else { return }
+    
+    let labelWidth = container.frame.width - avatarImageView.frame.maxX - contentInsets.left
+    let maxLabelHeight = (container.frame.height - contentHeightInsetsSumm) / 2
+    let labelX = avatarImageView.frame.maxX + contentInsets.left
+    let nameLabelY = (container.frame.height / 2) - maxLabelHeight
+    let dateLabelY = nameLabelY + maxLabelHeight
+    
+    let nameLabelOrigin = CGPoint(x: labelX, y: ceil(nameLabelY))
+    let dateLabelOrigin = CGPoint(x: labelX, y: ceil(dateLabelY))
+    
+    let nameLabelSize = CGSize(width: labelWidth, height: ceil(maxLabelHeight))
+    let dateLabelSize = CGSize(width: labelWidth, height: ceil(maxLabelHeight))
+    
+    nameLabel.frame = CGRect(origin: nameLabelOrigin, size: nameLabelSize)
+    dateLabel.frame = CGRect(origin: dateLabelOrigin, size: dateLabelSize)
+    
+    nameLabel.text = nameLabelText
+    dateLabel.text = dateLabelText
+  }
+}
+
+// MARK: - Create Subviews
+extension NewsHeaderView {
+  
+  private func addSubviews() {
+    
+    let background = createBackground()
+    let menuButton = createMenuButton()
+    let avatarImage = createAvatarView()
+    let nameLabel = createLabel(ofSize: 14)
+    let dateLabel = createLabel(ofSize: 12)
+    let profileView = createBackground()
+    
+    let tapGesture = UITapGestureRecognizer()
+    tapGesture.addTarget(self, action: #selector(didTapOnProfile(sender:)))
+    
+    dateLabel.textColor = .darkGray
+    profileView.backgroundColor = .clear
+    
+    profileView.addSubview(avatarImage)
+    profileView.addSubview(nameLabel)
+    profileView.addSubview(dateLabel)
+    
+    profileView.isUserInteractionEnabled = true
+    profileView.addGestureRecognizer(tapGesture)
+    
+    backgroundView = background
+    contentView.addSubview(profileView)
+    contentView.addSubview(menuButton)
+  }
+  
+  private func createBackground() -> UIView {
+    let background = UIView()
+    background.backgroundColor = Constants.newsHeaderViewBackgroundcolor
+    background.translatesAutoresizingMaskIntoConstraints = false
+    return background
+  }
+  
+  private func createLabel(ofSize size: CGFloat) -> UILabel {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.backgroundColor = .clear
+    label.font = UIFont.systemFont(ofSize: size)
+    label.numberOfLines = 1
+    return label
+  }
+  
+  private func createMenuButton() -> UIButton {
+    let button = UIButton()
+    button.backgroundColor = .clear
+    button.setImage(UIImage(systemName: "scale.3d"), for: .normal)
+    button.addTarget(self, action: #selector(didTapOnMenuButton), for: .touchUpInside)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
+  }
+  
+  private func createAvatarView() -> UIImageView {
+    let shadowImage = ShadowImage()
+    let roundedImage = RoundImage()
+    shadowImage.translatesAutoresizingMaskIntoConstraints = false
+    roundedImage.translatesAutoresizingMaskIntoConstraints = false
+    roundedImage.contentMode = .scaleAspectFill
+    shadowImage.addSubview(roundedImage)
+    return shadowImage
+  }
 }

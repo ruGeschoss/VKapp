@@ -10,8 +10,8 @@ import UIKit
 // MARK: Cell configuration
 struct CellConfiguration {
   let indexPath: IndexPath
+  let superviewWidth: CGFloat
   var height: CGFloat
-  var superviewWidth: CGFloat
   var isExpanded: Bool?
   
   init(indexPath: IndexPath, superviewWidth: CGFloat, height: CGFloat, isExpanded: Bool?) {
