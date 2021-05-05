@@ -22,7 +22,7 @@ final class NewsHeaderView: UITableViewHeaderFooterView {
     contentInsets.top + contentInsets.bottom
   }
   private var contentWidthInsetsSumm: CGFloat {
-    backgroundInsets.left + backgroundInsets.right
+    contentInsets.left + contentInsets.right
   }
   
   private var nameLabelText: String?
@@ -126,9 +126,10 @@ extension NewsHeaderView {
 
     let container = contentView.frame
     let buttonWidth = Constants.newsHeaderMenuButtonHeight
+    let widthInsetsSumm = backgroundWidthInsetsSumm + contentWidthInsetsSumm
     let profileViewX = container.minX + backgroundInsets.left
     let profileViewY = container.minY + backgroundInsets.top
-    let profileViewWidth = container.width - backgroundWidthInsetsSumm - buttonWidth
+    let profileViewWidth = container.width - buttonWidth - widthInsetsSumm
     let profileViewHeight = container.height - profileViewY
 
     let profileViewOrigin = CGPoint(x: profileViewX, y: profileViewY)

@@ -12,9 +12,7 @@ final class NewsViewController: UIViewController {
   @IBOutlet private weak var newsTableView: UITableView!
   
   private lazy var photoService = PhotoService(container: newsTableView)
-  private lazy var refreshControl: UIRefreshControl = {
-    createRefreshControl()
-  }()
+  private lazy var refreshControl: UIRefreshControl = { createRefreshControl() }()
   private var news: [NewsPostModel] = []
   private var users: [UserSJ] = []
   private var groups: [Group] = []
@@ -79,17 +77,16 @@ extension NewsViewController: UITableViewDataSource {
       return postCell
 
     default:
-//      guard
-//        let imageUrl = newsContent.photoAttachments.first?.imageUrl.last,
-////        let image = photoService.photo(indexPath: indexPath, url: imageUrl),
-//        let photoCell = tableView.dequeueReusableCell(
-//              withIdentifier: NewsPhotoTableViewCell.reuseID)
-//              as? NewsPhotoTableViewCell else { return UITableViewCell() }
-//      photoCell.cellConfig = cellConfig[indexPath]
-////      photoCell.configure(news: newsContent, image: image)
-//      cellConfig[indexPath] = photoCell.cellConfig
-//      return photoCell
-      return UITableViewCell()
+      guard
+        let imageUrl = newsContent.photoAttachments.first?.imageUrl.last,
+        let image = photoService.photo(indexPath: indexPath, url: imageUrl),
+        let photoCell = tableView.dequeueReusableCell(
+              withIdentifier: NewsPhotoTableViewCell.reuseID)
+              as? NewsPhotoTableViewCell else { return UITableViewCell() }
+      photoCell.cellConfig = cellConfig[indexPath]
+      photoCell.configure(news: newsContent, image: image)
+      cellConfig[indexPath] = photoCell.cellConfig
+      return photoCell
     }
   }
   
@@ -128,28 +125,21 @@ extension NewsViewController: UITableViewDataSource {
   // MARK: - Footer
   func tableView(_ tableView: UITableView,
                  viewForFooterInSection section: Int) -> UIView? {
-//    guard let footer = tableView.dequeueReusableHeaderFooterView(
-//            withIdentifier: Constants.newsFooterViewId)
-//            as? NewsFooterView else { return UIView() }
-//    let post = news[section]
-//    footer.configure(likes: post.likes, comments: post.comments,
-//                     reposts: post.reposts, views: post.views)
-//    return footer
-    return UIView()
+    guard let footer = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: NewsFooterView.reuseID)
+            as? NewsFooterView else { return UIView() }
+    footer.configure(post: news[section])
+    return footer
   }
   
   // MARK: - Footer height
   func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-    return 50
+    Constants.newsFooterTotalHeight
   }
   
   func tableView(_ tableView: UITableView,
                  heightForFooterInSection section: Int) -> CGFloat {
-//    guard let footer = tableView.dequeueReusableHeaderFooterView(
-//            withIdentifier: Constants.newsFooterViewId)
-//            as? NewsFooterView else { return 0 }
-//    return footer.frame.height
-    return 50
+    Constants.newsFooterTotalHeight
   }
 }
 
@@ -185,8 +175,8 @@ extension NewsViewController {
       forHeaderFooterViewReuseIdentifier: NewsHeaderView.reuseID)
     
     newsTableView.register(
-      Constants.newsFooterViewNib,
-      forHeaderFooterViewReuseIdentifier: Constants.newsFooterViewId)
+      NewsFooterView.self,
+      forHeaderFooterViewReuseIdentifier: NewsFooterView.reuseID)
     
     newsTableView.register(
       NewsPostTableViewCell.self,
@@ -230,6 +220,7 @@ extension NewsViewController {
         self.groups = response.groups
         self.users = response.users
         self.nextNewsRequestFrom = response.nextRequest
+        self.cellConfig.removeAll()
         self.refreshControl.endRefreshing()
         self.newsTableView.reloadData()
       }

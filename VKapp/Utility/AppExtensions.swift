@@ -69,6 +69,26 @@ extension Int {
     dateformatter.timeZone = .current
     return dateformatter.string(from: date)
   }
+  
+  var shortStringVersion: String {
+    guard !Double(self).isNaN, !Double(self).isInfinite else { return "" }
+    if self == 0 { return "0" }
+    
+    let units = ["", "k", "M"]
+    var interval = Double(self)
+    var unitIndex = 0
+    while unitIndex < units.count - 1 {
+      if abs(interval) < 1000.0 {
+        break
+      }
+      unitIndex += 1
+      interval /= 1000.0
+    }
+    // 2 for 1 digit, 3 for 2 digits, etc
+    let numberOfDigits = interval > 9 ? 2 : 3
+    let stringValue = String(format: "%0.*g", Int(log10(abs(interval))) + numberOfDigits, interval)
+    return "\(stringValue)\(units[unitIndex])"
+  }
 }
 
 // MARK: - TableViewCell
