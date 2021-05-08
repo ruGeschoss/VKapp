@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import PromiseKit
 
 final class MyGroupsTableViewController: UITableViewController {
   
@@ -63,7 +64,7 @@ extension MyGroupsTableViewController {
     NetworkManager
       .loadGroupsSJ(forUserId: groupListForUserId) { [weak self] in
         self?.refresher.endRefreshing()
-    }
+      }
   }
   
   private func createRefreshControl() -> UIRefreshControl {

@@ -16,7 +16,7 @@ final class AllGroupsTableViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     searchGroups.delegate = self
-    loadAllGroups()
+    loadAllGroups(byText: nil)
   }
   
   override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -53,38 +53,19 @@ extension AllGroupsTableViewController: UISearchBarDelegate {
   
   func searchBar(_ searchBar: UISearchBar,
                  textDidChange searchText: String) {
-    guard !searchText.isEmpty else { return }
-    NetworkManager
-      .searchGroupSJ(searchText: searchText) { [weak self] (result) in
-        guard let self = self else { return }
-        switch result {
-        case .success(let foundGroups):
-          self.groups = foundGroups
-          DispatchQueue.main.async {
-            self.tableView.reloadData()
-          }
-        case .failure(let error):
-          print(error.localizedDescription)
-        }
-      }
+    let text = searchText.isEmpty ? " " : searchText
+    loadAllGroups(byText: text)
   }
 }
 
 // MARK: - Functions
 extension AllGroupsTableViewController {
   
-  private func loadAllGroups() {
-    NetworkManager.searchGroupSJ(searchText: nil) { [weak self] (result) in
-      guard let self = self else { return }
-      switch result {
-      case .success(let groups):
+  private func loadAllGroups(byText: String?) {
+    NetworkManager
+      .searchGroupSJ(searchText: byText ?? nil) { groups in
         self.groups = groups
-        DispatchQueue.main.async {
-          self.tableView.reloadData()
-        }
-      case .failure(let error):
-        print(error.localizedDescription)
+        self.tableView.reloadData()
       }
-    }
   }
 }
