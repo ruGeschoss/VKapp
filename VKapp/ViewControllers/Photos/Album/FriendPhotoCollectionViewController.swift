@@ -12,6 +12,7 @@ final class FriendPhotoCollectionViewController: UICollectionViewController {
   private var allPhotosOfUserNotificationToken: NotificationToken?
   private var testToken: NotificationToken?
   private lazy var realm = RealmManager.shared
+  private lazy var photoService = PhotoService(container: self.collectionView)
   var currentImageIndex = 0
   var photosForUserID = String()
   
@@ -86,7 +87,9 @@ extension FriendPhotoCollectionViewController {
           withReuseIdentifier: "FriendPhotoCell",
           for: indexPath) as? FriendPhotoCollectionViewCell {
       let maxQualityPhoto = allPhotosUrls![indexPath.item].last!
-      cell.configure(photoUrl: maxQualityPhoto)
+      let photo = photoService
+        .photo(indexPath: indexPath, url: maxQualityPhoto)
+      cell.friendAlbumPhoto.image = photo
       return cell
     }
     return UICollectionViewCell()

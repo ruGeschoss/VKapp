@@ -11,6 +11,7 @@ final class NewsViewController: UIViewController {
   @IBOutlet private weak var backgroundView: GradientView!
   @IBOutlet private weak var newsTableView: UITableView!
   
+  private lazy var photoService = PhotoService(container: newsTableView)
   private var news: [NewsPostModel] = []
   private var users: [UserSJ] = []
   private var groups: [Group] = []
@@ -33,7 +34,6 @@ final class NewsViewController: UIViewController {
     NewsfeedService.getPhotoNews { (news, users, groups, nextFrom) in
       print("Got photo news: \(news.count), from: \(users.count) users and \(groups.count) groups")
       print("Next request from: \(nextFrom)")
-//      print(news.first?.photos.count)
     }
   }
 }
@@ -65,18 +65,18 @@ extension NewsViewController: UITableViewDataSource {
     
     guard let attachment = news[indexPath.section].photoAttachments.first,
           let photo = attachment.imageUrl.last else { return UITableViewCell() }
+    let image = photoService.photo(indexPath: indexPath, url: photo)
     
     switch indexPath.row {
     case 0:
       if news[indexPath.section].text == "" {
-        photoCell.configure(url: photo)
+        photoCell.cellImageView.image = image
         return photoCell
       }
       postCell.configure(text: news[indexPath.section].text)
       return postCell
     default:
-      
-      photoCell.configure(url: photo)
+      photoCell.cellImageView.image = image
       return photoCell
     }
   }
