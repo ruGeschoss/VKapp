@@ -242,8 +242,10 @@ extension FriendListTableViewController {
   
   @objc private func refresh(_ sender: UIRefreshControl) {
     NetworkManager
-      .loadFriendsSJ(forUser: friendListForUserId) { [weak self] in
-      self?.refreshControl.endRefreshing()
+      .loadFriendsSJ(forUser: friendListForUserId) {
+        DispatchQueue.main.async {
+          self.refreshControl.endRefreshing()
+        }
     }
   }
 }
