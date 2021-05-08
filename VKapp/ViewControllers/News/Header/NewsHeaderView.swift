@@ -9,8 +9,9 @@ import UIKit
 
 final class NewsHeaderView: UITableViewHeaderFooterView {
   
-  private let backgroundInsets: UIEdgeInsets = Constants.newsHeaderBackgroundInsets
-  private let contentInsets: UIEdgeInsets = Constants.newsHeaderContentInsets
+  typealias K = Constants.News.Header
+  private let backgroundInsets: UIEdgeInsets = K.backgroundInsets
+  private let contentInsets: UIEdgeInsets = K.contentInsets
   
   private var backgroundHeightInsetsSumm: CGFloat {
     backgroundInsets.top + backgroundInsets.bottom
@@ -95,10 +96,10 @@ extension NewsHeaderView {
     
     background.frame = CGRect(origin: backgroundOrigin, size: backgroundSIze)
     
-    let cornersToRound = Constants.newsHeaderCornersToRound
-    let cornerRadius = Constants.newsHeaderCornerRadius
+    let cornersToRound = K.cornersToRound
+    let cornerRadius = K.cornerRadius
     background.roundCorners(corners: cornersToRound, radius: cornerRadius)
-    background.backgroundColor = Constants.newsHeaderViewBackgroundcolor
+    background.backgroundColor = K.backgroundColor
   }
   
   // MARK: Set MenuButton Frame
@@ -108,7 +109,7 @@ extension NewsHeaderView {
     else { return }
     
     let container = contentView.frame
-    let buttonHeight = Constants.newsHeaderMenuButtonHeight
+    let buttonHeight = K.menuButtonHeight
     let menuButtonX = container.maxX - buttonHeight - backgroundInsets.right - contentInsets.right
     let menuButtonY = container.minY + backgroundInsets.top + contentInsets.top
     
@@ -125,7 +126,7 @@ extension NewsHeaderView {
     else { return }
 
     let container = contentView.frame
-    let buttonWidth = Constants.newsHeaderMenuButtonHeight
+    let buttonWidth = K.menuButtonHeight
     let widthInsetsSumm = backgroundWidthInsetsSumm + contentWidthInsetsSumm
     let profileViewX = container.minX + backgroundInsets.left
     let profileViewY = container.minY + backgroundInsets.top
@@ -144,7 +145,7 @@ extension NewsHeaderView {
       let shadowImageView = container.subviews.first as? UIImageView,
       let avatarImageView = shadowImageView.subviews.first as? UIImageView
     else { return }
-    let avatarHeight = Constants.newsHeaderAvatarImageHeight
+    let avatarHeight = K.avatarImageHeight
     let avatarSize = CGSize(width: avatarHeight, height: avatarHeight)
     let shadowImageOrigin = CGPoint(x: contentInsets.left, y: contentInsets.top)
     
@@ -214,7 +215,7 @@ extension NewsHeaderView {
   
   private func createBackground() -> UIView {
     let background = UIView()
-    background.backgroundColor = Constants.newsHeaderViewBackgroundcolor
+    background.backgroundColor = K.backgroundColor
     background.translatesAutoresizingMaskIntoConstraints = false
     return background
   }

@@ -7,66 +7,76 @@
 
 import UIKit
 
-final class Constants {
+enum Constants {
   
-  // MARK: - News Table View
-  static let newsTableViewBackgroundColor: UIColor =
-    UIColor.clear
-  
-  // MARK: - News Post Table View Cell
-  static let newsPostCellBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
-  static let newsPostCellInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-  static let newsPostCellContentInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-  static let newsPostCellContentHeightLimit: CGFloat = 100
-  static let newsPostCellButtonMoreTitle: String = "Show more"
-  static let newsPostCellButtonLessTitle: String = "Show less"
-  
-  // MARK: - News Photo Table ViewCell
-  static let newsPhotoCellBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
-  static let newsPhotoCellInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-  static let newsPhotoCellContentInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-  
-  // MARK: - News Header View
-  static let newsHeaderCornersToRound: UIRectCorner =
-    [.topLeft, .topRight]
-  static let newsHeaderCornerRadius: CGFloat = 30
-  static let newsHeaderBackgroundInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 5, left: 10, bottom: 0, right: 10)
-  static let newsHeaderContentInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-  static let newsHeaderViewBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
-  static let newsHeaderMenuButtonHeight: CGFloat = 30
-  static let newsHeaderAvatarImageHeight: CGFloat = 30
-  
-  static var newsHeaderTotalHeight: CGFloat {
-    let contentInsetsSumm = newsHeaderContentInsets.top + newsHeaderContentInsets.bottom
-    let backgroundInsetsSumm = newsHeaderBackgroundInsets.top + newsHeaderBackgroundInsets.bottom
-    let totalHeight = newsHeaderAvatarImageHeight + contentInsetsSumm + backgroundInsetsSumm
-    return totalHeight
+  enum News {
+    
+    static let backgroundColor: UIColor = .clear
+    
+    // MARK: News Header
+    enum Header {
+      static let backgroundInsets: UIEdgeInsets =
+        UIEdgeInsets(top: 5, left: 10, bottom: 0, right: 10)
+      static let contentInsets: UIEdgeInsets =
+        UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+      static let cornersToRound: UIRectCorner = [.topLeft, .topRight]
+      static let cornerRadius: CGFloat = 30
+      static let backgroundColor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
+      static let menuButtonHeight: CGFloat = 30
+      static let avatarImageHeight: CGFloat = 30
+      
+      static var totalHeight: CGFloat {
+        let contentInsetsSumm = contentInsets.top + contentInsets.bottom
+        let backgroundInsetsSumm = backgroundInsets.top + backgroundInsets.bottom
+        let totalHeight = avatarImageHeight + contentInsetsSumm + backgroundInsetsSumm
+        return totalHeight
+      }
+    }
+    
+    // MARK: News Footer
+    enum Footer {
+      static let backgroundInsets: UIEdgeInsets =
+        UIEdgeInsets(top: 0, left: 10, bottom: 5, right: 10)
+      static let contentInsets: UIEdgeInsets =
+        UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+      static let cornersToRound: UIRectCorner = [.bottomLeft, .bottomRight]
+      static let cornerRadius: CGFloat = 30
+      static let backgroundColor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
+      static let buttonsHeight: CGFloat = 30
+      
+      static var totalHeight: CGFloat {
+        let contentInsetsSumm = contentInsets.top + contentInsets.bottom
+        let backgroundInsetsSumm = backgroundInsets.top + backgroundInsets.bottom
+        let totalHeight = buttonsHeight + contentInsetsSumm + backgroundInsetsSumm
+        return totalHeight
+      }
+    }
+    
+    // MARK: Post cell
+    enum PostCell {
+      static let cellInsets: UIEdgeInsets =
+        UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+      static let cellContentInsets: UIEdgeInsets =
+        UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+      static let backgroundColor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
+      static let contentHeightLimit: CGFloat = 100
+      static let buttonMoreTitle: String = "Show more"
+      static let buttonLessTitle: String = "Show less"
+    }
+    
+    // MARK: Photo cell
+    enum PhotoCell {
+      static let backgroundColor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
+      static let cellInsets: UIEdgeInsets =
+        UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+      static let cellContentInsets: UIEdgeInsets =
+        UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
   }
   
-  // MARK: - News Footer View
-  static let newsFooterCornersToRound: UIRectCorner =
-    [.bottomLeft, .bottomRight]
-  static let newsFooterCornerRadius: CGFloat = 30
-  static let newsFooterViewBackgroundcolor: UIColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 0.3)
-  static let newsFooterBackgroundInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 0, left: 10, bottom: 5, right: 10)
-  static let newsFooterContentInsets: UIEdgeInsets =
-    UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-  static let newsFooterButtonsHeight: CGFloat = 30
-  
-  static var newsFooterTotalHeight: CGFloat {
-    let contentInsetsSumm = newsFooterContentInsets.top + newsFooterContentInsets.bottom
-    let backgroundInsetsSumm = newsFooterBackgroundInsets.top + newsFooterBackgroundInsets.bottom
-    let totalHeight = newsFooterButtonsHeight + contentInsetsSumm + backgroundInsetsSumm
-    return totalHeight
+  // MARK: Charpicker
+  enum Charpicker {
+    static let maxChars: Int = 15
   }
   
-  // MARK: - Charpicker
-  static let maximumCharpickerChars: Int = 15
 }

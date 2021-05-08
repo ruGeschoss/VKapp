@@ -10,7 +10,7 @@ import Foundation
 
 final class CharPicker: UIControl {
 
-  private var maximumChars = Constants.maximumCharpickerChars
+  private var maximumChars = Constants.Charpicker.maxChars
   private var stackView: UIStackView!
   var buttons: [UIButton] = []
   

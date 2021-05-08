@@ -19,6 +19,7 @@ final class NewsViewController: UIViewController {
   private var cellConfig: [IndexPath: CellConfiguration] = [:]
   private var nextNewsRequestFrom: String = ""
   private var newsAreLoading: Bool = false
+  typealias K = Constants.News
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -114,12 +115,12 @@ extension NewsViewController: UITableViewDataSource {
   
   // MARK: - Header height
   func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-    Constants.newsHeaderTotalHeight
+    K.Header.totalHeight
   }
   
   func tableView(_ tableView: UITableView,
                  heightForHeaderInSection section: Int) -> CGFloat {
-    Constants.newsHeaderTotalHeight
+    K.Header.totalHeight
   }
   
   // MARK: - Footer
@@ -134,12 +135,12 @@ extension NewsViewController: UITableViewDataSource {
   
   // MARK: - Footer height
   func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-    Constants.newsFooterTotalHeight
+    K.Footer.totalHeight
   }
   
   func tableView(_ tableView: UITableView,
                  heightForFooterInSection section: Int) -> CGFloat {
-    Constants.newsFooterTotalHeight
+    K.Footer.totalHeight
   }
 }
 
@@ -195,8 +196,7 @@ extension NewsViewController {
     newsTableView.refreshControl = refreshControl
     newsTableView.prefetchDataSource = self
     
-    newsTableView.backgroundColor =
-      Constants.newsTableViewBackgroundColor
+    newsTableView.backgroundColor = K.backgroundColor
   }
   
   // MARK: - Refresh Control

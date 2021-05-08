@@ -13,14 +13,14 @@ protocol ForcedCellUpdateDelegate: AnyObject {
 
 final class NewsPostTableViewCell: UITableViewCell {
   
-  private let contentInsets = Constants.newsPostCellContentInsets
-  private let cellInsets = Constants.newsPostCellInsets
-  private let heightLimit = Constants.newsPostCellContentHeightLimit
+  typealias K = Constants.News.PostCell
+  private let contentInsets = K.cellContentInsets
+  private let cellInsets = K.cellInsets
+  private let heightLimit = K.contentHeightLimit
   
-  private let cellInsetsSumm =
-    Constants.newsPostCellInsets.left + Constants.newsPostCellInsets.right
+  private let cellInsetsSumm = K.cellInsets.left + K.cellInsets.right
   private let contentInsetsSumm =
-    Constants.newsPostCellContentInsets.left + Constants.newsPostCellContentInsets.right
+    K.cellContentInsets.left + K.cellContentInsets.right
   private var insetsSumm: CGFloat { cellInsetsSumm + contentInsetsSumm }
   
   private var shouldShowExpandButton: Bool = false
@@ -142,8 +142,8 @@ extension NewsPostTableViewCell {
       return
     }
     
-    let moreTitle = Constants.newsPostCellButtonMoreTitle
-    let lessTitle = Constants.newsPostCellButtonLessTitle
+    let moreTitle = K.buttonMoreTitle
+    let lessTitle = K.buttonLessTitle
     let buttonTitle = isExpanded ? lessTitle : moreTitle
     expandButton.setTitle(buttonTitle, for: .normal)
     
@@ -186,7 +186,7 @@ extension NewsPostTableViewCell {
   
   private func createBackgroundView() -> UIView {
     let background = UIView()
-    background.backgroundColor = Constants.newsPostCellBackgroundcolor
+    background.backgroundColor = K.backgroundColor
     background.translatesAutoresizingMaskIntoConstraints = false
     return background
   }
