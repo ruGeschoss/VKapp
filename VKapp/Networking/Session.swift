@@ -8,7 +8,7 @@
 import Foundation
 import SwiftKeychainWrapper
 
-class Session {
+final class Session {
   
   static let shared = Session()
   

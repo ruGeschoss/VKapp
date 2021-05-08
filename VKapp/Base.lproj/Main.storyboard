@@ -656,7 +656,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="W4I-Ii-oaC" kind="relationship" relationship="rootViewController" id="Qom-V0-HOf"/>
+                        <segue destination="cdz-rB-iEc" kind="relationship" relationship="rootViewController" id="gE7-aP-eBU"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zgz-kV-XC6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -664,43 +664,63 @@
             <point key="canvasLocation" x="-2091" y="726"/>
         </scene>
         <!--Новости-->
-        <scene sceneID="jfM-BR-I0e">
+        <scene sceneID="EMm-eB-fWE">
             <objects>
-                <viewController storyboardIdentifier="NewsVC" modalPresentationStyle="fullScreen" id="W4I-Ii-oaC" customClass="NewsVC" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="NdF-gi-v6I">
+                <viewController id="cdz-rB-iEc" customClass="NewsViewController" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uxo-hr-DkS" customClass="GradientView" customModule="VKapp" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pfl-tA-NKc">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="a8p-dJ-uYw">
                                 <rect key="frame" x="0.0" y="56" width="414" height="611"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Ber-VV-kFp">
-                                    <size key="itemSize" width="128" height="128"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                            </collectionView>
+                            </tableView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="VVC-Bq-JbE"/>
+                        <viewLayoutGuide key="safeArea" id="Obl-vX-Lt6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="pfl-tA-NKc" firstAttribute="leading" secondItem="VVC-Bq-JbE" secondAttribute="leading" id="Cwf-Pk-a3n"/>
-                            <constraint firstItem="VVC-Bq-JbE" firstAttribute="bottom" secondItem="pfl-tA-NKc" secondAttribute="bottom" id="SdZ-eE-RVw"/>
-                            <constraint firstItem="VVC-Bq-JbE" firstAttribute="trailing" secondItem="pfl-tA-NKc" secondAttribute="trailing" id="iqX-NP-74J"/>
-                            <constraint firstItem="pfl-tA-NKc" firstAttribute="top" secondItem="VVC-Bq-JbE" secondAttribute="top" id="xAX-lb-YSM"/>
+                            <constraint firstItem="Obl-vX-Lt6" firstAttribute="trailing" secondItem="a8p-dJ-uYw" secondAttribute="trailing" id="5a5-v2-rAY"/>
+                            <constraint firstItem="Obl-vX-Lt6" firstAttribute="bottom" secondItem="a8p-dJ-uYw" secondAttribute="bottom" id="AyY-GL-2Gf"/>
+                            <constraint firstItem="a8p-dJ-uYw" firstAttribute="leading" secondItem="Obl-vX-Lt6" secondAttribute="leading" id="bYt-ce-9bu"/>
+                            <constraint firstItem="a8p-dJ-uYw" firstAttribute="top" secondItem="Obl-vX-Lt6" secondAttribute="top" id="czZ-JG-apY"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="startLocation">
+                                <real key="value" value="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="endLocation">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="point" keyPath="startPoint">
+                                <point key="value" x="0.0" y="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="point" keyPath="endPoint">
+                                <point key="value" x="1" y="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                <color key="value" red="1" green="0.59194407000000004" blue="0.79633952969999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Новости" image="newspaper.fill" catalog="system" id="WKe-mV-I35"/>
-                    <navigationItem key="navigationItem" title="Новости" id="Z9A-wQ-FpO"/>
+                    <navigationItem key="navigationItem" title="Новости" id="oha-un-O7l">
+                        <barButtonItem key="leftBarButtonItem" title="Выход" id="tbI-Fb-erl">
+                            <connections>
+                                <segue destination="yoL-9Z-wjP" kind="unwind" unwindAction="myUnwindActionWithUnwindSegue:" id="khO-gW-yZq"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="collectionView" destination="pfl-tA-NKc" id="7Qn-YI-QPU"/>
+                        <outlet property="backgroundView" destination="uxo-hr-DkS" id="ZbN-U0-erw"/>
+                        <outlet property="newsTableView" destination="a8p-dJ-uYw" id="l2V-W0-XTK"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1Da-zN-Wq2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Eya-ae-SsY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="yoL-9Z-wjP" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1326.0869565217392" y="726.35869565217399"/>
+            <point key="canvasLocation" x="-1326" y="726"/>
         </scene>
         <!--Друзья-->
         <scene sceneID="2UZ-o0-0vK">

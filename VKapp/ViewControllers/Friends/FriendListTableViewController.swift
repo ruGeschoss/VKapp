@@ -12,137 +12,66 @@ protocol PhotoDelegate: AnyObject {
   func getPhoto(photo: String)
 }
 
-class FriendListTableViewController: UIViewController, UITableViewDataSource {
-  
-  @IBOutlet weak var tableView: UITableView! {
-    didSet {
-      tableView.refreshControl = refreshControl
-      tableView.dataSource = self
-      tableView.delegate = self
-      tableView.backgroundColor = UIColor.clear
-    }
-  }
-  @IBOutlet weak var charPicker: CharPicker!
-  @IBOutlet weak var friendSearch: UISearchBar! {
-    didSet {
-      friendSearch.delegate = self
-    }
-  }
-  
-  var usersData: Results<UserSJ>? {
-    let realm = try? Realm()
-    let users: Results<UserSJ>? = realm?.objects(UserSJ.self).filter("forUser CONTAINS %@",
-                                                                     Session.shared.userId)
-    return users?.sorted(byKeyPath: "lastName", ascending: true)
-  }
-  
-  var searchData: Results<UserSJ>? {
-    guard !searchText.isEmpty else { return usersData }
-    
-    let lastNamePredicate = NSPredicate(format: "lastName CONTAINS[cd] %@", searchText)
-    let firstNamePredicate = NSPredicate(format: "firstName CONTAINS[cd] %@", searchText)
-    let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [firstNamePredicate,
-                                                                       lastNamePredicate])
-    return usersData?.filter(predicate)
-  }
-  
+final class FriendListTableViewController: UIViewController {
+  @IBOutlet private weak var tableView: UITableView!
+  @IBOutlet private weak var charPicker: CharPicker!
+  @IBOutlet private weak var friendSearch: UISearchBar!
+
+  private lazy var realm = RealmManager.shared
+  private var searchDataNotificationToken: NotificationToken?
+  private var testToken: NotificationToken?
+  private var sectionTitles = [String]()
+  private var selectedUser = String()
+  private var friendListForUserId = Session.shared.userId
+  private lazy var refreshControl: UIRefreshControl = {
+    createRefreshControl()
+  }()
   private var searchText: String {
     friendSearch.text ?? ""
   }
+  private var usersData: Results<UserSJ>? {
+    realm?.getObjects(type: UserSJ.self)
+      .filter("forUser CONTAINS %@", Session.shared.userId)
+      .sorted(byKeyPath: "lastName", ascending: true)
+  }
+  private var searchData: Results<UserSJ>? {
+    filterUsers()
+  }
   
-  var sectionTitles = [String]()
-  var selectedUser = String()
-  var friendListForUserId = Session.shared.userId
-  private var searchDataNotificationToken: NotificationToken?
-  private var testToken: NotificationToken?
-
-  private lazy var refreshControl: UIRefreshControl = {
-    let refreshControl = UIRefreshControl()
-    refreshControl.tintColor = .systemGray
-    refreshControl.attributedTitle = NSAttributedString(string: "Обновление...",
-                                                        attributes: [.font: UIFont.systemFont(ofSize: 10)])
-    refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
-    return refreshControl
-  }()
+  deinit {
+    searchDataNotificationToken?.invalidate()
+    testToken?.invalidate()
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupController()
     createSingleTargetToken()
     createSearchDataNotificationToken()
-  }
-  
-  // MARK: Notification Tokens
-  private func createSingleTargetToken() {
-    testToken = usersData?.last?.observe { change in
-      switch change {
-      case .change(let object, let properties):
-        let changes = properties.reduce("") { (res, new) in
-          "\(res)\n\(new.name):\n\t\(new.oldValue ?? "nil") -> \(new.newValue ?? "nil")"
-        }
-        let user = object as? UserSJ
-        #if DEBUG
-        print("Changed properties for user: \(user?.lastName ?? "")\n\(changes)")
-        #endif
-      case .deleted:
-        print("obj deleted")
-      case .error(let error):
-        print(error.localizedDescription)
-      }
-    }
-  }
-
-  private func createSearchDataNotificationToken() {
-    searchDataNotificationToken = usersData?.observe { [weak self] result in
-      switch result {
-      case .initial(let usersData):
-        print("Initiated with \(usersData.count)")
-        self?.getSectionTitles()
-        self?.tableView.reloadData()
-      case .update(let users,
-                   deletions: let deletions,
-                   insertions: let insertions,
-                   modifications: let modifications):
-        print("""
-              New count \(users.count)
-              Deletions \(deletions)
-              Insertions \(insertions)
-              Modifications \(modifications)
-              """)
-        if !deletions.isEmpty || !insertions.isEmpty {
-          self?.getSectionTitles()
-          self?.tableView.reloadData()
-        }
-      case .error(let error):
-        print(error.localizedDescription)
-      }
-    }
   }
 
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "ToMyFriendCell" {
-      if let destination = segue.destination as? FriendPhotoCollectionViewController {
+      if let destination = segue.destination
+          as? FriendPhotoCollectionViewController {
         destination.photosForUserID = selectedUser
       }
     }
   }
 
-  @objc private func refresh(_ sender: UIRefreshControl) {
-    NetworkManager.loadFriendsSJ(forUser: friendListForUserId) { [weak self] in
-      self?.refreshControl.endRefreshing()
-    }
-  }
-
-  @IBAction func charPicked(_ sender: CharPicker) {
+  // MARK: - Actions
+  @IBAction private func charPicked(_ sender: CharPicker) {
     let selectedChar = charPicker.selectedChar
     var indexPath = IndexPath(item: 0, section: 0)
-    for (index, section) in sectionTitles.enumerated() where selectedChar == section {
+    
+    for (index, section) in sectionTitles.enumerated()
+    where selectedChar == section {
         indexPath = IndexPath(item: 0, section: index)
     }
-
     tableView.scrollToRow(at: indexPath, at: .top, animated: true)
   }
 
-  @IBAction func didMakePan(_ sender: UIPanGestureRecognizer) {
+  @IBAction private func didMakePan(_ sender: UIPanGestureRecognizer) {
     view.endEditing(true)
 
     let location = sender.location(in: charPicker)
@@ -162,18 +91,31 @@ class FriendListTableViewController: UIViewController, UITableViewDataSource {
       break
     }
   }
-
-  // MARK: Deinit
-  deinit {
-    searchDataNotificationToken?.invalidate()
-    testToken?.invalidate()
-  }
-
 }
 
-// MARK: TableViewDelegate
+// MARK: - Functions
+extension FriendListTableViewController {
+  private func setupController() {
+    tableView.refreshControl = refreshControl
+    tableView.dataSource = self
+    tableView.delegate = self
+    tableView.backgroundColor = UIColor.clear
+    friendSearch.delegate = self
+  }
+  
+  private func filterUsers() -> Results<UserSJ>? {
+    guard !searchText.isEmpty else { return usersData }
+    let lastNamePredicate =
+      NSPredicate(format: "lastName CONTAINS[cd] %@", searchText)
+    let firstNamePredicate =
+      NSPredicate(format: "firstName CONTAINS[cd] %@", searchText)
+    let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [firstNamePredicate, lastNamePredicate])
+    return usersData?.filter(predicate)
+  }
+}
 
-extension FriendListTableViewController: UITableViewDelegate {
+// MARK: - TableView Datasouce
+extension FriendListTableViewController: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     return sectionTitles.count
   }
@@ -198,18 +140,25 @@ extension FriendListTableViewController: UITableViewDelegate {
 
   func tableView(_ tableView: UITableView,
                  cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if let cell = tableView.dequeueReusableCell(withIdentifier: "MyFriendCell",
-                                                for: indexPath) as? MyFriendsTableViewCell {
-      let friend = friendsForSectionByFirstChar(indexPath.section)[indexPath.row]
+    if let cell = tableView
+        .dequeueReusableCell(withIdentifier: "MyFriendCell",
+                             for: indexPath) as? MyFriendsTableViewCell {
+      let friend =
+        friendsForSectionByFirstChar(indexPath.section)[indexPath.row]
       cell.configure(forUser: friend)
       return cell
     }
     return UITableViewCell()
   }
+}
 
+// MARK: - TableView Delegate
+extension FriendListTableViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView,
                  didSelectRowAt indexPath: IndexPath) {
-    selectedUser = friendsForSectionByFirstChar(indexPath.section)[indexPath.row].userId
+    selectedUser =
+      friendsForSectionByFirstChar(indexPath.section)[indexPath.row]
+      .userId
     NetworkManager.loadPhotosSJ(ownerId: selectedUser) {
       self.performSegue(withIdentifier: "ToMyFriendCell", sender: self)
     }
@@ -217,30 +166,6 @@ extension FriendListTableViewController: UITableViewDelegate {
 
   func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
     view.endEditing(true)
-  }
-
-  func friendsForSectionByFirstChar(_ indexInTitles: Int) -> [UserSJ] {
-    var tmpArray: [UserSJ] = []
-    for each in searchData! {
-      if String(each.lastName.first ?? "-") == sectionTitles[indexInTitles] {
-        tmpArray.append(each)
-      }
-    }
-    return tmpArray
-  }
-
-  func getSectionTitles() {
-    sectionTitles = []
-
-    for each in searchData! {
-      let charForTitle = each.lastName.first ?? "-"
-      if !sectionTitles.contains(String(charForTitle)) {
-        sectionTitles.append(String(charForTitle))
-      }
-    }
-
-    charPicker.chars = sectionTitles
-    charPicker.setupUI()
   }
 }
 
@@ -255,11 +180,130 @@ extension FriendListTableViewController: UISearchBarDelegate {
           count > tableView.visibleCells.count else {
       charPicker.isUserInteractionEnabled = false
       charPicker.isHidden = true
-
       return
     }
-
     charPicker.isUserInteractionEnabled = true
     charPicker.isHidden = false
+  }
+}
+
+// MARK: - Private functions
+extension FriendListTableViewController {
+  
+  private func friendsForSectionByFirstChar(
+    _ indexInTitles: Int) -> [UserSJ] {
+    
+    var tmpArray: [UserSJ] = []
+    for each in searchData! {
+      if String(each.lastName.first ?? "-") ==
+          sectionTitles[indexInTitles] {
+        tmpArray.append(each)
+      }
+    }
+    return tmpArray
+  }
+
+  private func getSectionTitles() {
+    sectionTitles = []
+    var shouldAppendEmptySection = false
+    
+    for friend in searchData! {
+      let charForTitle = friend.lastName.first ?? "-"
+      
+      guard charForTitle != "-" else {
+        shouldAppendEmptySection = true
+        continue
+      }
+      if !sectionTitles.contains(String(charForTitle)) {
+        sectionTitles.append(String(charForTitle))
+      }
+    }
+    shouldAppendEmptySection ? (sectionTitles.append("-")) : ()
+    charPicker.chars = sectionTitles
+    charPicker.setupUI()
+  }
+}
+
+// MARK: - Refresh control
+extension FriendListTableViewController {
+  
+  private func createRefreshControl() -> UIRefreshControl {
+    let refreshControl = UIRefreshControl()
+    refreshControl.tintColor = .systemGray
+    refreshControl.attributedTitle =
+      NSAttributedString(
+        string: "Обновление...",
+        attributes: [.font: UIFont.systemFont(ofSize: 10)])
+    refreshControl.addTarget(
+      self, action: #selector(refresh(_:)),
+      for: .valueChanged)
+    return refreshControl
+  }
+  
+  @objc private func refresh(_ sender: UIRefreshControl) {
+    NetworkManager
+      .loadFriendsSJ(forUser: friendListForUserId) { [weak self] in
+      self?.refreshControl.endRefreshing()
+    }
+  }
+}
+
+// MARK: - Notification Tokens
+extension FriendListTableViewController {
+  
+  private func createSingleTargetToken() {
+    testToken = usersData?.last?.observe { change in
+      switch change {
+      case .change(let object, let properties):
+        let changes = properties.reduce("") { (res, new) in
+          """
+          \(res)\n\(new.name):
+          \t\(new.oldValue ?? "nil")
+          -> \(new.newValue ?? "nil")
+          """
+        }
+        let user = object as? UserSJ
+        #if DEBUG
+        print("""
+              Changed properties for user:
+              \(user?.lastName ?? "")\n\(changes)
+              """)
+        #endif
+      case .deleted:
+        print("obj deleted")
+      case .error(let error):
+        print(error.localizedDescription)
+      }
+    }
+  }
+
+  private func createSearchDataNotificationToken() {
+    searchDataNotificationToken = usersData?
+      .observe { [weak self] result in
+        switch result {
+        case .initial(let usersData):
+          print("Initiated with \(usersData.count)")
+          self?.getSectionTitles()
+          self?.tableView.reloadData()
+        case .update(let users,
+                     deletions: let deletions,
+                     insertions: let insertions,
+                     modifications: let modifications):
+          #if DEBUG
+          print("""
+              New count \(users.count)
+              Deletions \(deletions)
+              Insertions \(insertions)
+              Modifications \(modifications)
+              """)
+          #endif
+          if !deletions.isEmpty || !insertions.isEmpty {
+            self?.getSectionTitles()
+            self?.tableView.reloadData()
+          }
+        case .error(let error):
+          print(error.localizedDescription)
+        }
+      }
   }
 }
