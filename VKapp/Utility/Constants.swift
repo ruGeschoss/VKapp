@@ -5,6 +5,8 @@
 //  Created by Alexander Andrianov on 21.03.2021.
 //
 
+// swiftlint:disable nesting
+
 import UIKit
 
 enum Constants {

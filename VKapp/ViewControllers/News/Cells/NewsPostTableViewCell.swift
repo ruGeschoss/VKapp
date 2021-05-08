@@ -13,14 +13,14 @@ protocol ForcedCellUpdateDelegate: AnyObject {
 
 final class NewsPostTableViewCell: UITableViewCell {
   
-  typealias K = Constants.News.PostCell
-  private let contentInsets = K.cellContentInsets
-  private let cellInsets = K.cellInsets
-  private let heightLimit = K.contentHeightLimit
+  typealias Constant = Constants.News.PostCell
+  private let contentInsets = Constant.cellContentInsets
+  private let cellInsets = Constant.cellInsets
+  private let heightLimit = Constant.contentHeightLimit
   
-  private let cellInsetsSumm = K.cellInsets.left + K.cellInsets.right
+  private let cellInsetsSumm = Constant.cellInsets.left + Constant.cellInsets.right
   private let contentInsetsSumm =
-    K.cellContentInsets.left + K.cellContentInsets.right
+    Constant.cellContentInsets.left + Constant.cellContentInsets.right
   private var insetsSumm: CGFloat { cellInsetsSumm + contentInsetsSumm }
   
   private var shouldShowExpandButton: Bool = false
@@ -142,8 +142,8 @@ extension NewsPostTableViewCell {
       return
     }
     
-    let moreTitle = K.buttonMoreTitle
-    let lessTitle = K.buttonLessTitle
+    let moreTitle = Constant.buttonMoreTitle
+    let lessTitle = Constant.buttonLessTitle
     let buttonTitle = isExpanded ? lessTitle : moreTitle
     expandButton.setTitle(buttonTitle, for: .normal)
     
@@ -186,7 +186,7 @@ extension NewsPostTableViewCell {
   
   private func createBackgroundView() -> UIView {
     let background = UIView()
-    background.backgroundColor = K.backgroundColor
+    background.backgroundColor = Constant.backgroundColor
     background.translatesAutoresizingMaskIntoConstraints = false
     return background
   }

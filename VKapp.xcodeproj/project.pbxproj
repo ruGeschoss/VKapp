@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B7122E0826471C2700D23FC9 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7122E0726471C2700D23FC9 /* AsyncImageView.swift */; };
 		B751CBD725A3A7B300919820 /* CustomImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751CBD625A3A7B300919820 /* CustomImage.swift */; };
 		B751CBE225A44A6F00919820 /* LikeButtonUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751CBE125A44A6F00919820 /* LikeButtonUIButton.swift */; };
 		B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B751CBF425B46F8B00919820 /* CharPicker.swift */; };
@@ -69,6 +70,7 @@
 		14E6AF7D5EBE48DF0B96F8A4 /* Pods-VKapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKapp.release.xcconfig"; path = "Target Support Files/Pods-VKapp/Pods-VKapp.release.xcconfig"; sourceTree = "<group>"; };
 		389D77A31E15EEAA1DB185DD /* Pods-VKapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKapp.debug.xcconfig"; path = "Target Support Files/Pods-VKapp/Pods-VKapp.debug.xcconfig"; sourceTree = "<group>"; };
 		9E38BF168BE93A3F0089FA6F /* Pods_VKapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VKapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7122E0726471C2700D23FC9 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		B751CBD625A3A7B300919820 /* CustomImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImage.swift; sourceTree = "<group>"; };
 		B751CBE125A44A6F00919820 /* LikeButtonUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButtonUIButton.swift; sourceTree = "<group>"; };
 		B751CBF425B46F8B00919820 /* CharPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharPicker.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				B768A04D25CC19B4005C069E /* AppExtensions.swift */,
 				B7FB6DBB2607E463005B31C8 /* Constants.swift */,
 				B777C46C2639C89200C3711A /* Structs.swift */,
+				B7122E0726471C2700D23FC9 /* AsyncImageView.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -634,6 +637,7 @@
 				B768A06525D01E02005C069E /* Session.swift in Sources */,
 				B79B16CE25DF280F001DA787 /* Profile.swift in Sources */,
 				B7FB6E96261C71B0005B31C8 /* AsyncOperation.swift in Sources */,
+				B7122E0826471C2700D23FC9 /* AsyncImageView.swift in Sources */,
 				B769DBEA25C96D8E00E0E864 /* CustomNavigationController.swift in Sources */,
 				B751CBF525B46F8B00919820 /* CharPicker.swift in Sources */,
 				B7FB6EE42620AD81005B31C8 /* PhotoService.swift in Sources */,
