@@ -75,12 +75,9 @@ extension NewsHeaderView {
   // MARK: - Date formatter
   private func setDateToUnderline(_ date: Int) {
     DispatchQueue.global().async {
-      let date = Date(timeIntervalSince1970: Double(date))
-      let dateformatter = DateFormatter()
-      dateformatter.locale = Locale(identifier: "ru")
-      dateformatter.dateFormat = "d MMMM yyyy HH:mm"
+      let date = date.convertToDate()
       DispatchQueue.main.async {
-        self.profileNameUnderline.text = dateformatter.string(from: date)
+        self.profileNameUnderline.text = date
       }
     }
   }

@@ -33,7 +33,7 @@ final class NewsViewController: UIViewController {
     NewsfeedService.getPhotoNews { (news, users, groups, nextFrom) in
       print("Got photo news: \(news.count), from: \(users.count) users and \(groups.count) groups")
       print("Next request from: \(nextFrom)")
-      print(news.first?.photos.count)
+//      print(news.first?.photos.count)
     }
   }
 }

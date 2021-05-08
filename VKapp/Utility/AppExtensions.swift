@@ -40,6 +40,30 @@ extension String {
   }
 }
 
+// MARK: - Double
+extension Double {
+  func convertToDate() -> String {
+    let date = Date(timeIntervalSinceReferenceDate: self)
+    let dateformatter = DateFormatter()
+    dateformatter.locale = Locale(identifier: "ru")
+    dateformatter.dateFormat = "d MMMM yyyy HH:mm"
+    dateformatter.timeZone = .current
+    return dateformatter.string(from: date)
+  }
+}
+
+// MARK: = Int
+extension Int {
+  func convertToDate() -> String {
+    let date = Date(timeIntervalSince1970: Double(self))
+    let dateformatter = DateFormatter()
+    dateformatter.locale = Locale(identifier: "ru")
+    dateformatter.dateFormat = "d MMMM yyyy HH:mm"
+    dateformatter.timeZone = .current
+    return dateformatter.string(from: date)
+  }
+}
+
 // MARK: - UIView
 extension UIView {
   func roundCorners(corners: UIRectCorner,

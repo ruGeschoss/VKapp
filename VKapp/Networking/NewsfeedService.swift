@@ -41,7 +41,7 @@ final class NewsfeedService {
         let json = JSON(data)
         let nextFrom = json["response"]["next_from"].stringValue
         let dispatchGroup = DispatchGroup()
-        print(Date().timeIntervalSince1970)
+        
         var parsedNews: [NewsPostModel] = []
         var parsedUsers: [UserSJ] = []
         var parsedGroups: [Group] = []
@@ -65,7 +65,6 @@ final class NewsfeedService {
         }
         
         dispatchGroup.notify(queue: DispatchQueue.main) {
-          print(Date().timeIntervalSince1970)
           completion(parsedNews, parsedUsers, parsedGroups, nextFrom)
         }
       case .failure(let error):
@@ -91,7 +90,6 @@ final class NewsfeedService {
         let json = JSON(data)
         let nextFrom = json["response"]["next_from"].stringValue
         let dispatchGroup = DispatchGroup()
-        print(Date().timeIntervalSince1970)
         var parsedNews: [NewsPhotoModel] = []
         var parsedUsers: [UserSJ] = []
         var parsedGroups: [Group] = []
@@ -115,7 +113,6 @@ final class NewsfeedService {
         }
         
         dispatchGroup.notify(queue: DispatchQueue.main) {
-          print(Date().timeIntervalSince1970)
           completion(parsedNews, parsedUsers, parsedGroups, nextFrom)
         }
       case .failure(let error):

@@ -111,10 +111,9 @@ extension LoginVC {
   private func checkIfTokenExpired() {
     let currentTime = Date.timeIntervalSinceReferenceDate
     let tokenExpires = Session.shared.tokenExpires
-    let dateExpires = Date(timeIntervalSinceReferenceDate: tokenExpires)
     #if DEBUG
-    print("Текущее время: \(Date())")
-    print("Токен действует до \(dateExpires)")
+    print("Текущее время: \(currentTime.convertToDate())")
+    print("Токен действует до: \(tokenExpires.convertToDate())")
     print("\(Session.shared.token)")
     #endif
     
@@ -248,12 +247,10 @@ extension LoginVC {
   }
   
   private func showTokenExpiredAlert() {
-    let tokenExpires = Session.shared.tokenExpires
-    let dateExpires = Date(
-      timeIntervalSinceReferenceDate: tokenExpires)
+    let tokenExpires = Session.shared.tokenExpires.convertToDate()
     let alert = UIAlertController(
       title: "Внимание",
-      message: "Токен устарел \(dateExpires)",
+      message: "Токен действовал до \(tokenExpires)",
       preferredStyle: .alert)
     let action = UIAlertAction(
       title: "ОК", style: .cancel) { [weak self] _ in
