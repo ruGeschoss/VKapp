@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -343,7 +343,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyGroupCell" id="lBT-2d-Ylc" customClass="MyGroupsTableViewCell" customModule="VKapp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="24.333333969116211" width="414" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lBT-2d-Ylc" id="BGy-dr-Jhh">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
@@ -434,7 +434,7 @@
                         </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GroupCell" id="BKw-p4-plk" customClass="AllGroupsTableViewCell" customModule="VKapp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="68.333333969116211" width="414" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BKw-p4-plk" id="6Hb-lS-Asm">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
@@ -741,7 +741,7 @@
                                 </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyFriendCell" id="eRh-xp-Qcr" customClass="MyFriendsTableViewCell" customModule="VKapp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="84" width="414" height="60"/>
+                                        <rect key="frame" x="0.0" y="80.333333969116211" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eRh-xp-Qcr" id="P6u-0x-PFZ">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>

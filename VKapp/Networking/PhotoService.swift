@@ -97,7 +97,7 @@ final class PhotoService {
     AF.request(url).responseData(queue: .global()) { [weak self] response in
       guard
         let data = response.data,
-        let image = UIImage(data: data)
+        let image = UIImage(data: data, scale: 0.7)
       else { return }
       DispatchQueue.main.async {
         self?.images[url] = image

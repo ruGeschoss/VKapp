@@ -8,74 +8,130 @@
 import UIKit
 
 final class NewsPhotoTableViewCell: UITableViewCell {
-  @IBOutlet private weak var cellBackgroundView: UIView! {
-    didSet {
-      self.cellBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-    }
+  
+  private let cellInsets = Constants.newsPhotoCellInsets
+  private let contentInsets = Constants.newsPhotoCellContentInsets
+  
+  private var cellInsetsSumm: CGFloat {
+    cellInsets.left + cellInsets.right
+  }
+  private var contentInsetsSumm: CGFloat {
+    contentInsets.left + contentInsets.right
+  }
+  private var insetsSumm: CGFloat {
+    cellInsetsSumm + contentInsetsSumm
   }
   
-  @IBOutlet private weak var cellImageView: UIImageView! {
-    didSet {
-      self.cellImageView.translatesAutoresizingMaskIntoConstraints = false
-      cellImageView.contentMode = .scaleAspectFit
-    }
+  private var contentNews: NewsPostModel?
+  private var contentImage: UIImage?
+  var cellConfig: CellConfiguration?
+  
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    selectionStyle = .none
+    backgroundColor = .clear
+    contentView.backgroundColor = .clear
+    
+    let background = createBackgroundView()
+    let contentImage = createContentImageView()
+    
+    contentView.addSubview(background)
+    contentView.addSubview(contentImage)
   }
   
-  private let inset: CGFloat = 10
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+  }
   
   override func layoutSubviews() {
     super.layoutSubviews()
-    setupUI()
-    layoutCellBackgroundView()
-    layoutCellImageView()
+    setupFrames()
   }
   
   override func prepareForReuse() {
     super.prepareForReuse()
-  }
-  
-  override func setSelected(_ selected: Bool, animated: Bool) {
-  }
-  
-  func configure(image: UIImage?) {
-    cellImageView.image = image ?? UIImage(named: "No_Image")!
-    layoutCellBackgroundView()
-    layoutCellImageView()
-  }
-  
-  private func setupUI() {
-    self.cellBackgroundView.backgroundColor =
-      Constants.newsPhotoCellBackgroundcolor
-  }
-  
-  private func layoutCellImageView() {
-    guard let image = cellImageView.image else {
-      cellBackgroundView.frame = bounds
-      cellImageView.frame = CGRect(
-        x: bounds.minX + inset, y: bounds.minY,
-        width: bounds.width - inset * 2, height: bounds.height)
-      return
+    cellConfig = nil
+    contentNews = nil
+    if let content = contentView.subviews[1] as? UIImageView {
+      content.image = nil
     }
-    
-    let aspect = image.size.width / image.size.height
-    let width = bounds.width - inset * 2
-    
-    let imageHeight = aspect < 1 ? width : width / aspect
-    let imageWidth = imageHeight * aspect
-    let imageX = (width - imageWidth) / 2
-    let imageOrigin = CGPoint(x: imageX, y: 0)
-    let imageSize = CGSize(width: ceil(imageWidth), height: ceil(imageHeight))
-    self.cellImageView.frame = CGRect(origin: imageOrigin, size: imageSize)
-    cellImageView.layoutSubviews()
   }
   
-  private func layoutCellBackgroundView() {
-    let width = bounds.width - inset * 2
-    let height = bounds.height
-    let backgroundOrigin = CGPoint(x: bounds.minX + inset, y: bounds.minY)
-    let backgroundSize = CGSize(width: ceil(width), height: ceil(height))
-    self.cellBackgroundView.frame = CGRect(
-      origin: backgroundOrigin, size: backgroundSize)
-    cellBackgroundView.layoutSubviews()
+  // MARK: Configure
+  func configure(news: NewsPostModel, image: UIImage) {
+    contentNews = news
+    contentImage = image
+    setupFrames()
+  }
+}
+
+// MARK: - Setup frames
+extension NewsPhotoTableViewCell {
+  
+  private func setupFrames() {
+    guard cellConfig != nil else { return }
+    setupContentImageView()
+    setupBackgroundView()
+  }
+  
+  // MARK: Set Content frame
+  private func setupContentImageView() {
+    guard
+      let news = contentNews,
+      news.photoAttachments.count > 0,
+      let contentImageView = contentView.subviews[1] as? UIImageView
+    else { return }
+    
+    let maxWidth = cellConfig!.superviewWidth - cellInsetsSumm
+    let maxContentWitdh = maxWidth - contentInsetsSumm
+    let aspect = CGFloat(news.photoAttachments.first!.aspectRatio)
+    let cellContentHeight =
+      aspect > 1 ? maxContentWitdh / aspect : maxContentWitdh
+    let cellContentWidth =
+      aspect < 1 ? maxContentWitdh * aspect : maxContentWitdh 
+    let contentSize =
+      CGSize(width: ceil(cellContentWidth), height: ceil(cellContentHeight))
+    
+    let contentX = (cellConfig!.superviewWidth - cellContentWidth) / 2
+    let contentOrigin = CGPoint(x: ceil(contentX), y: contentInsets.top)
+    
+    contentImageView.frame = CGRect(origin: contentOrigin, size: contentSize)
+    contentImageView.image = contentImage
+  }
+  
+  // MARK: Set Background Frame
+  private func setupBackgroundView() {
+    guard
+      let backgroundView = contentView.subviews.first,
+      let contentImageView = contentView.subviews[1] as? UIImageView
+    else { return }
+    
+    let maxWidth = cellConfig!.superviewWidth - cellInsetsSumm
+    let heightInsetsSumm = contentInsets.top + contentInsets.bottom
+    let cellHeight = contentImageView.frame.height + heightInsetsSumm
+    let cellOrigin =
+      CGPoint(x: bounds.minX + cellInsets.left, y: cellInsets.top)
+    let cellSize = CGSize(width: ceil(maxWidth), height: ceil(cellHeight))
+    cellConfig?.height = cellSize.height + cellInsets.bottom
+    backgroundView.frame = CGRect(origin: cellOrigin, size: cellSize)
+  }
+}
+
+// MARK: - Create Subviews
+extension NewsPhotoTableViewCell {
+  
+  private func createBackgroundView() -> UIView {
+    let background = UIView()
+    background.translatesAutoresizingMaskIntoConstraints = false
+    background.backgroundColor = Constants.newsPhotoCellBackgroundcolor
+    return background
+  }
+  
+  private func createContentImageView() -> UIImageView {
+    let contentImage = UIImageView()
+    contentImage.translatesAutoresizingMaskIntoConstraints = false
+    contentImage.backgroundColor = Constants.newsPhotoCellBackgroundcolor
+    contentImage.contentMode = .scaleToFill
+    return contentImage
   }
 }

@@ -7,6 +7,13 @@
 
 import UIKit
 
+// MARK: NewsOwner
+protocol NewsOwner: AnyObject {
+  var ownerName: String { get }
+  var ownerAvatarURL: String { get }
+  var ownerId: String { get }
+}
+
 // MARK: - String
 extension String {
   func height(withConstrainedWidth width: CGFloat,
@@ -52,7 +59,7 @@ extension Double {
   }
 }
 
-// MARK: = Int
+// MARK: - Int
 extension Int {
   func convertToDate() -> String {
     let date = Date(timeIntervalSince1970: Double(self))
@@ -61,6 +68,48 @@ extension Int {
     dateformatter.dateFormat = "d MMMM yyyy HH:mm"
     dateformatter.timeZone = .current
     return dateformatter.string(from: date)
+  }
+  
+  var shortStringVersion: String {
+    guard !Double(self).isNaN, !Double(self).isInfinite else { return "" }
+    if self == 0 { return "0" }
+    
+    let units = ["", "k", "M"]
+    var interval = Double(self)
+    var unitIndex = 0
+    while unitIndex < units.count - 1 {
+      if abs(interval) < 1000.0 {
+        break
+      }
+      unitIndex += 1
+      interval /= 1000.0
+    }
+    // 2 for 1 digit, 3 for 2 digits, etc
+    let numberOfDigits = interval > 9 ? 2 : 3
+    let stringValue = String(format: "%0.*g", Int(log10(abs(interval))) + numberOfDigits, interval)
+    return "\(stringValue)\(units[unitIndex])"
+  }
+}
+
+// MARK: - TableViewCell
+extension UITableViewCell: ReusableCell {}
+
+protocol ReusableCell {}
+
+extension ReusableCell where Self: UITableViewCell {
+  static var reuseID: String {
+    String(describing: self)
+  }
+}
+
+// MARK: - TableView Header/Footer
+extension UITableViewHeaderFooterView: ReusableHeaderFooter {}
+
+protocol ReusableHeaderFooter {}
+
+extension ReusableHeaderFooter where Self: UITableViewHeaderFooterView {
+  static var reuseID: String {
+    String(describing: self)
   }
 }
 
@@ -89,6 +138,25 @@ extension UIView {
     UIView.animate(
       withDuration: 0.1, delay: 0.1,
       options: .curveLinear, animations: {
+        self.transform =
+          CGAffineTransform.identity
+      })
+  }
+  
+  func animatedSpin() {
+    UIView.animate(
+      withDuration: 0.1,
+      delay: 0,
+      options: .curveLinear,
+      animations: {
+        self.transform =
+          CGAffineTransform(rotationAngle: -60)
+      })
+    UIView.animate(
+      withDuration: 0.1,
+      delay: 0.1,
+      options: .curveLinear,
+      animations: {
         self.transform =
           CGAffineTransform.identity
       })

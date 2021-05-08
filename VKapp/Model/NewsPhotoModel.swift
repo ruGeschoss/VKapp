@@ -12,6 +12,7 @@ final class NewsPhotoModel: Decodable {
   
   var sourceId: Int = 0
   var date: Int = 0
+  var stringDate: String?
   var photosCount: Int = 0
   var photos: [Photos] = []
   var postId: Int = 0

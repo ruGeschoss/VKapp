@@ -44,5 +44,18 @@ final class UserSJ: Object, Decodable {
   override static func primaryKey() -> String? {
     "userId"
   }
+}
+
+extension UserSJ: NewsOwner {
+  var ownerId: String {
+    userId
+  }
   
+  var ownerName: String {
+    firstName + " " + lastName
+  }
+  
+  var ownerAvatarURL: String {
+    photo
+  }
 }

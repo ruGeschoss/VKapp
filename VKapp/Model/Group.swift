@@ -53,5 +53,18 @@ final class Group: Object, Decodable {
   override static func primaryKey() -> String? {
     "groupId"
   }
+}
+
+extension Group: NewsOwner {
+  var ownerName: String {
+    groupName
+  }
   
+  var ownerAvatarURL: String {
+    groupAvatarSizes.first!
+  }
+  
+  var ownerId: String {
+    groupId
+  }
 }

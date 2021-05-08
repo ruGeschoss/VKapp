@@ -12,6 +12,7 @@ final class NewsPostModel: Decodable {
   
   var sourceId: Int = 0
   var date: Int = 0
+  var stringDate: String?
   var postType: String = ""
   var text: String = ""
   var markedAsAds: Bool = false
@@ -39,9 +40,7 @@ final class NewsPostModel: Decodable {
     #if DEBUG
     let attachments = json["attachments"].arrayValue
     if attachments.count != 0 {
-      let photoAttachments = attachments.filter { (element) in
-        element["type"] == "photo"
-      }
+      let photoAttachments = attachments.filter { $0["type"] == "photo" }
       self.photoAttachments = photoAttachments
         .map { Photos(from: $0["photo"]) }
     }
