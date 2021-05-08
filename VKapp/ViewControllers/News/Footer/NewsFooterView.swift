@@ -58,13 +58,10 @@ final class NewsFooterView: UITableViewHeaderFooterView {
   
   // MARK: - Setup
   func configure(likes: Likes, comments: Comments, reposts: Reposts, views: Views) {
-    #if DEBUG
     configureLikes(likes: likes)
     configureComments(comments: comments)
     configureReposts(reposts: reposts)
     configureViews(views: views)
-    print("Footer configured")
-    #endif
   }
 }
 

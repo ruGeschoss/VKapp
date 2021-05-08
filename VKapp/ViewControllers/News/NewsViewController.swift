@@ -15,6 +15,7 @@ final class NewsViewController: UIViewController {
   private var news: [NewsPostModel] = []
   private var users: [UserSJ] = []
   private var groups: [Group] = []
+  private var aspects: [IndexPath: CGFloat] = [:]
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -54,6 +55,7 @@ extension NewsViewController: UITableViewDataSource {
     }
   }
   
+  // MARK: - CellForRowAt
   func tableView(_ tableView: UITableView,
                  cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let postCell = tableView.dequeueReusableCell(
@@ -63,24 +65,46 @@ extension NewsViewController: UITableViewDataSource {
             withIdentifier: Constants.newsPhotoCellId)
             as? NewsPhotoTableViewCell else { return UITableViewCell() }
     
-    guard let attachment = news[indexPath.section].photoAttachments.first,
-          let photo = attachment.imageUrl.last else { return UITableViewCell() }
-    let image = photoService.photo(indexPath: indexPath, url: photo)
-    
     switch indexPath.row {
     case 0:
-      if news[indexPath.section].text == "" {
-        photoCell.cellImageView.image = image
-        return photoCell
+      if news[indexPath.section].text != "" {
+        postCell.configure(text: news[indexPath.section].text)
+        return postCell
       }
-      postCell.configure(text: news[indexPath.section].text)
-      return postCell
+      fallthrough
+      
     default:
-      photoCell.cellImageView.image = image
+      guard let attachment = news[indexPath.section].photoAttachments.first,
+            let photo = attachment.imageUrl.last
+      else { return UITableViewCell() }
+      
+      let image = photoService
+        .photo(indexPath: indexPath, url: photo)
+      photoCell.configure(image: image)
+      
+      if let size = image?.size,
+         aspects[indexPath] == nil {
+        
+        let aspect = size.width / size.height
+        aspects[indexPath] = aspect
+      }
       return photoCell
     }
   }
   
+  // MARK: - HeightForRowAt
+  func tableView(_ tableView: UITableView,
+                 heightForRowAt indexPath: IndexPath) -> CGFloat {
+    guard
+      let aspect = aspects[indexPath]
+    else { return UITableView.automaticDimension }
+    // 20 - cell insets left + right
+    let maxWidth = tableView.bounds.width - 20
+    let height = aspect < 1 ? maxWidth : maxWidth / aspect
+    return ceil(height)
+  }
+  
+  // MARK: - Header
   func tableView(_ tableView: UITableView,
                  viewForHeaderInSection section: Int) -> UIView? {
     guard let header = tableView.dequeueReusableHeaderFooterView(
@@ -89,7 +113,7 @@ extension NewsViewController: UITableViewDataSource {
     
     guard users.first != nil,
           groups.first != nil else { return UIView() }
-    
+
     switch news[section].sourceId > 0 {
     case true:
       let sourceId = news[section].sourceId
@@ -109,6 +133,15 @@ extension NewsViewController: UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView,
+                 heightForHeaderInSection section: Int) -> CGFloat {
+    guard let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: Constants.newsHeaderViewId)
+            as? NewsHeaderView else { return 0 }
+    return header.frame.height
+  }
+  
+  // MARK: - Footer
+  func tableView(_ tableView: UITableView,
                  viewForFooterInSection section: Int) -> UIView? {
     guard let footer = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: Constants.newsFooterViewId)
@@ -117,14 +150,6 @@ extension NewsViewController: UITableViewDataSource {
     footer.configure(likes: post.likes, comments: post.comments,
                      reposts: post.reposts, views: post.views)
     return footer
-  }
-  
-  func tableView(_ tableView: UITableView,
-                 heightForHeaderInSection section: Int) -> CGFloat {
-    guard let header = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: Constants.newsHeaderViewId)
-            as? NewsHeaderView else { return 0 }
-    return header.frame.height
   }
   
   func tableView(_ tableView: UITableView,
