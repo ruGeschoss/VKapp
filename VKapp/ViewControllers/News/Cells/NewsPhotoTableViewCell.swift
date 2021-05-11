@@ -9,9 +9,9 @@ import UIKit
 
 final class NewsPhotoTableViewCell: UITableViewCell {
   
-  private let cellInsets = Constants.newsPhotoCellInsets
-  private let contentInsets = Constants.newsPhotoCellContentInsets
-  
+  typealias Constant = Constants.News.PhotoCell
+  private let cellInsets = Constant.cellInsets
+  private let contentInsets = Constant.cellContentInsets
   private var cellInsetsSumm: CGFloat {
     cellInsets.left + cellInsets.right
   }
@@ -123,14 +123,14 @@ extension NewsPhotoTableViewCell {
   private func createBackgroundView() -> UIView {
     let background = UIView()
     background.translatesAutoresizingMaskIntoConstraints = false
-    background.backgroundColor = Constants.newsPhotoCellBackgroundcolor
+    background.backgroundColor = Constant.backgroundColor
     return background
   }
   
   private func createContentImageView() -> UIImageView {
     let contentImage = UIImageView()
     contentImage.translatesAutoresizingMaskIntoConstraints = false
-    contentImage.backgroundColor = Constants.newsPhotoCellBackgroundcolor
+    contentImage.backgroundColor = Constant.backgroundColor
     contentImage.contentMode = .scaleToFill
     return contentImage
   }

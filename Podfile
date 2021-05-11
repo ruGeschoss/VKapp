@@ -11,6 +11,6 @@ target 'VKapp' do
   pod 'PromiseKit'
   pod 'RealmSwift'
   pod 'SwiftKeychainWrapper'
-#  pod 'SDWebImage', '~> 5.0'
   pod 'SwiftLint'
+  pod 'Texture'
 end

@@ -9,8 +9,9 @@ import UIKit
 
 final class NewsFooterView: UITableViewHeaderFooterView {
   
-  private let backgroundInsets: UIEdgeInsets = Constants.newsFooterBackgroundInsets
-  private let contentInsets: UIEdgeInsets = Constants.newsFooterContentInsets
+  typealias Constant = Constants.News.Footer
+  private let backgroundInsets: UIEdgeInsets = Constant.backgroundInsets
+  private let contentInsets: UIEdgeInsets = Constant.contentInsets
   
   private var backgroundHeightInsetsSumm: CGFloat {
     backgroundInsets.top + backgroundInsets.bottom
@@ -93,10 +94,10 @@ extension NewsFooterView {
     
     background.frame = CGRect(origin: backgroundOrigin, size: backgroundSIze)
     
-    let cornersToRound = Constants.newsFooterCornersToRound
-    let cornerRadius = Constants.newsFooterCornerRadius
+    let cornersToRound = Constant.cornersToRound
+    let cornerRadius = Constant.cornerRadius
     background.roundCorners(corners: cornersToRound, radius: cornerRadius)
-    background.backgroundColor = Constants.newsFooterViewBackgroundcolor
+    background.backgroundColor = Constant.backgroundColor
   }
   
   // MARK: Set like button frame
@@ -106,7 +107,7 @@ extension NewsFooterView {
       let likes = newsPost?.likes
     else { return }
     
-    let buttonHeight = Constants.newsFooterButtonsHeight
+    let buttonHeight = Constant.buttonsHeight
     let buttonWidth = buttonHeight * 2 + likeButton.titleEdgeInsets.left
     let availableHeight = contentView.bounds.height
     let buttonY = (availableHeight - buttonHeight) / 2
@@ -137,7 +138,7 @@ extension NewsFooterView {
           let comments = newsPost?.comments
     else { return }
     
-    let buttonHeight = Constants.newsFooterButtonsHeight
+    let buttonHeight = Constant.buttonsHeight
     let buttonWidth = buttonHeight * 2 + commentButton.titleEdgeInsets.left
     let buttonY = likeButton.frame.minY
     let buttonX = likeButton.frame.maxX
@@ -168,7 +169,7 @@ extension NewsFooterView {
       let reposts = newsPost?.reposts
     else { return }
     
-    let buttonHeight = Constants.newsFooterButtonsHeight
+    let buttonHeight = Constant.buttonsHeight
     let buttonWidth = buttonHeight * 2 + repostButton.titleEdgeInsets.left
     let buttonY = commentButton.frame.minY
     let buttonX = commentButton.frame.maxX
@@ -201,7 +202,7 @@ extension NewsFooterView {
     let title = views.count.shortStringVersion
     let titleWidth = title.width(withConstrainedHeight: 30, font: UIFont.systemFont(ofSize: 10))
     
-    let buttonHeight = Constants.newsFooterButtonsHeight / 1.5
+    let buttonHeight = Constant.buttonsHeight / 1.5
     let buttonWidth = buttonHeight + titleWidth + viewsCount.titleEdgeInsets.left
     let buttonY = (contentView.bounds.height - buttonHeight) / 2
     let buttonX = contentView.bounds.maxX - buttonWidth - backgroundInsets.right - contentInsets.right
@@ -244,7 +245,7 @@ extension NewsFooterView {
   
   private func createBackground() -> UIView {
     let background = UIView()
-    background.backgroundColor = Constants.newsHeaderViewBackgroundcolor
+    background.backgroundColor = Constant.backgroundColor
     background.translatesAutoresizingMaskIntoConstraints = false
     return background
   }

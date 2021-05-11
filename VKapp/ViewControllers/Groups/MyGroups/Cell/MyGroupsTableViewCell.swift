@@ -44,9 +44,6 @@ extension MyGroupsTableViewCell {
                 UIImage(data: data, scale: 0.3)
             }
             do {
-              #if DEBUG
-              // TODO: Generic for array append
-              #endif
               let realm = try Realm()
               realm.beginWrite()
               forGroup.groupAvatarData.append(data)

@@ -325,9 +325,10 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
+                        <segue destination="5v8-1f-kjs" kind="relationship" relationship="viewControllers" id="lez-W7-tHW"/>
                         <segue destination="rvD-uk-w55" kind="relationship" relationship="viewControllers" id="zdE-WO-Sf6"/>
                         <segue destination="a4L-4s-lLq" kind="relationship" relationship="viewControllers" id="b7C-oy-kpo"/>
-                        <segue destination="5v8-1f-kjs" kind="relationship" relationship="viewControllers" id="lez-W7-tHW"/>
+                        <segue destination="795-Zx-MOL" kind="relationship" relationship="viewControllers" id="p8l-us-48m"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DTk-oS-S55" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -722,6 +723,39 @@
             </objects>
             <point key="canvasLocation" x="-1326" y="726"/>
         </scene>
+        <!--Фото-->
+        <scene sceneID="zph-vv-Lpq">
+            <objects>
+                <navigationController id="795-Zx-MOL" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Фото" image="folder.fill" catalog="system" id="hGx-Rx-rAC"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CaP-io-Jdg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="h9j-bS-P78" kind="relationship" relationship="rootViewController" id="6FZ-Ie-qxk"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GIf-yI-bVn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2091" y="1418"/>
+        </scene>
+        <!--Album View Controller-->
+        <scene sceneID="OoO-RD-Xcs">
+            <objects>
+                <viewController modalPresentationStyle="fullScreen" id="h9j-bS-P78" customClass="AlbumViewController" customModule="VKapp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sLr-6G-wtt">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="NIi-U8-Xml"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="7Kh-BJ-7CB"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Kt-XC-3NG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1326" y="1418"/>
+        </scene>
         <!--Друзья-->
         <scene sceneID="2UZ-o0-0vK">
             <objects>
@@ -887,6 +921,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="folder.fill" catalog="system" width="128" height="97"/>
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="newspaper.fill" catalog="system" width="128" height="111"/>
         <image name="person.2.fill" catalog="system" width="128" height="80"/>
